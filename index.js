@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express()
 const port = 5000
+const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
+const {User} = require('./models/User')
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://boiler-plate:qlfflwh94@boiler-plate.aiokh.mongodb.net/boiler-p?retryWrites=true&w=majority+srv://boiler-plate:qlfflwh94@boiler-plate.aiokh.mongodb.net/boiler-plate?retryWrites=true&w=majorityd',{
+mongoose.connect('mongodb+srv://boiler-plate:qlfflwh94@boiler-plate.aiokh.mongodb.net/boiler-plate?retryWrites=true&w=majority',{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     useCreateIndex:true,
@@ -12,8 +14,23 @@ mongoose.connect('mongodb+srv://boiler-plate:qlfflwh94@boiler-plate.aiokh.mongod
     .catch(err=>console.log(err));
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello World!!!')
 })
+
+app.use(bodyParser.urlencoded({extended:true}));
+
+app.use(bodyParser.json());
+
+app.post('/register',(req,res)=> {
+	const user = new User(req.body)
+
+	user.save((err,userInfo)=>{
+		if(err) return res.json({succss:false,err})
+		return res.status(200).json({
+			success:true
+		});
+	});
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
