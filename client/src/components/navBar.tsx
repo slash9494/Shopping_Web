@@ -1,6 +1,6 @@
 import React from 'react'
 
-function navBar () {
+function NavBar () {
     return (
         <div>
         
@@ -8,4 +8,4 @@ function navBar () {
     );
 }
 
-export default navBar;
+export default NavBar;

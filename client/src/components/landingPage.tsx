@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 
 
-function landingPage () {
+function LandingPage () {
     return (
         <div>
             
@@ -9,4 +9,4 @@ function landingPage () {
     );
 }
 
-export default landingPage;
+export default LandingPage;

@@ -11,7 +11,8 @@ import ReduxThunk from 'redux-thunk';
 import rootReducer from './modules/reducers';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
-const store = createStore(rootReducer,composeWithDevTools(),applyMiddleware(promiseMiddleware,ReduxThunk));
+
+const store = createStore(rootReducer,composeWithDevTools(applyMiddleware(promiseMiddleware,ReduxThunk)));
 
 ReactDOM.render(
   <Provider  store={store}>
