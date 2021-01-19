@@ -1,5 +1,8 @@
 import React, {useState, ChangeEvent, FormEvent} from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../modules/actions';
 
 const LoginBlock = styled.div`
     display: flex;
@@ -30,7 +33,7 @@ const Button = styled.button`
 `;
 
 
-function LoginPage () {
+function LoginPage (props:any) {
     const [inputs,setInputs] = useState({
         email:'',
         password:''
@@ -45,9 +48,20 @@ function LoginPage () {
         });
     }
 
+    const dispatch = useDispatch();
 
     const onSubmit = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        dispatch(loginUser(inputs))
+            .then((response:any)=>{
+                if(response.payload.success){
+                    props.history.push('/')
+                }else{
+                    alert('Error')
+                }
+            })
+
     }
 
     return (
