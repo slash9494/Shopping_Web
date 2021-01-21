@@ -8,11 +8,11 @@ import {Provider} from 'react-redux';
 import {applyMiddleware,createStore} from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
-import rootReducer from './modules/reducers';
+import rootReducer from './modules/reducers/reducer';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
 
-const store = createStore(rootReducer,composeWithDevTools(applyMiddleware(promiseMiddleware,ReduxThunk)));
+export const store = createStore(rootReducer,composeWithDevTools(applyMiddleware(promiseMiddleware,ReduxThunk)));
 
 ReactDOM.render(
   <Provider  store={store}>

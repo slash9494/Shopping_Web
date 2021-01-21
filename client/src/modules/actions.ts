@@ -9,7 +9,7 @@ type LoginUserProps = {
 export const LOGIN_USER = 'login_user';
 
 export function loginUser (dataToSubmit: LoginUserProps){
-    const request = axios.post('api/users/login',dataToSubmit)
+    const request = axios.post('/api/users/login',dataToSubmit)
         .then(response=>response.data)
     
     return {

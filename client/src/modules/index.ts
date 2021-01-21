@@ -1,3 +1,3 @@
-export {default} from './reducers';
+export {default} from './reducers/reducer';
 export * from './actions';
 export * from './types'

@@ -1,7 +1,8 @@
 import {ActionType} from 'typesafe-actions';
 import * as actions from './actions';
-
+ 
 export type Action = ActionType <typeof actions>;
+
 
 export type UserInfo = {
     name:{
@@ -19,7 +20,7 @@ export type UserInfo = {
 		type:String,
 	},
 	role:{
-		type:Number, /*number가 0이면 유저, 1이면 관리자*/
+		type:Number,
 		default?:number
 	},
 	image:String,

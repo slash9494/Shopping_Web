@@ -1,8 +1,10 @@
-import React, {useState, ChangeEvent, FormEvent} from 'react'
+import React, {useState, ChangeEvent, FormEvent, useEffect} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../modules/actions';
+import { withRouter } from 'react-router-dom';
+
 
 const LoginBlock = styled.div`
     display: flex;
@@ -32,7 +34,6 @@ const Button = styled.button`
     &:hover{background: #495057;}
 `;
 
-
 function LoginPage (props:any) {
     const [inputs,setInputs] = useState({
         email:'',
@@ -53,16 +54,21 @@ function LoginPage (props:any) {
     const onSubmit = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        dispatch(loginUser(inputs))
-            .then((response:any)=>{
-                if(response.payload.success){
+        dispatch<any>(loginUser(inputs))
+            .then((response: { payload: { loginSuccess: boolean; }; })=>{
+                if(response.payload.loginSuccess){
                     props.history.push('/')
                 }else{
-                    alert('Error')
+                    alert('Routing Error')
                 }
             })
 
     }
+
+    // useEffect(()=>{
+    //     axios.get('/api/hello')
+    //     .then(response=> console.log(response.data))
+    // },[])
 
     return (
         <LoginBlock>
@@ -80,4 +86,4 @@ function LoginPage (props:any) {
     );
 }
 
-export default LoginPage;
+export default withRouter(LoginPage);
