@@ -1,6 +1,14 @@
 import React, {useEffect} from 'react'
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import styled from 'styled-components';
+
+const LandingPageContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 80px;
+`;
 
 function LandingPage (props:any) {
     const onClick = () => {
@@ -15,10 +23,10 @@ function LandingPage (props:any) {
     }
 
     return (
-        <div>
+        <LandingPageContainer>
             메인
             <button onClick={onClick}>로그아웃</button>
-        </div>
+        </LandingPageContainer>
     );
 }
 

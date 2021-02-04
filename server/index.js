@@ -1,4 +1,6 @@
+// import * as express from 'express'
 const express = require('express');
+// import {Request,Response,NextFunction} from 'express'
 const app = express();
 const port = 5000;
 const mongoose = require('mongoose');
@@ -14,7 +16,7 @@ mongoose.connect(config.mongoURI,{
     useCreateIndex:true,
     useFindAndModify:false
 }).then(()=>console.log("mongDB connected.."))
-    .catch(err=>console.log(err));
+    .catch((err)=>console.log(err));
 
 app.get('/', (req, res) => {
   res.send('Hello World!!!')
