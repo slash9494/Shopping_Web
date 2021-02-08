@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const config = require("./config/key");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 mongoose
   .connect(config.mongoURI, {
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!!!");
 });
 
+app.use(express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
@@ -30,6 +32,8 @@ app.use(cookieParser());
 
 app.use("/api/users", require("./routes/users"));
 app.use("/api/product", require("./routes/product"));
+
+app.use("/server/uploads", express.static("server/uploads"));
 
 app.get("/api/hello", (req, res) => {
   res.send("hello");

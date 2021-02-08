@@ -1,24 +1,22 @@
-import {State,Action} from '../types';
-import {createReducer} from 'typesafe-actions';
-import { LOGIN_USER, REGISTER_USER, AUTH_USER } from '../actions';
+import { State, Action } from "../types";
+import { createReducer } from "typesafe-actions";
+import { LOGIN_USER, REGISTER_USER, AUTH_USER } from "../actions";
 
+const initialState: State = {};
 
-const initialState:State = [];
+const userReducer = createReducer<State, Action>(initialState, {
+  [LOGIN_USER]: (state, action) => ({
+    ...state,
+    loginSuccess: action.payload,
+  }),
+  [REGISTER_USER]: (state, action) => ({
+    ...state,
+    register: action.payload,
+  }),
+  [AUTH_USER]: (state, action) => ({
+    ...state,
+    userData: action.payload,
+  }),
+});
 
-const userReducer = createReducer<State,Action>(initialState,{
-    [LOGIN_USER] : (state,action) =>({
-        ...state,
-        loginSuccess:action.payload
-    }),
-    [REGISTER_USER] : (state,action) => ({
-        ...state,
-        register:action.payload
-    }),
-    [AUTH_USER] : (state,action) => ({
-        ...state,
-        userData:action.payload
-    })
-    
-})
-
-export default userReducer
+export default userReducer;

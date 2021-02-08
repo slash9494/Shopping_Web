@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk";
-import rootReducer from "./modules/reducers/reducer";
+import rootReducer from "./modules/reducers/index";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
@@ -20,17 +20,17 @@ const theme = createMuiTheme({
   },
 });
 
-export const store = createStore(
+const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(promiseMiddleware, ReduxThunk))
 );
 
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <Provider store={store}>
+  <Provider store={store}>
+    <MuiThemeProvider theme={theme}>
       <App />
-    </Provider>
-  </MuiThemeProvider>,
+    </MuiThemeProvider>
+  </Provider>,
   document.getElementById("root")
 );
 
