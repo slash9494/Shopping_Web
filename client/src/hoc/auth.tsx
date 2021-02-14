@@ -1,8 +1,9 @@
 import { Action } from "../modules/types";
 import React, { useEffect, Dispatch } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../modules";
+
 import { RootState } from "../modules/reducers";
+import { AUTH_CHECK_REQUEST } from "../modules/actions";
 
 function Auth(
   SpecificComponent: any,
@@ -18,24 +19,29 @@ function Auth(
     let user = useSelector((state: RootState) => state.userReducer);
 
     useEffect(() => {
-      dispatch<any>(auth()).then((response: any) => {
-        //로그인하지 않은 상태
-        if (!response.payload.isAuth) {
-          if (option) {
-            props.history.push("/login");
-          }
+      dispatch<any>({ type: AUTH_CHECK_REQUEST });
+
+      //로그인하지 않은 상태
+      if (!user.authCheckInfo?.isAuth) {
+        if (option) {
+          props.history.push("/login");
+        }
+      } else {
+        //로그인 한 상태
+        if (adminRoute && !user.authCheckInfo.isAdmin) {
+          props.history.push("/");
         } else {
-          //로그인 한 상태
-          if (adminRoute && !response.payload.isAdmin) {
+          if (option === false) {
             props.history.push("/");
-          } else {
-            if (option === false) {
-              props.history.push("/");
-            }
           }
         }
-      });
-    }, [dispatch, props.history]);
+      }
+    }, [
+      dispatch,
+      props.history,
+      // user.authCheckInfo?.isAdmin,
+      // user.authCheckInfo?.isAuth,
+    ]);
     return <SpecificComponent {...props} user={user} />;
   }
 

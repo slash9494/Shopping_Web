@@ -38,17 +38,6 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    "&:focus": {
-      backgroundColor: theme.palette.primary.main,
-      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
-
 const LandingPageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -56,70 +45,26 @@ const LandingPageContainer = styled.div`
   padding: 20px 80px;
 `;
 
+const DirectoryContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  @media screen and (max-width: 800px) {
+    align-items: center;
+    display: grid;
+    margin-right: 85px;
+    grid-template-columns: 1.5fr;
+    grid-gap: 15px;
+  }
+`;
+
 function LandingPage(props: any) {
-  const onClick = () => {
-    axios.get(`/api/users/logout`).then((response) => {
-      if (response.data.success) {
-        props.history.push("/login");
-      } else {
-        alert("로그아웃 하는데 실패했습니다.");
-      }
-    });
-  };
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const classes = useStyles(props);
-
   return (
     <LandingPageContainer>
-      <div>메인</div>
-      <button onClick={onClick}>로그아웃</button>
-      <div>
-        <Button
-          aria-controls="customized-menu"
-          aria-haspopup="true"
-          variant="contained"
-          color="primary"
-          onClick={handleClick}
-        >
-          Open Menu
-        </Button>
-        <StyledMenu
-          id="customized-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <StyledMenuItem>
-            <ListItemIcon>
-              <SendIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Sent mail" />
-          </StyledMenuItem>
-          <StyledMenuItem>
-            <ListItemIcon>
-              <DraftsIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Drafts" />
-          </StyledMenuItem>
-          <StyledMenuItem>
-            <ListItemIcon>
-              <InboxIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText primary="Inbox" />
-          </StyledMenuItem>
-        </StyledMenu>
-      </div>
+      <DirectoryContainer>
+        <div>메인</div>
+      </DirectoryContainer>
     </LandingPageContainer>
   );
 }

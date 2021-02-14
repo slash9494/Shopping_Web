@@ -9,7 +9,7 @@ router.post("/register", (req, res) => {
   user.save((err, userInfo) => {
     if (err) return res.json({ succss: false, err });
     return res.status(200).json({
-      success: true,
+      signUpSuccess: true,
     });
   });
 });
@@ -19,7 +19,7 @@ router.post("/login", (req, res) => {
     if (!user)
       return res.json({
         loginSuccess: false,
-        message: "제공된 이메일에 해당하는 유저가 없습니다.",
+        message: "이메일에 해당하는 유저가 없습니다.",
       });
     user.comparePassword(req.body.password, (err, isMatch) => {
       if (!isMatch)
@@ -38,6 +38,20 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.get("/logoutUpdate", auth, (req, res) => {
+  User.findOne({ email: req.user.email }, (err, user) => {
+    if (!user)
+      return res.status(200).send({
+        success: true,
+      });
+    else {
+      return res.status(200).send({
+        login: true,
+      });
+    }
+  });
+});
+
 router.get("/auth", auth, (req, res) => {
   res.status(200).json({
     _id: req.user._id,
@@ -53,9 +67,9 @@ router.get("/auth", auth, (req, res) => {
 
 router.get("/logout", auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
-    if (err) return res.json({ success: false, err });
+    if (err) return res.json({ logOutSuccess: false, err });
     return res.status(200).send({
-      success: true,
+      logOutSuccess: true,
     });
   });
 });

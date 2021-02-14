@@ -1,10 +1,21 @@
-import React,{useState} from 'react'
-import LeftMenu from './Sections/LeftMenu';
-import RightMenu from './Sections/RightMenu';
-import styled from 'styled-components';
-import {Link} from 'react-router-dom';
-import {ReactComponent as Logo} from '../../images/LYH.svg';
-import './header.style.scss';
+import React, { useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { ReactComponent as Logo } from "../../images/LYH.svg";
+import axios from "axios";
+import "./header.style.scss";
+import Button from "@material-ui/core/Button";
+import { withStyles, makeStyles, createStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { LOG_OUT_REQUEST } from "../../modules";
+import { RootState } from "../../modules/reducers";
+
+const useStyles = makeStyles({
+  button: {
+    fontSize: "100%",
+  },
+});
 
 const HeaderContainer = styled.div`
   height: 70px;
@@ -22,12 +33,10 @@ const HeaderContainer = styled.div`
 const LogoContainer = styled(Link)`
   height: 100%;
   width: 70px;
-  
-  
+
   @media screen and (max-width: 800px) {
-    height:1em;
-    margin:0;
-    
+    height: 1em;
+    margin: 0;
   }
 `;
 
@@ -47,40 +56,62 @@ const OptionLink = styled(Link)`
   cursor: pointer;
 `;
 
-function Header () {
-    const [visible,setVisible] = useState(false)
+function Header(props: any) {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const { logOutInfo } = useSelector((state: RootState) => state.userReducer);
+  // useEffect(() => {
+  //   axios.get(`/api/users/logoutUpdate`).then((response) => {
+  //     console.log(response.data);
+  //     if (!response.data.login) {
+  //       dispatch(loginUser(response.data));
+  //     }
+  //   });
+  // }, [dispatch, props]);
 
-    const showDrawer = () => {
-        setVisible(true)
-    }
+  const onClick = () => {
+    dispatch<any>({
+      type: LOG_OUT_REQUEST,
+    });
 
-    const onClose = () => {
-        setVisible(false)
+    if (logOutInfo && logOutInfo.logOutSuccess) {
+      props.history.push("/login");
+    } else {
+      alert("로그아웃 하는데 실패했습니다.");
     }
-    
-    return (
-        <HeaderContainer>
-        <LogoContainer to='/'>
-            <Logo className='logo-container'/>
-         </LogoContainer>
-         <OptionsContainer>
-             <OptionLink to='/shop'> SHOP </OptionLink>
-             <OptionLink to='/contact'> CONTACT </OptionLink>
-             {/* {
+  };
+
+  return (
+    <HeaderContainer>
+      <LogoContainer to="/">
+        <Logo className="logo-container" />
+      </LogoContainer>
+      <OptionsContainer>
+        <OptionLink to="/contact"> CONTACT </OptionLink>
+        {/* {
                  currentUser ?
                  <OptionLink onClick={() => auth.signOut()}>SIGN OUT</OptionLink>
                  : <OptionLink className='option' to='/signin'> SIGN IN</OptionLink>
-             } */}
-             <OptionLink to='./'>SIGN OUT</OptionLink>
-             <OptionLink className='option' to='/signin'> SIGN IN</OptionLink>
-             {/* <CartIcon/> */}
-         </OptionsContainer>
-{/*      
+             }  */}
+
+        {/* {user.userData && user.userData.} */}
+        {}
+
+        <OptionLink className="option" to="/login">
+          {" "}
+          SIGN IN
+        </OptionLink>
+        <Button onClick={onClick} className={classes.button}>
+          SIGN OUT
+        </Button>
+        {/* <CartIcon/> */}
+      </OptionsContainer>
+      {/*      
           {   hidden ? null :
               <CartDropDown/>
             } */}
-         </HeaderContainer>
-    );
+    </HeaderContainer>
+  );
 }
 
-export default Header;
+export default withRouter(Header);

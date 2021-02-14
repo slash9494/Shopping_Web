@@ -1,9 +1,18 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../modules/actions";
+import { useDispatch, useSelector } from "react-redux";
+
 import { withRouter } from "react-router-dom";
+import { LOG_IN_REQUEST } from "../modules/actions";
+
+import { bindActionCreators } from "redux";
+import { RootState } from "../modules/reducers";
+// const mapDispatchToProps = dispatch => bindActionCreators({
+//  fetchArticles,
+//  fetchArticlesSuccess,
+//  fetchArticlesFailure,
+// }, dispatch)
 
 const LoginBlock = styled.div`
   display: flex;
@@ -51,21 +60,32 @@ function LoginPage(props: any) {
   };
 
   const dispatch = useDispatch();
+  const { loginInfo } = useSelector((state: RootState) => state.userReducer);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch<any>(loginUser(inputs)).then(
-      (response: { payload: { loginSuccess: boolean } }) => {
-        if (response.payload.loginSuccess) {
-          props.history.push("/");
-        } else {
-          alert("로그인하는데 실패했습니다.");
-        }
-      }
-    );
+    try {
+      dispatch<any>({
+        type: LOG_IN_REQUEST,
+        data: {
+          email: email,
+          password,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
-
+  useEffect(() => {
+    if (loginInfo?.loginSuccess === true) {
+      props.history.push("/");
+    }
+    if (loginInfo?.loginSuccess === false) {
+      const message = loginInfo.message;
+      alert(message);
+    }
+  }, [loginInfo?.loginSuccess, loginInfo?.message, props.history]);
   return (
     <LoginBlock>
       <Form onSubmit={onSubmit}>

@@ -2,9 +2,6 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { registerUser } from "../modules";
-import { RegisterUserProps } from "../modules/actions";
-import { report } from "process";
 
 const RegisterBlock = styled.div`
   display: flex;
@@ -58,15 +55,15 @@ function RegisterPage(props: any) {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch<any>(registerUser(inputs)).then(
-      (response: { payload: { success: boolean } }) => {
-        if (response.payload.success) {
-          props.history.push("/login");
-        } else {
-          alert("회원가입하는데 실패했습니다.");
-        }
-      }
-    );
+    // dispatch<any>(registerUser(inputs)).then(
+    //   (response: { payload: { success: boolean } }) => {
+    //     if (response.payload.success) {
+    //       props.history.push("/login");
+    //     } else {
+    //       alert("회원가입하는데 실패했습니다.");
+    //     }
+    //   }
+    // );
   };
 
   return (

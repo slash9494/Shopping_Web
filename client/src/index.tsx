@@ -6,10 +6,11 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import promiseMiddleware from "redux-promise";
-import ReduxThunk from "redux-thunk";
 import rootReducer from "./modules/reducers/index";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import createSagaMiddleware from "redux-saga";
+import { rootSaga } from "./modules/sagas";
 
 const theme = createMuiTheme({
   typography: {
@@ -20,10 +21,14 @@ const theme = createMuiTheme({
   },
 });
 
+const sagaMiddleware = createSagaMiddleware();
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(promiseMiddleware, ReduxThunk))
+  composeWithDevTools(applyMiddleware(promiseMiddleware, sagaMiddleware))
 );
+
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>
