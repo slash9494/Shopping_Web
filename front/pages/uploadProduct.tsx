@@ -15,8 +15,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import FileUploadForm from "./FileUploadForm";
-import { RootState } from "../../modules/reducers";
+import FileUploadForm from "../components/FileUploadForm";
+import { RootState } from "../modules/reducers";
 
 type Images = any[];
 
@@ -193,4 +193,4 @@ function UploadForm(props: any) {
     </Container>
   );
 }
-export default (UploadForm);
+export default UploadForm;

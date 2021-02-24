@@ -5,10 +5,9 @@ import { useDispatch } from "react-redux";
 import { signUpActionAsync } from "../modules";
 
 import { useSelector } from "react-redux";
-// import { withRouter } from "react-router-dom";
 
 import { RootState } from "../modules/reducers/index";
-
+import { useRouter } from "next/router";
 const RegisterBlock = styled.div`
   display: flex;
   justify-content: center;
@@ -59,6 +58,7 @@ function SignUpForm(props: any) {
   };
 
   const dispatch = useDispatch();
+  const router = useRouter();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -70,7 +70,7 @@ function SignUpForm(props: any) {
   useEffect(() => {
     if (signUpInfo?.data?.signUpSuccess === true) {
       alert("회원가입을 완료했습니다.");
-      props.history.push("/");
+      router.push("/");
     }
     if (signUpInfo?.data?.signUpSuccess === false) {
       alert("회원가입하는데 실패했습니다.");
@@ -104,4 +104,4 @@ function SignUpForm(props: any) {
   );
 }
 
-export default (SignUpForm);
+export default SignUpForm;

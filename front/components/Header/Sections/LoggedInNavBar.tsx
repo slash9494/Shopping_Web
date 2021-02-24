@@ -1,24 +1,23 @@
-import React, { useState, ChangeEvent, FormEvent, Dispatch } from "react";
+import React, { FormEvent } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { LOG_IN_REQUEST, loginActionAsync } from "../../../modules/actions";
-// import { withRouter } from "react-router-dom";
 
-// import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { logOutActionAsync } from "../../../modules";
-import { LOG_OUT_REQUEST } from "../../../modules";
+import Link from "next/link";
 
 const Container = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const OptionLink = styled(Link)`
+const OptionLink = styled.a`
   padding: 10px 15px;
   cursor: pointer;
   font-size: 1rem;
+  text-decoration: none;
+  color: black;
 `;
 
 const useStyles = makeStyles({
@@ -26,8 +25,6 @@ const useStyles = makeStyles({
     fontSize: "1rem",
   },
 });
-
-
 
 function LoggedInNavBar() {
   const classes = useStyles();
@@ -41,9 +38,10 @@ function LoggedInNavBar() {
       <form onSubmit={onSubmit}>
         <Button type="submit" className={classes.button}>
           SIGN OUT
-      </Button>
+        </Button>
       </form>
-      <OptionLink to="/product/upload">UPLOAD</OptionLink>
+
+      <OptionLink href="/upLoadProduct">UPLOAD</OptionLink>
     </Container>
   );
 }

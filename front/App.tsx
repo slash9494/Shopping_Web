@@ -1,24 +1,18 @@
 import React, { Suspense } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  RouteComponentProps,
-} from "react-router-dom";
+
 import LandingPage from "./components/HomeLayout";
-import LoginPage from "./components/LoginForm";
+import LoginPage from "./pages/signIn";
 import Auth from "./hoc/auth";
 import Header from "./components/Header/Header";
 import { GlobalStyle } from "./globalStyle";
-import UploadPage from "./components/productUpload/UploadForm";
-import SignUpPage from "./components/SignUpForm";
+import UploadPage from "./pages/uploadProduct";
+import SignUpPage from "./pages/signUp";
 import Footer from "./components/Footer";
 
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Router>
+      {/* <Router>
         <GlobalStyle />
         <Header />
 
@@ -41,7 +35,7 @@ function App() {
           />
         </Switch>
         <Footer />
-      </Router>
+      </Router> */}
     </Suspense>
   );
 }

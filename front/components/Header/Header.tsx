@@ -1,10 +1,9 @@
 import React from "react";
-// import { withRouter } from "react-router-dom";
-import styled from "styled-components";
-// import { Link } from "react-router-dom";
-import { ReactComponent as Logo } from "../../images/LYH.svg";
 
-import "./header.style.scss";
+import styled from "styled-components";
+
+import Logos from "../../images/LYH.svg";
+import Link from "next/link";
 
 import { useSelector } from "react-redux";
 
@@ -18,54 +17,78 @@ import Menu from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
+import DrawerList from "./Sections/DrawerList";
 
 const useStyles = makeStyles({
   toolBarContainer: {
     height: "1rem",
+    width: "20vw",
+    justifyContent: "flex-start",
+    padding: 0,
+    paddingLeft: "3vw",
   },
 });
 
 const HeaderContainer = styled.div`
-  height: 70px;
-  width: 93vw;
+  height: 90px;
+  width: 98.6vw;
   display: flex;
-  justify-content: space-between;
+  /* flex-shrink: 0; */
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 5;
+  background-color: transparent;
+  @media screen and (max-width: 960px) {
+    margin: 0px;
+  }
+`;
 
-  @media screen and (max-width: 800px) {
+const LogoContainer = styled.a`
+  width: 20vw;
+  padding-left: 6vw;
+  padding-top: 1.5vh;
+  height: 120px;
+  margin: 0;
+
+  @media screen and (max-width: 960px) {
+    width: 80vw;
+    margin: 0px;
+    padding: 0;
+    height: 90px;
+    justify-content: flex-end;
+    display: flex;
+    padding-right: 36vw;
     padding-top: 20px;
   }
 `;
 
-const LogoContainer = styled(Link)`
-  height: 100%;
-  width: 70px;
-
-  @media screen and (max-width: 800px) {
-    height: 1em;
-    margin: 0;
-  }
-`;
-
-const ToolBarContainer = styled.div`
-  height: 1em;
+const LeftMenuContainer = styled.div`
   margin: 0;
+  width: 40vw;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 6vw;
 `;
 
 const OptionsContainer = styled.div`
-  width: 300px;
-  height: 10vh;
+  width: 40vw;
+  height: 80px;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  /* @media screen and (max-width: 800px) {
-    width: 50%;
-  } */
+  padding-right: 6vw;
+  align-items: center;
 `;
 
-const OptionLink = styled(Link)`
+const OptionLink = styled.a`
   padding: 10px 15px;
   cursor: pointer;
   font-size: 1rem;
+  text-decoration: none;
+  color: black;
 `;
 
 function Header() {
@@ -80,43 +103,52 @@ function Header() {
   };
   return (
     <HeaderContainer>
-      <LogoContainer to="/">
-        <Logo className="logo-container" />
-      </LogoContainer>
-      <ToolBarContainer>
+      <Hidden mdUp>
         <Toolbar className={classes.toolBarContainer}>
-          <Hidden smDown implementation="css">
-            <OptionsContainer>
-              <OptionLink to="/contact"> CONTACT </OptionLink>
-              {!authCheckInfo?.data?.isAuth ? (
-                <LoggedOutNavBar />
-              ) : (
-                  <LoggedInNavBar />
-                )}
-            </OptionsContainer>
-          </Hidden>
-
-          <Hidden mdUp>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerToggle}
-            >
-              <Menu />
-            </IconButton>
-          </Hidden>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+          >
+            <Menu />
+          </IconButton>
         </Toolbar>
-      </ToolBarContainer>
-      <Hidden mdUp implementation="js">
+      </Hidden>
+      <Hidden smDown implementation="css">
+        <LeftMenuContainer>
+          <OptionLink href="/contact">CONTACT</OptionLink>
+
+          <OptionLink href="/uploadProduct">VIDEO BOOK</OptionLink>
+        </LeftMenuContainer>
+      </Hidden>
+      <Link href="/" passHref>
+        <LogoContainer>
+          <Logos />
+        </LogoContainer>
+      </Link>
+
+      <Hidden smDown implementation="css">
+        <OptionsContainer>
+          {!authCheckInfo?.data?.isAuth ? (
+            <LoggedOutNavBar />
+          ) : (
+            <LoggedInNavBar />
+          )}
+        </OptionsContainer>
+      </Hidden>
+
+      <Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
-          anchor={"right"}
+          anchor={"left"}
           open={mobileOpen}
           onClose={handleDrawerToggle}
-        ></Drawer>
+        >
+          <DrawerList />
+        </Drawer>
       </Hidden>
     </HeaderContainer>
   );
 }
 
-export default withRouter(Header);
+export default Header;

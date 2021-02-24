@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { loginActionAsync } from "../modules/actions";
-
+import { useRouter } from "next/router";
 
 import { useSelector } from "react-redux";
 
@@ -32,7 +32,6 @@ const Button = styled.button`
   }
 `;
 
-
 const LoginBlock = styled.div`
   display: flex;
   justify-content: center;
@@ -49,7 +48,6 @@ function LoginForm(props: any) {
     password: "",
   });
   const { email, password } = inputs;
-
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setInputs({
@@ -67,9 +65,10 @@ function LoginForm(props: any) {
     }
   };
   const dispatch = useDispatch();
+  const router = useRouter();
   useEffect(() => {
     if (loginInfo?.data?.loginSuccess === true) {
-      props.history.push("/");
+      router.push("/");
     }
     if (loginInfo?.data?.loginSuccess === false) {
       const message = loginInfo.data.message;

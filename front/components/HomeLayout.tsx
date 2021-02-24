@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
-// import { withRouter } from "react-router-dom";
-
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import CardMedia from "@material-ui/core/CardMedia";
 import ManImage from "../images/ManCategory.jpg";
 import WomanImage from "../images/WomanCategory.jpg";
-import KidImage from "./images/KidCategory.jpg";
+import KidImage from "../images/KidCategory.jpg";
+
+// interface Props {
+//   children: ReactElement;
+// }
 
 const useStyles = makeStyles({
   container: {
@@ -59,7 +62,7 @@ const LandingPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 80px;
+  padding: 0 60px 10px 60px;
 `;
 
 const DirectoryContainer = styled.div`
@@ -67,16 +70,17 @@ const DirectoryContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+
   @media screen and (max-width: 800px) {
     align-items: center;
-    display: grid;
-    margin-right: 85px;
+    display: flex;
+    justify-content: center;
     grid-template-columns: 1.5fr;
     grid-gap: 15px;
   }
 `;
 
-const MenuItemContainer = styled.div`
+const MenuItemContainer = styled.a`
   height: 80vh;
   min-width: 30%;
   width: 22vw;
@@ -87,12 +91,17 @@ const MenuItemContainer = styled.div`
   justify-content: center;
   border: 1px solid black;
   margin: 0 7.5px 15px;
-  overflow: hidden;
+
+  text-decoration: none;
+  color: #212529;
+  font-size: 1.2em;
+
   @media screen and (max-width: 800px) {
     width: 70vw;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1em;
   }
   &:hover {
     cursor: pointer;
@@ -129,13 +138,13 @@ const ContentContainer = styled.div`
   position: absolute;
 `;
 
-function HomeLayout(props: any) {
+function HomeLayout() {
   const classes = useStyles();
 
   return (
     <LandingPageContainer>
       <DirectoryContainer>
-        <MenuItemContainer>
+        <MenuItemContainer href="/shop/manPage">
           <CardMedia
             className="image"
             style={styles.imageStyle}
@@ -144,7 +153,8 @@ function HomeLayout(props: any) {
           />
           <ContentContainer>MAN</ContentContainer>
         </MenuItemContainer>
-        <MenuItemContainer>
+
+        <MenuItemContainer href="/shop/womanPage">
           <CardMedia
             className="image"
             style={styles.imageStyle}
@@ -153,7 +163,8 @@ function HomeLayout(props: any) {
           />
           <ContentContainer>WOMAN</ContentContainer>
         </MenuItemContainer>
-        <MenuItemContainer>
+
+        <MenuItemContainer href="/shop/kidPage">
           <CardMedia
             className="image"
             style={styles.imageStyle}
@@ -166,5 +177,9 @@ function HomeLayout(props: any) {
     </LandingPageContainer>
   );
 }
+
+HomeLayout.prototypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default HomeLayout;
