@@ -7,7 +7,7 @@ import type { AppProps /*, AppContext */ } from "next/app";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import "../index.css";
+import "../index.scss";
 import styled from "styled-components";
 
 const theme = createMuiTheme({
