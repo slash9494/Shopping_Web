@@ -56,6 +56,8 @@ productSchema.index(
   }
 );
 
-const Product = mongoose.model("Product", productSchema);
+const ManProduct = mongoose.model("ManProduct", productSchema);
+const WomanProduct = mongoose.model("WomanProduct", productSchema);
+const KidProduct = mongoose.model("KidProduct", productSchema);
 
-module.exports = { Product };
+module.exports = { ManProduct, WomanProduct, KidProduct };

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import userReducer from "./userReducer";
-import productReducer, { dummyProductReducer } from "./ProductReducer";
+import productReducer from "./ProductReducer";
 import { HYDRATE } from "next-redux-wrapper";
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -16,7 +16,6 @@ const rootReducer = combineReducers({
   },
   userReducer,
   productReducer,
-  dummyProductReducer,
 });
 
 export default rootReducer;

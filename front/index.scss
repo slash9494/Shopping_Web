@@ -21,7 +21,7 @@ code {
 
 .image-gallery {
   height: 79vh;
-  @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1025px) {
     width: 60vw;
   }
   .image-gallery-thumbnails-wrapper.right {
@@ -53,7 +53,7 @@ code {
 .image-gallery-slides {
   height: 79vh;
   width: 30vw;
-  @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1025px) {
     width: 60vw;
   }
 }
@@ -69,7 +69,7 @@ code {
 
 .image-gallery-slide-wrapper.right {
   width: 30vw !important;
-  @media screen and (max-width: 1280px) {
+  @media screen and (max-width: 1025px) {
     width: 60vw !important;
   }
 }

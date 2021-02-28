@@ -35,11 +35,23 @@ export interface UserState {
 }
 
 export interface FileUploadInfo {
-  success: boolean | null;
+  fileUploadSuccess: boolean | null;
   filePath: string[] | null;
   fillName: string[] | null;
 }
 
+export interface UploadProductInfo {
+  uploadProductSuccess: boolean;
+}
+
+export interface LoadProductsInfo {
+  manProducts: any[];
+  womanProducts: any[];
+  kidProduct: any[];
+}
+
 export interface ProductState {
   fileUploadInfo?: AsyncState<FileUploadInfo, Error>;
+  uploadProductInfo?: AsyncState<UploadProductInfo, Error>;
+  loadProductsInfo?: AsyncState<LoadProductsInfo, Error>;
 }

@@ -1,3 +1,4 @@
+import { AuthCheckInfo } from "./../types";
 import { RootState } from "./index";
 import { asyncState } from "../utils/reducerUtil";
 import { UserState, Action } from "../types";
@@ -17,8 +18,8 @@ import {
   AUTH_CHECK_REQUEST,
   AUTH_CHECK_SUCCESS,
   AUTH_CHECK_FAILURE,
+  AUTH_DUMMY_SUCCESS,
 } from "../actions";
-import { useSelector } from "react-redux";
 
 export const initialState: UserState = {
   loginInfo: asyncState.initial(),
@@ -77,6 +78,17 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   [SIGN_UP_FAILURE]: (state, action) => ({
     ...state,
     signUpInfo: asyncState.error(action.payload),
+  }),
+  [AUTH_DUMMY_SUCCESS]: (state: any) => ({
+    ...state,
+    authCheckInfo: asyncState.success({
+      _id: "testId000",
+      isAdmin: false,
+      isAuth: true,
+      email: "test000@naver.com",
+      name: "test000",
+      role: null,
+    }),
   }),
 });
 

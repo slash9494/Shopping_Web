@@ -8,7 +8,6 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "../index.scss";
-import styled from "styled-components";
 
 const theme = createMuiTheme({
   typography: {
@@ -19,18 +18,7 @@ const theme = createMuiTheme({
   },
 });
 
-const HeaderFixedContainer = styled.div`
-  padding-top: 90px;
-  width: 100%;
-`;
-
 const LYH = ({ Component, pageProps }: AppProps) => (
-  // React.useEffect(() => {
-  //   const jssStyles:any = document.querySelector('#jss-server-side');
-  //   if (jssStyles) {
-  //     jssStyles.parentElement.removeChild(jssStyles);
-  //   }
-  // }, []),
   <>
     <Head>
       <meta charSet="utf-8" />
@@ -39,8 +27,6 @@ const LYH = ({ Component, pageProps }: AppProps) => (
 
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      {/* <HeaderFixedContainer> */}
-
       <Header />
       <Component {...pageProps} />
 

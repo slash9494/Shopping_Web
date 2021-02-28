@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fileUploadActionAsync } from "../modules";
+import { fileUploadActionAsync } from "../../modules";
 import Dropzone from "react-dropzone";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
-import { RootState } from "../modules/reducers";
+import { RootState } from "../../modules/reducers";
+import { Alert } from "@material-ui/lab";
 type ImagesState = any[];
 
 type FileUploadProps = {
@@ -67,21 +68,17 @@ function FileUploadForm(props: FileUploadProps) {
     dispatch(fileUploadActionAsync.request({ formData, config }));
   };
 
-  const PropImages = useCallback(() => {
-    props.refreshImages([[...Images, fileUploadInfo?.data?.filePath]]);
-  }, [fileUploadInfo?.data?.filePath, props]);
-
   useEffect(() => {
-    if (fileUploadInfo?.data?.success === true) {
+    if (fileUploadInfo?.data?.fileUploadSuccess === true) {
       setImages([...Images, fileUploadInfo.data.filePath]);
-      PropImages();
-    } else if (fileUploadInfo?.data?.success === false) {
-      alert("파일을 업로드하는데 실패했습니다.");
+      props.refreshImages([...Images, fileUploadInfo?.data?.filePath]);
+    } else if (fileUploadInfo?.data?.fileUploadSuccess === false) {
+      <Alert severity="error">파일을 업로드하는데 실패했습니다.</Alert>;
     } else return;
   }, [
-    PropImages,
+    props.refreshImages,
     fileUploadInfo?.data?.filePath,
-    fileUploadInfo?.data?.success,
+    fileUploadInfo?.data?.fileUploadSuccess,
   ]);
   const onDelete = (image: ImageData) => {
     const currentIndex = Images.indexOf(image);
@@ -107,7 +104,8 @@ function FileUploadForm(props: FileUploadProps) {
       <DroppedImageContainer>
         {Images.map((image, index) => (
           <DroppedImage
-            src={`http://localhost:5000/${image}`}
+            // src={`http://localhost:5000/${image}`}
+            src="https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951"
             alt={`productImg-${index}`}
             key={index}
             onClick={() => {

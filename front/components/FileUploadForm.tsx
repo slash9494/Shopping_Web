@@ -57,6 +57,7 @@ function FileUploadForm(props: FileUploadProps) {
   const { fileUploadInfo } = useSelector(
     (state: RootState) => state.productReducer
   );
+
   const onDrop = (files: File[]) => {
     let formData = new FormData();
     const config = {
@@ -72,16 +73,16 @@ function FileUploadForm(props: FileUploadProps) {
   }, [fileUploadInfo?.data?.filePath, props]);
 
   useEffect(() => {
-    if (fileUploadInfo?.data?.success === true) {
+    if (fileUploadInfo?.data?.fileUploadSuccess === true) {
       setImages([...Images, fileUploadInfo.data.filePath]);
       PropImages();
-    } else if (fileUploadInfo?.data?.success === false) {
+    } else if (fileUploadInfo?.data?.fileUploadSuccess === false) {
       alert("파일을 업로드하는데 실패했습니다.");
     } else return;
   }, [
-    PropImages,
+    // PropImages,
     fileUploadInfo?.data?.filePath,
-    fileUploadInfo?.data?.success,
+    fileUploadInfo?.data?.fileUploadSuccess,
   ]);
   const onDelete = (image: ImageData) => {
     const currentIndex = Images.indexOf(image);
@@ -107,7 +108,8 @@ function FileUploadForm(props: FileUploadProps) {
       <DroppedImageContainer>
         {Images.map((image, index) => (
           <DroppedImage
-            src={`http://localhost:5000/${image}`}
+            // src={`http://localhost:5000/${image}`}
+            src="https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
             alt={`productImg-${index}`}
             key={index}
             onClick={() => {

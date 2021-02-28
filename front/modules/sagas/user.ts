@@ -1,5 +1,12 @@
 import axios from "axios";
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import {
+  all,
+  call,
+  fork,
+  put,
+  takeLatest,
+  takeEvery,
+} from "redux-saga/effects";
 import {
   LOG_IN_REQUEST,
   LOG_OUT_REQUEST,
@@ -32,7 +39,7 @@ async function loginAPI(loginData: LoginAPIProps) {
 const loginAsyncSaga = createAsyncSaga(loginActionAsync, loginAPI);
 
 function* logInSaga() {
-  yield takeEvery(LOG_IN_REQUEST, loginAsyncSaga);
+  yield takeLatest(LOG_IN_REQUEST, loginAsyncSaga);
 }
 
 async function signUpAPI(signUpData: SignUpProps) {
@@ -43,7 +50,7 @@ async function signUpAPI(signUpData: SignUpProps) {
 const signUpAsyncSaga = createAsyncSaga(signUpActionAsync, signUpAPI);
 
 function* signUpSaga() {
-  yield takeEvery(SIGN_UP_REQUEST, signUpAsyncSaga);
+  yield takeLatest(SIGN_UP_REQUEST, signUpAsyncSaga);
 }
 
 async function logOutAPI() {
@@ -70,7 +77,7 @@ async function logOutAPI() {
 const logOutAsyncSaga = createAsyncSaga(logOutActionAsync, logOutAPI);
 
 function* logOutSaga() {
-  yield takeEvery(LOG_OUT_REQUEST, logOutAsyncSaga);
+  yield takeLatest(LOG_OUT_REQUEST, logOutAsyncSaga);
 }
 
 async function authCheckAPI() {

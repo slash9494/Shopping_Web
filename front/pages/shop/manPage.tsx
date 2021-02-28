@@ -9,6 +9,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../modules/reducers";
+import { createSelector } from "reselect";
+import productReducer from "../../modules/reducers/ProductReducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,14 +63,15 @@ const AppContainer = styled.ul`
 
 function manPage() {
   const classes = useStyles();
-  const { items } = useSelector(
-    (state: RootState) => state.dummyProductReducer
-  );
+  // const checkUploadProductInfo = createSelector(
+  //   (state:RootState)=>state.productReducer,
+  //   (productReducer)=>(productReducer.uploadProductInfo?.data.)
+  // )
 
   return (
     <AppContainer className={classes.root}>
       <Grid container justify="center" spacing={3}>
-        {items.map((item: any) => {
+        {/* {manItems.map((item: any) => {
           return (
             <Grid item xs={6} sm={6} md={3} xl={3} className={classes.item}>
               <Link href="/shop/">
@@ -82,7 +85,7 @@ function manPage() {
               </CardContent>
             </Grid>
           );
-        })}
+        })} */}
       </Grid>
     </AppContainer>
   );
