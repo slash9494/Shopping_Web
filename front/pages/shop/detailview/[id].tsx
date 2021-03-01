@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-import Description from "../../../components/productDetail/description";
+import Description from "../../../components/productDetail/Description";
 import ProductDetail from "../../../components/productDetail/ProductDetail";
 
 const useStyles = makeStyles((theme: Theme) =>

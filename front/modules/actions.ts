@@ -124,4 +124,4 @@ export const loadDummyManProductsActionAsync = createAsyncAction(
   LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
   LOAD_DUMMY_MAN_PRODUCTS_SUCCESS,
   LOAD_DUMMY_MAN_PRODUCTS_FAILURE
-)<any, LoadProductsInfo, Error>();
+)<void, LoadProductsInfo, Error>();

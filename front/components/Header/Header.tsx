@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 
 const HeaderContainer = styled.div`
   height: 90px;
-  width: 98.6vw;
+  width: 100vw;
   display: flex;
   /* flex-shrink: 0; */
   position: fixed;

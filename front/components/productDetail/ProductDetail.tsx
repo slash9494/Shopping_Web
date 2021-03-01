@@ -11,7 +11,7 @@ import Select from "@material-ui/core/Select";
 import "react-image-gallery/styles/css/image-gallery.css";
 import Popover from "@material-ui/core/Popover";
 import HelpIcon from "@material-ui/icons/Help";
-import Description from "./description";
+import Description from "./Description";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

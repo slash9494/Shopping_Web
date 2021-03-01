@@ -8,12 +8,16 @@ import {
   UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
   UPLOAD_DUMMY_MAN_PRODUCT_SUCCESS,
   UPLOAD_DUMMY_MAN_PRODUCT_FAILURE,
+  LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
+  LOAD_DUMMY_MAN_PRODUCTS_SUCCESS,
+  LOAD_DUMMY_MAN_PRODUCTS_FAILURE,
 } from "../actions";
 import { produce } from "immer";
 
 export const initialState: ProductState = {
   fileUploadInfo: asyncState.initial(),
   uploadProductInfo: asyncState.initial(),
+  loadProductsInfo: asyncState.initial(),
 };
 
 const productReducer = createReducer<ProductState, Action>(initialState, {
@@ -35,11 +39,23 @@ const productReducer = createReducer<ProductState, Action>(initialState, {
   }),
   [UPLOAD_DUMMY_MAN_PRODUCT_SUCCESS]: (state, action) => ({
     ...state,
-    uploadProductInfo: asyncState.success({ uploadProductSuccess: true }),
+    uploadProductInfo: asyncState.success(action.payload),
   }),
   [UPLOAD_DUMMY_MAN_PRODUCT_FAILURE]: (state, action) => ({
     ...state,
     uploadProductInfo: asyncState.error(action.payload),
+  }),
+  [LOAD_DUMMY_MAN_PRODUCTS_REQUEST]: (state) => ({
+    ...state,
+    loadProductsInfo: asyncState.load(),
+  }),
+  [LOAD_DUMMY_MAN_PRODUCTS_SUCCESS]: (state, action) => ({
+    ...state,
+    loadProductsInfo: asyncState.success(action.payload),
+  }),
+  [LOAD_DUMMY_MAN_PRODUCTS_FAILURE]: (state, action) => ({
+    ...state,
+    loadProductsInfo: asyncState.error(action.payload),
   }),
 });
 

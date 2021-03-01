@@ -10,6 +10,8 @@ import {
   UPLOAD_KID_PRODUCT_REQUEST,
   uploadDummyManProductActionAsync,
   UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
+  loadDummyManProductsActionAsync,
+  LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
 } from "./../actions";
 import axios from "axios";
 import { fileUploadActionAsync } from "../actions";
@@ -141,7 +143,55 @@ function* uploadDummyManProductSaga() {
 }
 
 function loadDummyManProductsAPI() {
-  return [{}];
+  return {
+    manProducts: [
+      {
+        writer: "test000",
+        title: "테스트 자켓",
+        description: "테스트용 자켓 설명",
+        price: 15000,
+        images: [
+          "https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+          "https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951",
+        ],
+        category: 1,
+      },
+      {
+        writer: "test001",
+        title: "테스트 자켓2",
+        description: "테스트용 자켓 설명 2",
+        price: 25000,
+        images: [
+          "https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951",
+          "https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+        ],
+        category: 2,
+      },
+      {
+        writer: "test003",
+        title: "테스트 자켓3",
+        description: "테스트용 자켓 설명 3",
+        price: 35000,
+        images: [
+          "https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+          "https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951",
+        ],
+        category: 3,
+      },
+    ],
+  };
+}
+
+const loadDummyManProductAsyncSaga = createAsyncDummySaga(
+  loadDummyManProductsActionAsync,
+  loadDummyManProductsAPI
+);
+
+function* loadDummyManProductsSaga() {
+  yield takeLatest(
+    LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
+    loadDummyManProductAsyncSaga
+  );
 }
 
 export default function* productSaga() {
@@ -151,5 +201,6 @@ export default function* productSaga() {
     fork(uploadWomanProductSaga),
     fork(uploadKidProductSaga),
     fork(uploadDummyManProductSaga),
+    fork(loadDummyManProductsSaga),
   ]);
 }

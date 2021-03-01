@@ -20,9 +20,7 @@ import userReducer, {
   uploadDummyManProductActionAsync,
 } from "../modules";
 import { createSelector } from "reselect";
-import { Alert } from "@material-ui/lab";
 import { useRouter } from "next/router";
-import Modal from "@material-ui/core/Modal";
 export type Images = any[];
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -130,7 +128,7 @@ function UploadForm() {
   };
   useEffect(() => {
     if (uploadProductInfo?.data?.uploadProductSuccess === true) {
-      alert(<Alert severity="success">상품업로드를 완료했습니다.</Alert>);
+      alert("상품업로드를 완료했습니다.");
       router.push("/shop/manPage");
     }
   }, [uploadProductInfo?.data?.uploadProductSuccess]);

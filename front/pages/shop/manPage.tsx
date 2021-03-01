@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Typography } from "@material-ui/core";
+import { Typography, List, Drawer } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Link from "next/link";
 import Grid from "@material-ui/core/Grid";
-
+import Button from "@material-ui/core/Button";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../modules/reducers";
 import { createSelector } from "reselect";
 import productReducer from "../../modules/reducers/ProductReducer";
+import {
+  LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
+  loadDummyManProductsActionAsync,
+} from "../../modules";
+import ItemFilter from "../../components/itemFilter/itemFilter";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -62,16 +67,22 @@ const AppContainer = styled.ul`
 `;
 
 function manPage() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadDummyManProductsActionAsync.request());
+  }, []);
   const classes = useStyles();
-  // const checkUploadProductInfo = createSelector(
-  //   (state:RootState)=>state.productReducer,
-  //   (productReducer)=>(productReducer.uploadProductInfo?.data.)
-  // )
+  const checkUploadProductInfo = createSelector(
+    (state: RootState) => state.productReducer,
+    (productReducer) => productReducer.loadProductsInfo
+  );
+  const loadProductsInfo = useSelector(checkUploadProductInfo);
 
   return (
     <AppContainer className={classes.root}>
+      <ItemFilter />
       <Grid container justify="center" spacing={3}>
-        {/* {manItems.map((item: any) => {
+        {loadProductsInfo?.data?.manProducts.map((item: any) => {
           return (
             <Grid item xs={6} sm={6} md={3} xl={3} className={classes.item}>
               <Link href="/shop/">
@@ -85,7 +96,7 @@ function manPage() {
               </CardContent>
             </Grid>
           );
-        })} */}
+        })}
       </Grid>
     </AppContainer>
   );
