@@ -53,12 +53,9 @@ export const UPLOAD_DUMMY_MAN_PRODUCT_SUCCESS =
 export const UPLOAD_DUMMY_MAN_PRODUCT_FAILURE =
   "UPLOAD_DUMMY_MAN_PRODUCT_FAILURE";
 
-export const LOAD_DUMMY_MAN_PRODUCTS_REQUEST =
-  "LOAD_DUMMY_MAN_PRODUCTS_REQUEST";
-export const LOAD_DUMMY_MAN_PRODUCTS_SUCCESS =
-  "LOAD_DUMMY_MAN_PRODUCTS_SUCCESS";
-export const LOAD_DUMMY_MAN_PRODUCTS_FAILURE =
-  "LOAD_DUMMY_MAN_PRODUCTS_FAILURE";
+export const LOAD_MAN_PRODUCTS_REQUEST = "LOAD_MAN_PRODUCTS_REQUEST";
+export const LOAD_MAN_PRODUCTS_SUCCESS = "LOAD_MAN_PRODUCTS_SUCCESS";
+export const LOAD_MAN_PRODUCTS_FAILURE = "LOAD_MAN_PRODUCTS_FAILURE";
 
 export const loginActionAsync = createAsyncAction(
   LOG_IN_REQUEST,
@@ -120,8 +117,8 @@ export const uploadDummyManProductActionAsync = createAsyncAction(
   UPLOAD_DUMMY_MAN_PRODUCT_FAILURE
 )<any, UploadProductInfo, Error>();
 
-export const loadDummyManProductsActionAsync = createAsyncAction(
-  LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
-  LOAD_DUMMY_MAN_PRODUCTS_SUCCESS,
-  LOAD_DUMMY_MAN_PRODUCTS_FAILURE
+export const loadManProductsActionAsync = createAsyncAction(
+  LOAD_MAN_PRODUCTS_REQUEST,
+  LOAD_MAN_PRODUCTS_SUCCESS,
+  LOAD_MAN_PRODUCTS_FAILURE
 )<void, LoadProductsInfo, Error>();

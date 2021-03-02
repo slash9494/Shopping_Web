@@ -10,12 +10,15 @@ import CardContent from "@material-ui/core/CardContent";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../modules/reducers";
 import { createSelector } from "reselect";
-import productReducer from "../../modules/reducers/ProductReducer";
-import {
-  LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
-  loadDummyManProductsActionAsync,
-} from "../../modules";
-import ItemFilter from "../../components/itemFilter/itemFilter";
+import { loadManProductsActionAsync } from "../../modules";
+import ItemFilter from "../../components/itemFilter/ItemFilter";
+
+type Filters = {
+  size: number[];
+  category: number[];
+  price: number[];
+  [prop: string]: any;
+};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -43,7 +46,6 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     media: {
-      //   Height: 50,
       paddingTop: "130%",
       cursor: "pointer",
     },
@@ -69,7 +71,7 @@ const AppContainer = styled.ul`
 function manPage() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadDummyManProductsActionAsync.request());
+    dispatch(loadManProductsActionAsync.request());
   }, []);
   const classes = useStyles();
   const checkUploadProductInfo = createSelector(
@@ -77,10 +79,34 @@ function manPage() {
     (productReducer) => productReducer.loadProductsInfo
   );
   const loadProductsInfo = useSelector(checkUploadProductInfo);
+  const [filters, setFilters] = useState<Filters>({
+    size: [],
+    category: [],
+    price: [],
+  });
+  const handleFilters = (propedFilters: number[], kind: string) => {
+    const newFilters = { ...filters };
+    newFilters[kind] = propedFilters;
+    setFilters(newFilters);
+    showFilteredResults(newFilters);
+    console.log(newFilters);
+  };
+  const showFilteredResults = (filters: Filters) => {
+    const variables = {
+      filters: filters,
+    };
+  };
 
   return (
     <AppContainer className={classes.root}>
-      <ItemFilter />
+      <ItemFilter
+        sizeFilters={(propedSizeFilters: number[]) =>
+          handleFilters(propedSizeFilters, "size")
+        }
+        categoryFilters={(propedCategoryFilters: number[]) =>
+          handleFilters(propedCategoryFilters, "category")
+        }
+      />
       <Grid container justify="center" spacing={3}>
         {loadProductsInfo?.data?.manProducts.map((item: any) => {
           return (
@@ -91,7 +117,7 @@ function manPage() {
               <CardContent className={classes.cardContent}>
                 <Typography align="left" className={classes.cartText}>
                   <div style={{ cursor: "hover" }}> {item.title} </div>
-                  <div>{item.price}</div>
+                  <div>{Math.floor(item.price)}원</div>
                 </Typography>
               </CardContent>
             </Grid>
