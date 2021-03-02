@@ -1,5 +1,7 @@
 import { Action } from "./../types";
 import { response } from "express";
+import shortId from "shortid";
+import faker from "faker";
 import {
   FILE_UPLOAD_REQUEST,
   uploadManProductActionAsync,
@@ -10,8 +12,8 @@ import {
   UPLOAD_KID_PRODUCT_REQUEST,
   uploadDummyManProductActionAsync,
   UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
-  loadDummyManProductsActionAsync,
-  LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
+  loadManProductsActionAsync,
+  LOAD_MAN_PRODUCTS_REQUEST,
 } from "./../actions";
 import axios from "axios";
 import { fileUploadActionAsync } from "../actions";
@@ -20,6 +22,7 @@ import createAsyncSaga, {
 } from "../utils/createAsyncSaga";
 import { takeEvery, all, fork, takeLatest } from "redux-saga/effects";
 import { Images } from "../../pages/uploadProduct";
+import { url } from "inspector";
 
 export type Config = {
   data: {
@@ -144,54 +147,52 @@ function* uploadDummyManProductSaga() {
 
 function loadDummyManProductsAPI() {
   return {
-    manProducts: [
-      {
-        writer: "test000",
-        title: "테스트 자켓",
-        description: "테스트용 자켓 설명",
-        price: 15000,
-        images: [
-          "https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
-          "https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951",
-        ],
-        category: 1,
-      },
-      {
-        writer: "test001",
-        title: "테스트 자켓2",
-        description: "테스트용 자켓 설명 2",
-        price: 25000,
-        images: [
-          "https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951",
-          "https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
-        ],
-        category: 2,
-      },
-      {
-        writer: "test003",
-        title: "테스트 자켓3",
-        description: "테스트용 자켓 설명 3",
-        price: 35000,
-        images: [
-          "https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
-          "https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951",
-        ],
-        category: 3,
-      },
-    ],
+    manProducts: generateDummyManProduct(20),
   };
 }
 
-const loadDummyManProductAsyncSaga = createAsyncDummySaga(
-  loadDummyManProductsActionAsync,
+const fakeImages = () => {
+  const randomNumber = Math.floor(Math.random() * 1000);
+  return `https://source.unsplash.com/1600x900/?man-model&sig=${randomNumber}`;
+};
+
+const generateDummyManProduct = (number: Number) =>
+  Array(number)
+    .fill(20)
+    .map(() => ({
+      id: shortId.generate(),
+      writer: faker.name.findName(),
+      title: faker.commerce.productName(),
+      description: faker.commerce.productDescription(),
+      price: faker.commerce.price(10000, 110000),
+      images: [fakeImages(), fakeImages(), fakeImages()],
+      category: faker.random.number({
+        min: 1,
+        max: 4,
+      }),
+      size: [
+        faker.random.number({
+          min: 1,
+          max: 3,
+        }),
+        faker.random.number({
+          min: 1,
+          max: 3,
+        }),
+        faker.random.number({
+          min: 1,
+          max: 3,
+        }),
+      ],
+    }));
+
+const loadManProductAsyncSaga = createAsyncDummySaga(
+  loadManProductsActionAsync,
   loadDummyManProductsAPI
 );
 
-function* loadDummyManProductsSaga() {
-  yield takeLatest(
-    LOAD_DUMMY_MAN_PRODUCTS_REQUEST,
-    loadDummyManProductAsyncSaga
-  );
+function* loadManProductsSaga() {
+  yield takeLatest(LOAD_MAN_PRODUCTS_REQUEST, loadManProductAsyncSaga);
 }
 
 export default function* productSaga() {
@@ -201,6 +202,6 @@ export default function* productSaga() {
     fork(uploadWomanProductSaga),
     fork(uploadKidProductSaga),
     fork(uploadDummyManProductSaga),
-    fork(loadDummyManProductsSaga),
+    fork(loadManProductsSaga),
   ]);
 }

@@ -1,5 +1,5 @@
 import { PayloadAction, AsyncActionCreatorBuilder } from "typesafe-actions";
-import { call, put } from "redux-saga/effects";
+import { call, put, delay } from "redux-saga/effects";
 import { FunctionComponent } from "react";
 
 type PromiseCreatorFunction<P, T> =
@@ -42,8 +42,11 @@ export function createAsyncDummySaga<T1, P1, T2, P2, T3, P3>(
 ) {
   return function* saga(action: ReturnType<typeof asyncActionCreator.request>) {
     try {
-      const result = yield call(promiseDummyCreator);
+      const result = isPayloadAction<P1>(action)
+        ? yield call(promiseDummyCreator, action.payload)
+        : yield call(promiseDummyCreator);
       console.log("request.payload:", result);
+      yield delay(1000);
       yield put(asyncActionCreator.success(result));
     } catch (e) {
       console.log(e);

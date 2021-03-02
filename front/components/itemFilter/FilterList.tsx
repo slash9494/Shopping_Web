@@ -6,7 +6,6 @@ import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import styled from "styled-components";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CloseIcon from "@material-ui/icons/Close";
-import { Typography } from "@material-ui/core";
 const useStyles = makeStyles({
   root: {
     "&:hover": {
@@ -18,13 +17,6 @@ const useStyles = makeStyles({
     height: 16,
     backgroundImage:
       "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
-    // "$root.Mui-focusVisible &": {
-    //   outline: "2px auto rgba(19,124,189,.6)",
-    //   outlineOffset: 2,
-    // },
-    // "input:hover ~ &": {
-    //   backgroundColor: "#ebf1f5",
-    // },
     "input:disabled ~ &": {
       boxShadow: "none",
       background: "rgba(206,217,224,.5)",
@@ -73,27 +65,53 @@ const ListContainer = styled.div``;
 const ListItemsContainer = styled.div`
   padding: 30px;
 `;
-
-function FilterList(props: any) {
+function StyledCheckbox(props: CheckboxProps) {
   const classes = useStyles();
 
-  function StyledCheckbox(props: CheckboxProps) {
-    const classes = useStyles();
-
-    return (
-      <Checkbox
-        className={classes.root}
-        disableRipple
-        color="default"
-        checkedIcon={
-          <span className={clsx(classes.icon, classes.checkedIcon)} />
-        }
-        icon={<span className={classes.icon} />}
-        inputProps={{ "aria-label": "decorative checkbox" }}
-        {...props}
-      />
-    );
-  }
+  return (
+    <Checkbox
+      className={classes.root}
+      disableRipple
+      color="default"
+      checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+      icon={<span className={classes.icon} />}
+      inputProps={{ "aria-label": "decorative checkbox" }}
+      {...props}
+    />
+  );
+}
+function FilterList(props: any) {
+  const classes = useStyles();
+  const [sizeChecked, setSizeChecked] = useState<number[]>([]);
+  const [categoryChecked, setCategoryChecked] = useState<number[]>([]);
+  const handleSizeChecked = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const parsedValue = parseInt(e.target.value);
+    const currentIndex = sizeChecked.indexOf(parsedValue);
+    const newChecked = [...sizeChecked];
+    if (currentIndex === -1) {
+      newChecked.push(parsedValue);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+    setSizeChecked(newChecked);
+    props.handleSizeFilters(newChecked);
+  };
+  const handleCategoryChecked = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const parsedValue = parseInt(e.target.value);
+    const currentIndex = categoryChecked.indexOf(parsedValue);
+    const newChecked = [...sizeChecked];
+    if (currentIndex === -1) {
+      newChecked.push(parsedValue);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+    setCategoryChecked(newChecked);
+    props.handleCategoryFilters(newChecked);
+  };
   return (
     <Container>
       <ButtonContainer>
@@ -106,41 +124,48 @@ function FilterList(props: any) {
           <h2>사이즈</h2>
           <FormControlLabel
             className={classes.itemContainer}
-            control={<StyledCheckbox />}
+            control={<StyledCheckbox onClick={handleSizeChecked} />}
             label="S"
+            value="1"
           />
           <FormControlLabel
             className={classes.itemContainer}
-            control={<StyledCheckbox />}
+            control={<StyledCheckbox onClick={handleSizeChecked} />}
             label="M"
+            value="2"
           />
           <FormControlLabel
             className={classes.itemContainer}
-            control={<StyledCheckbox />}
+            control={<StyledCheckbox onClick={handleSizeChecked} />}
             label="L"
+            value="3"
           />
         </ListItemsContainer>
         <ListItemsContainer>
           <h2>아이템</h2>
           <FormControlLabel
             className={classes.itemContainer}
-            control={<StyledCheckbox />}
+            control={<StyledCheckbox onClick={handleCategoryChecked} />}
             label="Top"
+            value="1"
           />
           <FormControlLabel
             className={classes.itemContainer}
-            control={<StyledCheckbox />}
+            control={<StyledCheckbox onClick={handleCategoryChecked} />}
             label="Bottom"
+            value="2"
           />
           <FormControlLabel
             className={classes.itemContainer}
-            control={<StyledCheckbox />}
+            control={<StyledCheckbox onClick={handleCategoryChecked} />}
             label="Shoes"
+            value="3"
           />
           <FormControlLabel
             className={classes.itemContainer}
-            control={<StyledCheckbox />}
+            control={<StyledCheckbox onClick={handleCategoryChecked} />}
             label="Acc"
+            value="4"
           />
         </ListItemsContainer>
         <ListItemsContainer>
