@@ -6,6 +6,7 @@ import {
   put,
   takeLatest,
   takeEvery,
+  delay,
 } from "redux-saga/effects";
 import {
   LOG_IN_REQUEST,
@@ -16,9 +17,14 @@ import {
   signUpActionAsync,
   logOutActionAsync,
   authCheckActionAsync,
+  addToCartActionAsync,
+  ADD_TO_CART_REQUEST,
 } from "../actions";
 
-import createAsyncSaga from "../utils/createAsyncSaga";
+import createAsyncSaga, {
+  createAsyncDummySaga,
+} from "../utils/createAsyncSaga";
+import { func } from "prop-types";
 
 type LoginAPIProps = {
   email: string;
@@ -107,11 +113,28 @@ function* authCheckSaga() {
   yield takeEvery(AUTH_CHECK_REQUEST, authCheckAsyncSaga);
 }
 
+function duummyAddToCartAPI(productId: any) {
+  return {
+    cart: [{ id: productId, quantity: 1, date: Date.now() }],
+  };
+}
+
+const addToCartAsyncSaga = createAsyncDummySaga(
+  addToCartActionAsync,
+  duummyAddToCartAPI
+);
+
+function* addToCartSaga() {
+  yield delay(1000);
+  yield takeEvery(ADD_TO_CART_REQUEST, addToCartAsyncSaga);
+}
+
 export default function* userSaga() {
   yield all([
     fork(logInSaga),
     fork(signUpSaga),
     fork(logOutSaga),
     fork(authCheckSaga),
+    fork(addToCartSaga),
   ]);
 }

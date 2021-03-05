@@ -20,7 +20,7 @@ import { fileUploadActionAsync } from "../actions";
 import createAsyncSaga, {
   createAsyncDummySaga,
 } from "../utils/createAsyncSaga";
-import { takeEvery, all, fork, takeLatest } from "redux-saga/effects";
+import { takeEvery, all, fork, takeLatest, delay } from "redux-saga/effects";
 import { Images } from "../../pages/uploadProduct";
 import { url } from "inspector";
 

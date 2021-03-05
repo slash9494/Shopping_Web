@@ -12,6 +12,9 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import Popover from "@material-ui/core/Popover";
 import HelpIcon from "@material-ui/icons/Help";
 import Description from "./Description";
+import { useDispatch } from "react-redux";
+import { addToCartActionAsync } from "../../modules";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -85,32 +88,36 @@ const PopOverButton = styled.button`
 
 function ProductDetail() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [size, setSize] = useState<string | number>("");
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const PopOverOpen = Boolean(anchorEl);
+  const popOverId = open ? "simple-popover" : undefined;
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSize(event.target.value as number);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleOpen = () => {
     setOpen(true);
   };
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
   const touchOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
   const touchClose = () => {
     setAnchorEl(null);
   };
-
-  const PopOverOpen = Boolean(anchorEl);
-  const popOverId = open ? "simple-popover" : undefined;
-
+  const handleAddToCart = () => {
+    const productId = "testProductId000";
+    if (size === "") {
+      Swal.fire("사이즈를 선택해주세요", "", "info");
+      return;
+    } else {
+      dispatch(addToCartActionAsync.request(productId));
+    }
+  };
   return (
     <ProductDetailContainer>
       <CardContent>
@@ -165,7 +172,9 @@ function ProductDetail() {
       </FormControl>
 
       <Divider classes={{ root: classes.divider }} />
-      <Button type="submit">장바구니</Button>
+      <Button type="submit" onClick={handleAddToCart}>
+        장바구니
+      </Button>
     </ProductDetailContainer>
   );
 }

@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { loginActionAsync } from "../modules/actions";
 
-
 import { useSelector } from "react-redux";
 
 // import { withRouter } from "react-router-dom";
 
 import { RootState } from "../modules/reducers";
+import Swal from "sweetalert2";
 
 const Form = styled.form`
   display: flex;
@@ -31,7 +31,6 @@ const Button = styled.button`
     background: #495057;
   }
 `;
-
 
 const LoginBlock = styled.div`
   display: flex;
@@ -73,7 +72,7 @@ function LoginForm(props: any) {
     }
     if (loginInfo?.data?.loginSuccess === false) {
       const message = loginInfo.data.message;
-      alert(message);
+      Swal.fire(`${message}`, "", "error");
     }
   }, [loginInfo?.data?.loginSuccess, loginInfo?.data?.message, props.history]);
   return (

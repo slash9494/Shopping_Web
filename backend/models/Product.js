@@ -11,8 +11,31 @@ const productSchema = mongoose.Schema(
       type: String,
       maxlength: 50,
     },
+    descriptionTitle: {
+      type: String,
+    },
     description: {
       type: String,
+    },
+    size: {
+      type: Array,
+      default: [],
+    },
+    amountOfS: {
+      type: Number,
+      default: 0,
+    },
+    amountOfM: {
+      type: Number,
+      default: 0,
+    },
+    amountOfL: {
+      type: Number,
+      default: 0,
+    },
+    color: {
+      type: String,
+      default: "",
     },
     price: {
       type: Number,
@@ -24,7 +47,7 @@ const productSchema = mongoose.Schema(
     },
     category: {
       type: Number,
-      default: 1,
+      default: 0,
     },
     sold: {
       type: Number,

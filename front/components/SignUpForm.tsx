@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 // import { withRouter } from "react-router-dom";
 
 import { RootState } from "../modules/reducers/index";
+import Swal from "sweetalert2";
 
 const RegisterBlock = styled.div`
   display: flex;
@@ -62,18 +63,22 @@ function SignUpForm(props: any) {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      return alert("패스워드가 일치하지 않습니다.");
+      return Swal.fire(
+        "패스워드가 일치하지 않습니다.",
+        "패스워드를 동일하게 입력하세요",
+        "error"
+      );
     }
 
     return dispatch(signUpActionAsync.request(inputs));
   };
   useEffect(() => {
     if (signUpInfo?.data?.signUpSuccess === true) {
-      alert("회원가입을 완료했습니다.");
+      Swal.fire("회원가입을 완료했습니다.", "", "success");
       props.history.push("/");
     }
     if (signUpInfo?.data?.signUpSuccess === false) {
-      alert("회원가입하는데 실패했습니다.");
+      Swal.fire("회원가입하는데 실패했습니다.", "", "error");
     }
   }, [props.history, signUpInfo?.data?.signUpSuccess]);
   return (
@@ -104,4 +109,4 @@ function SignUpForm(props: any) {
   );
 }
 
-export default (SignUpForm);
+export default SignUpForm;

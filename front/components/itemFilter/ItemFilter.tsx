@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button, Drawer } from "@material-ui/core";
 import FilterList from "./FilterList";
+import SearchProduct from "./SearchProduct";
 
 const FilterContainer = styled.div`
   display: flex;
@@ -17,14 +18,22 @@ function ItemFilter(props: any) {
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
-  const [sizeFilters, setSizeFilters] = useState([]);
-  const [categoryFilters, setCategoryFilters] = useState([]);
-  useEffect(() => {
-    props.sizeFilters(sizeFilters);
-    props.categoryFilters(categoryFilters);
-  }, [sizeFilters, categoryFilters]);
+  const handleSizeFilters = (value: any) => {
+    props.sizeFilters(value);
+  };
+  const handleCategoryFilters = (value: any) => {
+    props.categoryFilters(value);
+  };
+  const handlePriceFilters = (value: any) => {
+    props.priceFilters(value);
+  };
+  const searchValue = (value: any) => {
+    props.searchValue(value);
+  };
+
   return (
     <FilterContainer>
+      <SearchProduct searchValue={searchValue} />
       <Button onClick={handleDrawerOpen}>Filters</Button>
       <Drawer
         open={open}
@@ -34,8 +43,9 @@ function ItemFilter(props: any) {
       >
         <FilterList
           onClose={handleDrawerOpen}
-          handleSizeFilters={setSizeFilters}
-          handleCategoryFilters={setCategoryFilters}
+          handleSizeFilters={handleSizeFilters}
+          handleCategoryFilters={handleCategoryFilters}
+          handlePriceFilters={handlePriceFilters}
         />
       </Drawer>
     </FilterContainer>

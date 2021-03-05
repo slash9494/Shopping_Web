@@ -2,7 +2,7 @@ import React from "react";
 
 import styled from "styled-components";
 
-import Logos from "../../images/LYH.svg";
+import Logo from "../../images/LYH.svg";
 import Link from "next/link";
 
 import { useSelector } from "react-redux";
@@ -45,7 +45,7 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const LogoContainer = styled.a`
+const LogoContainer = styled.div`
   width: 20vw;
   padding-left: 6vw;
   padding-top: 1.5vh;
@@ -62,6 +62,12 @@ const LogoContainer = styled.a`
     padding-right: 36vw;
     padding-top: 20px;
   }
+`;
+
+const LogoLink = styled.a`
+  width: 0;
+  height: 0;
+  cursor: pointer;
 `;
 
 const LeftMenuContainer = styled.div`
@@ -93,9 +99,7 @@ const OptionLink = styled.a`
 
 function Header() {
   const classes = useStyles();
-  const { authCheckInfo } = useSelector(
-    (state: RootState) => state.userReducer
-  );
+  const { userData } = useSelector((state: RootState) => state.userReducer);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -121,19 +125,14 @@ function Header() {
           <OptionLink href="/uploadProduct">VIDEO BOOK</OptionLink>
         </LeftMenuContainer>
       </Hidden>
-      <Link href="/" passHref>
-        <LogoContainer>
-          <Logos />
-        </LogoContainer>
-      </Link>
-
+      <LogoContainer>
+        <LogoLink href="/">
+          <Logo />
+        </LogoLink>
+      </LogoContainer>
       <Hidden smDown implementation="css">
         <OptionsContainer>
-          {!authCheckInfo?.data?.isAuth ? (
-            <LoggedOutNavBar />
-          ) : (
-            <LoggedInNavBar />
-          )}
+          {!userData?.data?.isAuth ? <LoggedOutNavBar /> : <LoggedInNavBar />}
         </OptionsContainer>
       </Hidden>
 

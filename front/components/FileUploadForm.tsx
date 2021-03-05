@@ -5,6 +5,8 @@ import Dropzone from "react-dropzone";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import { RootState } from "../modules/reducers";
+import Swal from "sweetalert2";
+
 type ImagesState = any[];
 
 type FileUploadProps = {
@@ -77,7 +79,7 @@ function FileUploadForm(props: FileUploadProps) {
       setImages([...Images, fileUploadInfo.data.filePath]);
       PropImages();
     } else if (fileUploadInfo?.data?.fileUploadSuccess === false) {
-      alert("파일을 업로드하는데 실패했습니다.");
+      Swal.fire("파일을 업로드하는데 실패했습니다.", "", "error");
     } else return;
   }, [
     // PropImages,

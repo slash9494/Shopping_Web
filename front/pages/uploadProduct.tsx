@@ -21,9 +21,14 @@ import userReducer, {
 } from "../modules";
 import { createSelector } from "reselect";
 import { useRouter } from "next/router";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import styled from "styled-components";
+import Swal from "sweetalert2";
 export type Images = any[];
 
 const useStyles = makeStyles((theme: Theme) => ({
+  root: { padding: 0 },
   formControl: {
     minWidth: 120,
     marginRight: 10,
@@ -52,7 +57,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     maxWidth: "800px",
     margin: "2rem auto",
   },
+  sizeContainer: {
+    display: "flex",
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      flexDirection: "column",
+    },
+  },
 }));
+const SizeListContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 function UploadForm() {
   const classes = useStyles();
@@ -63,21 +79,35 @@ function UploadForm() {
     (productReducer) => productReducer.uploadProductInfo
   );
   const uploadProductInfo = useSelector(checkUploadProductInfo);
-  console.log(uploadProductInfo);
   const checkAuthInfo = createSelector(
     (state: RootState) => [state.userReducer],
-    (userReducer) => userReducer.authCheckInfo
+    (userReducer) => userReducer.userData
   );
-  const authCheckInfo = useSelector(checkAuthInfo);
+  const userData = useSelector(checkAuthInfo);
   const [inputs, setInputs] = useState({
     title: null,
+    descriptionTitle: null,
     description: null,
+    amountOfS: null,
+    amountOfM: null,
+    amountOfL: null,
     price: null,
+    color: null,
   });
   const [images, setImages] = useState<Images>([]);
-  const [category, setCategory] = useState(0);
+  const [category, setCategory] = useState<number | string>("");
   const [section, setSection] = useState("");
-  const { title, description, price } = inputs;
+  const [sizeValues, setSizeValues] = useState<number[]>([]);
+  const {
+    title,
+    descriptionTitle,
+    description,
+    price,
+    color,
+    amountOfS,
+    amountOfM,
+    amountOfL,
+  } = inputs;
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs({
@@ -85,33 +115,56 @@ function UploadForm() {
       [name]: value,
     });
   };
-  console.log(images);
   const updateImages = (propedImages: Images) => {
     setImages(propedImages);
   };
-  const categoryChange = (event: ChangeEvent<{ value: unknown }>) => {
-    setCategory(event.target.value as number);
+  const categoryChange = (e: ChangeEvent<{ value: unknown }>) => {
+    setCategory(e.target.value as number);
   };
-  const sectionChange = (event: ChangeEvent<{ value: unknown }>) => {
-    setSection(event.target.value as string);
+  const sectionChange = (e: ChangeEvent<{ value: unknown }>) => {
+    setSection(e.target.value as string);
+  };
+  const sizeValueChange = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const parsedValue = parseInt(e.target.value);
+    const currentIndex = sizeValues.indexOf(parsedValue);
+    const newSizeValues = [...sizeValues];
+    if (currentIndex === -1) {
+      newSizeValues.push(parsedValue);
+    } else {
+      newSizeValues.splice(currentIndex, 1);
+    }
+    setSizeValues(newSizeValues);
   };
   const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
+      !inputs.descriptionTitle ||
       !inputs.description ||
       !inputs.price ||
       !inputs.title ||
       !images.length ||
       !category ||
-      !section
+      !section ||
+      !color
     ) {
-      return alert("빈칸을 전부 채워야 합니다.");
+      Swal.fire(
+        "빈칸을 모두 채워야 합니다.",
+        "사이즈를 제외한 빈칸과 셀렉터를 모두 입력하세요",
+        "error"
+      );
+      return;
     }
-
-    const body = {
+    let body = {
       writer: "test000",
       title: title,
+      descriptionTitle: descriptionTitle,
       description: description,
+      amoutOfS: amountOfS,
+      amountOfM: amountOfM,
+      amountOfL: amountOfL,
+      size: sizeValues,
       price: price,
       images: images,
       category: category,
@@ -128,8 +181,8 @@ function UploadForm() {
   };
   useEffect(() => {
     if (uploadProductInfo?.data?.uploadProductSuccess === true) {
-      alert("상품업로드를 완료했습니다.");
-      router.push("/shop/manPage");
+      Swal.fire("상품 업로드를 완료했습니다.", "", "success");
+      router.push("/");
     }
   }, [uploadProductInfo?.data?.uploadProductSuccess]);
   return (
@@ -165,6 +218,19 @@ function UploadForm() {
                 variant="outlined"
                 required
                 fullWidth
+                name="descriptionTitle"
+                label="descriptionTitle"
+                id="descriptionTitle"
+                autoComplete="text"
+                value={descriptionTitle}
+                onChange={onChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
                 name="description"
                 label="description"
                 id="description"
@@ -173,7 +239,7 @@ function UploadForm() {
                 onChange={onChange}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <TextField
                 variant="outlined"
                 required
@@ -186,6 +252,93 @@ function UploadForm() {
                 onChange={onChange}
               />
             </Grid>
+            <Grid item xs={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="color"
+                label="color"
+                id="color"
+                autoComplete="transaction-amount"
+                value={color}
+                onChange={onChange}
+              />
+            </Grid>
+            <Grid item xs={12} className={classes.sizeContainer}>
+              <SizeListContainer>
+                <FormControlLabel
+                  value="1"
+                  control={
+                    <Checkbox
+                      color="default"
+                      className={classes.root}
+                      onClick={sizeValueChange}
+                    />
+                  }
+                  label="S"
+                  labelPlacement="top"
+                />
+                <TextField
+                  variant="outlined"
+                  required
+                  name="amountOfS"
+                  label="piece(재고량)"
+                  id="amountOfS"
+                  autoComplete="transaction-amount"
+                  value={amountOfS}
+                  onChange={onChange}
+                />
+              </SizeListContainer>
+              <SizeListContainer>
+                <FormControlLabel
+                  value="2"
+                  control={
+                    <Checkbox
+                      color="default"
+                      className={classes.root}
+                      onClick={sizeValueChange}
+                    />
+                  }
+                  label="M"
+                  labelPlacement="top"
+                />
+                <TextField
+                  variant="outlined"
+                  required
+                  name="amountOfM"
+                  label="piece(재고량)"
+                  id="amountOfM"
+                  autoComplete="transaction-amount"
+                  value={amountOfM}
+                  onChange={onChange}
+                />
+              </SizeListContainer>
+              <SizeListContainer>
+                <FormControlLabel
+                  value="3"
+                  control={
+                    <Checkbox
+                      color="default"
+                      className={classes.root}
+                      onClick={sizeValueChange}
+                    />
+                  }
+                  label="L"
+                  labelPlacement="top"
+                />
+                <TextField
+                  variant="outlined"
+                  required
+                  name="amountOfL"
+                  label="piece(재고량)"
+                  id="amountOfL"
+                  autoComplete="transaction-amount"
+                  value={amountOfL}
+                  onChange={onChange}
+                />
+              </SizeListContainer>
+            </Grid>
             <Grid item xs={12} justify="flex-start">
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel id="demo-simple-select-outlined-label">
@@ -197,8 +350,8 @@ function UploadForm() {
                   value={category}
                   onChange={categoryChange}
                   label="category"
+                  name="category"
                 >
-                  <MenuItem value={0}></MenuItem>
                   <MenuItem value={1}>Top</MenuItem>
                   <MenuItem value={2}>Bottom</MenuItem>
                   <MenuItem value={3}>Shoes</MenuItem>

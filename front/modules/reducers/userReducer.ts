@@ -1,5 +1,3 @@
-import { AuthCheckInfo } from "./../types";
-import { RootState } from "./index";
 import { asyncState } from "../utils/reducerUtil";
 import { UserState, Action } from "../types";
 import { createReducer } from "typesafe-actions";
@@ -19,13 +17,16 @@ import {
   AUTH_CHECK_SUCCESS,
   AUTH_CHECK_FAILURE,
   AUTH_DUMMY_SUCCESS,
+  ADD_TO_CART_REQUEST,
+  ADD_TO_CART_SUCCESS,
+  ADD_TO_CART_FAILURE,
 } from "../actions";
 
 export const initialState: UserState = {
   loginInfo: asyncState.initial(),
   logOutInfo: asyncState.initial(),
   signUpInfo: asyncState.initial(),
-  authCheckInfo: asyncState.initial(),
+  userData: asyncState.initial(),
 };
 
 const userReducer = createReducer<UserState, Action>(initialState, {
@@ -49,7 +50,7 @@ const userReducer = createReducer<UserState, Action>(initialState, {
     ...state,
     logOutInfo: asyncState.success(action.payload),
     loginInfo: asyncState.initial(),
-    authCheckInfo: asyncState.initial(),
+    userData: asyncState.initial(),
   }),
   [LOG_OUT_FAILURE]: (state, action) => ({
     ...state,
@@ -57,15 +58,15 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   }),
   [AUTH_CHECK_REQUEST]: (state) => ({
     ...state,
-    authCheckInfo: asyncState.load(state.authCheckInfo?.data),
+    userData: asyncState.load(state.userData?.data),
   }),
   [AUTH_CHECK_SUCCESS]: (state, action) => ({
     ...state,
-    authCheckInfo: asyncState.success(action.payload),
+    userData: asyncState.success(action.payload),
   }),
   [AUTH_CHECK_FAILURE]: (state, action) => ({
     ...state,
-    authCheckInfo: asyncState.error(action.payload),
+    userData: asyncState.error(action.payload),
   }),
   [SIGN_UP_REQUEST]: (state) => ({
     ...state,
@@ -81,7 +82,7 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   }),
   [AUTH_DUMMY_SUCCESS]: (state: any) => ({
     ...state,
-    authCheckInfo: asyncState.success({
+    userData: asyncState.success({
       _id: "testId000",
       isAdmin: false,
       isAuth: true,
@@ -89,6 +90,17 @@ const userReducer = createReducer<UserState, Action>(initialState, {
       name: "test000",
       role: null,
     }),
+  }),
+  [ADD_TO_CART_REQUEST]: (state) => ({
+    ...state,
+  }),
+  [ADD_TO_CART_SUCCESS]: (state, action) => ({
+    ...state,
+    userData: asyncState.success(action.payload),
+  }),
+  [ADD_TO_CART_FAILURE]: (state, action) => ({
+    ...state,
+    userData: asyncState.error(action.payload),
   }),
 });
 

@@ -4,6 +4,7 @@ import * as actions from "./actions";
 
 export type Action = ActionType<typeof actions>;
 
+// User Types //
 export interface LoginInfo {
   loginSuccess: boolean | null;
   userId: string | null;
@@ -18,21 +19,31 @@ export interface LogOutInfo {
   logOutSuccess: boolean | null;
 }
 
-export interface AuthCheckInfo {
+interface CartInfo {
+  id: string;
+  quantity: number;
+  date: Date;
+}
+
+export interface UserData {
   _id: string;
   isAdmin: boolean;
   isAuth: boolean;
   email: string;
   name: string;
   role: null | number;
+  cart: null | Array<CartInfo>;
+  history: null | Array<any>;
 }
 
 export interface UserState {
   loginInfo?: AsyncState<LoginInfo, Error>;
   signUpInfo?: AsyncState<SignUpInfo, Error>;
   logOutInfo?: AsyncState<LogOutInfo, Error>;
-  authCheckInfo?: AsyncState<AuthCheckInfo, Error>;
+  userData?: AsyncState<UserData, Error>;
 }
+
+// Product Types //
 
 export interface FileUploadInfo {
   fileUploadSuccess: boolean | null;
