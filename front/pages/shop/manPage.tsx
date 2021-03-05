@@ -12,19 +12,13 @@ import { RootState } from "../../modules/reducers";
 import { createSelector } from "reselect";
 import { loadManProductsActionAsync } from "../../modules";
 import ItemFilter from "../../components/itemFilter/ItemFilter";
-<<<<<<< HEAD
+
 import { price } from "../../components/itemFilter/priceData";
-type Filters = {
-  size: number[];
-  category: number[];
-  price: Array<number>;
-=======
 
 type Filters = {
   size: number[];
   category: number[];
   price: number[];
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
   [prop: string]: any;
 };
 
@@ -65,6 +59,11 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: "1em",
       fontStyle: "black",
     },
+    gridContainer: {
+      [theme.breakpoints.down("xs")]: {
+        padding: "10vh 0 0 0",
+      },
+    },
   })
 );
 
@@ -92,7 +91,7 @@ function manPage() {
     category: [],
     price: [],
   });
-<<<<<<< HEAD
+
   const [searchTerm, setSearchTerm] = useState("");
   const [skip, setSkip] = useState(0);
   const handleFilters = (propedFilters: number[] | number, kind: string) => {
@@ -136,21 +135,7 @@ function manPage() {
     setSkip(0);
     // getProduct(variables)
   };
-=======
-  const handleFilters = (propedFilters: number[], kind: string) => {
-    const newFilters = { ...filters };
-    newFilters[kind] = propedFilters;
-    setFilters(newFilters);
-    showFilteredResults(newFilters);
-    console.log(newFilters);
-  };
-  const showFilteredResults = (filters: Filters) => {
-    const variables = {
-      filters: filters,
-    };
-  };
 
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
   return (
     <AppContainer className={classes.root}>
       <ItemFilter
@@ -160,15 +145,17 @@ function manPage() {
         categoryFilters={(propedCategoryFilters: number[]) =>
           handleFilters(propedCategoryFilters, "category")
         }
-<<<<<<< HEAD
         priceFilters={(propedPriceFilters: number) =>
           handleFilters(propedPriceFilters, "price")
         }
         searchValue={upDateSearchTerm}
-=======
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
       />
-      <Grid container justify="center" spacing={3}>
+      <Grid
+        container
+        justify="center"
+        spacing={3}
+        className={classes.gridContainer}
+      >
         {loadProductsInfo?.data?.manProducts.map((item: any) => {
           return (
             <Grid item xs={6} sm={6} md={3} xl={3} className={classes.item}>

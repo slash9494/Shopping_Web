@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Grid, CardMedia, Divider, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { useDispatch, useSelector } from "react-redux";
+import { authCheckDummyActionAsync } from "../modules";
+import { createSelector } from "reselect";
+import { RootState } from "../modules/reducers";
 const useStyles = makeStyles({
   media: { paddingTop: "100%", width: "50%" },
   itemContainer: {
@@ -53,6 +57,23 @@ const PayButton = styled.button`
 `;
 function cart() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const checkUserDataInfo = createSelector(
+    (state: RootState) => state.userReducer,
+    (userReducer) => userReducer.userData
+  );
+  const userData = useSelector(checkUserDataInfo);
+  useEffect(() => {
+    let cartItemsId = [];
+    if (userData?.data?.cart) {
+      if (userData.data.cart.length > 0) {
+        userData.data.cart.forEach((item) => {
+          cartItemsId.push(item.id);
+        });
+      }
+    }
+    dispatch(authCheckDummyActionAsync.success(""));
+  }, []);
   return (
     <AppContainer>
       <h2>장바구니</h2>

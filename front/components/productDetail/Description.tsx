@@ -46,8 +46,12 @@ const DescriptionContainer = styled.div`
     width: 96vw;
   }
 `;
+interface DescriptionProps {
+  description?: string;
+  descriptionTitle?: string;
+}
 
-function Description() {
+function Description(props: DescriptionProps) {
   const classes = useStyles();
   return (
     <DescriptionContainer>
@@ -56,7 +60,7 @@ function Description() {
         variant="h5"
         align="center"
       >
-        CARE FOR FIBER: 50% 이상 재생 울 사용.
+        {props.descriptionTitle}
       </Typography>
       <Typography
         className={classes.description}
@@ -64,9 +68,7 @@ function Description() {
         gutterBottom
         align="center"
       >
-        이 섬유는 다른 울 제품에서 폐기된 울을 재활용하여 생산합니다. 이
-        폐기물을 새로운 자원으로 전환하여 원자재 생산 및 물, 에너지 그리고
-        천연자원 소모를 줄일 수 있습니다.
+        {props.description}
       </Typography>
     </DescriptionContainer>
   );

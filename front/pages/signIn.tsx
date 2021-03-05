@@ -1,7 +1,11 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { loginActionAsync } from "../modules/actions";
+import {
+  loginActionAsync,
+  authCheckDummyActionAsync,
+  AUTH_DUMMY_SUCCESS,
+} from "../modules/actions";
 import { useRouter } from "next/router";
 
 import { useSelector } from "react-redux";
@@ -60,7 +64,7 @@ function LoginForm(props: any) {
     e.preventDefault();
 
     try {
-      dispatch(loginActionAsync.request(inputs));
+      dispatch(authCheckDummyActionAsync.success(inputs));
     } catch (error) {
       console.log(error);
     }

@@ -18,7 +18,6 @@ function ItemFilter(props: any) {
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
-<<<<<<< HEAD
   const handleSizeFilters = (value: any) => {
     props.sizeFilters(value);
   };
@@ -32,14 +31,6 @@ function ItemFilter(props: any) {
     props.searchValue(value);
   };
 
-=======
-  const [sizeFilters, setSizeFilters] = useState([]);
-  const [categoryFilters, setCategoryFilters] = useState([]);
-  useEffect(() => {
-    props.sizeFilters(sizeFilters);
-    props.categoryFilters(categoryFilters);
-  }, [sizeFilters, categoryFilters]);
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
   return (
     <FilterContainer>
       <SearchProduct searchValue={searchValue} />
@@ -52,14 +43,9 @@ function ItemFilter(props: any) {
       >
         <FilterList
           onClose={handleDrawerOpen}
-<<<<<<< HEAD
           handleSizeFilters={handleSizeFilters}
           handleCategoryFilters={handleCategoryFilters}
           handlePriceFilters={handlePriceFilters}
-=======
-          handleSizeFilters={setSizeFilters}
-          handleCategoryFilters={setCategoryFilters}
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
         />
       </Drawer>
     </FilterContainer>

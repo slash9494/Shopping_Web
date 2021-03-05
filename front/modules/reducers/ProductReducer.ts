@@ -11,6 +11,9 @@ import {
   LOAD_MAN_PRODUCTS_REQUEST,
   LOAD_MAN_PRODUCTS_SUCCESS,
   LOAD_MAN_PRODUCTS_FAILURE,
+  LOAD_PRODUCT_BY_ID_REQUEST,
+  LOAD_PRODUCT_BY_ID_SUCCESS,
+  LOAD_PRODUCT_BY_ID_FAILURE,
 } from "../actions";
 import { produce } from "immer";
 
@@ -18,6 +21,7 @@ export const initialState: ProductState = {
   fileUploadInfo: asyncState.initial(),
   uploadProductInfo: asyncState.initial(),
   loadProductsInfo: asyncState.initial(),
+  loadProductByIdInfo: asyncState.initial(),
 };
 
 const productReducer = createReducer<ProductState, Action>(initialState, {
@@ -56,6 +60,18 @@ const productReducer = createReducer<ProductState, Action>(initialState, {
   [LOAD_MAN_PRODUCTS_FAILURE]: (state, action) => ({
     ...state,
     loadProductsInfo: asyncState.error(action.payload),
+  }),
+  [LOAD_PRODUCT_BY_ID_REQUEST]: (state, action) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.load(action.payload),
+  }),
+  [LOAD_PRODUCT_BY_ID_SUCCESS]: (state, action) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.success(action.payload),
+  }),
+  [LOAD_PRODUCT_BY_ID_FAILURE]: (state, action) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.error(action.payload),
   }),
 });
 

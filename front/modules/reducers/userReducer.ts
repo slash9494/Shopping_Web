@@ -20,6 +20,7 @@ import {
   ADD_TO_CART_REQUEST,
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILURE,
+  AUTH_DUMMY_REQUEST,
 } from "../actions";
 
 export const initialState: UserState = {
@@ -80,6 +81,10 @@ const userReducer = createReducer<UserState, Action>(initialState, {
     ...state,
     signUpInfo: asyncState.error(action.payload),
   }),
+  [AUTH_DUMMY_REQUEST]: (state, action) => ({
+    ...state,
+    userData: action.payload,
+  }),
   [AUTH_DUMMY_SUCCESS]: (state: any) => ({
     ...state,
     userData: asyncState.success({
@@ -89,13 +94,15 @@ const userReducer = createReducer<UserState, Action>(initialState, {
       email: "test000@naver.com",
       name: "test000",
       role: null,
+      cart: [],
+      history: [],
     }),
   }),
   [ADD_TO_CART_REQUEST]: (state) => ({
     ...state,
   }),
   [ADD_TO_CART_SUCCESS]: (state, action) => ({
-    ...state,
+    ...state.userData,
     userData: asyncState.success(action.payload),
   }),
   [ADD_TO_CART_FAILURE]: (state, action) => ({

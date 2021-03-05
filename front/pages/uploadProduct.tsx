@@ -18,6 +18,7 @@ import { RootState } from "../modules/reducers";
 import userReducer, {
   UPLOAD_MAN_PRODUCT_REQUEST,
   uploadDummyManProductActionAsync,
+  authCheckDummyActionAsync,
 } from "../modules";
 import { createSelector } from "reselect";
 import { useRouter } from "next/router";

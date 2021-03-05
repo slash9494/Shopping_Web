@@ -14,6 +14,8 @@ import {
   UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
   loadManProductsActionAsync,
   LOAD_MAN_PRODUCTS_REQUEST,
+  loadProductByIdActionAsync,
+  LOAD_PRODUCT_BY_ID_REQUEST,
 } from "./../actions";
 import axios from "axios";
 import { fileUploadActionAsync } from "../actions";
@@ -163,7 +165,6 @@ const generateDummyManProduct = (number: Number) =>
       id: shortId.generate(),
       writer: faker.name.findName(),
       title: faker.commerce.productName(),
-      description: faker.commerce.productDescription(),
       price: faker.commerce.price(10000, 110000),
       images: [fakeImages(), fakeImages(), fakeImages()],
       category: faker.random.number({
@@ -184,6 +185,10 @@ const generateDummyManProduct = (number: Number) =>
           max: 3,
         }),
       ],
+      sold: faker.random.number({
+        min: 0,
+        max: 3,
+      }),
     }));
 
 const loadManProductAsyncSaga = createAsyncDummySaga(
@@ -195,6 +200,56 @@ function* loadManProductsSaga() {
   yield takeLatest(LOAD_MAN_PRODUCTS_REQUEST, loadManProductAsyncSaga);
 }
 
+function loadDummyProductByIdAPI() {
+  return {
+    title: faker.commerce.productName(),
+    descriptionTitle: faker.name.title(),
+    description: faker.commerce.productDescription(),
+    size: [
+      faker.random.number({
+        min: 1,
+        max: 3,
+      }),
+      faker.random.number({
+        min: 1,
+        max: 3,
+      }),
+      faker.random.number({
+        min: 1,
+        max: 3,
+      }),
+    ],
+    amountOfS: faker.random.number({
+      min: 0,
+      max: 2,
+    }),
+    amountOfM: faker.random.number({
+      min: 0,
+      max: 2,
+    }),
+    amountOfL: faker.random.number({
+      min: 0,
+      max: 2,
+    }),
+    color: faker.commerce.color(),
+    price: faker.random.number({
+      min: 20000,
+      max: 110000,
+    }),
+    images: [fakeImages(), fakeImages(), fakeImages()],
+    id: faker.random.uuid(),
+  };
+}
+
+const loadProductByIdAsyncSaga = createAsyncDummySaga(
+  loadProductByIdActionAsync,
+  loadDummyProductByIdAPI
+);
+
+function* loadProductByIdSaga() {
+  yield takeLatest(LOAD_PRODUCT_BY_ID_REQUEST, loadProductByIdAsyncSaga);
+}
+
 export default function* productSaga() {
   yield all([
     fork(fileUploadSaga),
@@ -203,5 +258,6 @@ export default function* productSaga() {
     fork(uploadKidProductSaga),
     fork(uploadDummyManProductSaga),
     fork(loadManProductsSaga),
+    fork(loadProductByIdSaga),
   ]);
 }

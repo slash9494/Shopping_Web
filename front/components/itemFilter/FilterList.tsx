@@ -4,13 +4,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CloseIcon from "@material-ui/icons/Close";
-<<<<<<< HEAD
+
 import { price } from "./priceData";
 import StyledCheckBox from "./StyledCheckBox";
 import StyledRadioBox from "./StyledRadioBox";
 import RadioGroup from "@material-ui/core/RadioGroup";
-const useStyles = makeStyles({
-=======
 const useStyles = makeStyles({
   root: {
     "&:hover": {
@@ -45,7 +43,6 @@ const useStyles = makeStyles({
       backgroundColor: "#868e96",
     },
   },
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
   itemContainer: {
     width: "100%",
     justifyContent: "space-between",
@@ -60,6 +57,9 @@ const Container = styled.div`
   width: 20vw;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 600px) {
+    width: 40vw;
+  }
 `;
 const ButtonContainer = styled.div`
   display: flex;
@@ -71,29 +71,12 @@ const ListContainer = styled.div``;
 const ListItemsContainer = styled.div`
   padding: 30px;
 `;
-function StyledCheckbox(props: CheckboxProps) {
-  const classes = useStyles();
 
-  return (
-    <Checkbox
-      className={classes.root}
-      disableRipple
-      color="default"
-      checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
-      icon={<span className={classes.icon} />}
-      inputProps={{ "aria-label": "decorative checkbox" }}
-      {...props}
-    />
-  );
-}
 function FilterList(props: any) {
   const classes = useStyles();
   const [sizeChecked, setSizeChecked] = useState<number[]>([]);
   const [categoryChecked, setCategoryChecked] = useState<number[]>([]);
-<<<<<<< HEAD
   const [priceChecked, setPriceChecked] = useState<string>("");
-=======
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
   const handleSizeChecked = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -113,11 +96,7 @@ function FilterList(props: any) {
   ) => {
     const parsedValue = parseInt(e.target.value);
     const currentIndex = categoryChecked.indexOf(parsedValue);
-<<<<<<< HEAD
     const newChecked = [...categoryChecked];
-=======
-    const newChecked = [...sizeChecked];
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
     if (currentIndex === -1) {
       newChecked.push(parsedValue);
     } else {
@@ -126,16 +105,12 @@ function FilterList(props: any) {
     setCategoryChecked(newChecked);
     props.handleCategoryFilters(newChecked);
   };
-<<<<<<< HEAD
   const handlePriceChecked = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log(e.target.value);
     props.handlePriceFilters(e.target.value);
   };
 
-=======
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
   return (
     <Container>
       <ButtonContainer>
@@ -148,31 +123,19 @@ function FilterList(props: any) {
           <h2>사이즈</h2>
           <FormControlLabel
             className={classes.itemContainer}
-<<<<<<< HEAD
             control={<StyledCheckBox onClick={handleSizeChecked} />}
-=======
-            control={<StyledCheckbox onClick={handleSizeChecked} />}
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
             label="S"
             value="1"
           />
           <FormControlLabel
             className={classes.itemContainer}
-<<<<<<< HEAD
             control={<StyledCheckBox onClick={handleSizeChecked} />}
-=======
-            control={<StyledCheckbox onClick={handleSizeChecked} />}
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
             label="M"
             value="2"
           />
           <FormControlLabel
             className={classes.itemContainer}
-<<<<<<< HEAD
             control={<StyledCheckBox onClick={handleSizeChecked} />}
-=======
-            control={<StyledCheckbox onClick={handleSizeChecked} />}
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
             label="L"
             value="3"
           />
@@ -181,41 +144,25 @@ function FilterList(props: any) {
           <h2>아이템</h2>
           <FormControlLabel
             className={classes.itemContainer}
-<<<<<<< HEAD
             control={<StyledCheckBox onClick={handleCategoryChecked} />}
-=======
-            control={<StyledCheckbox onClick={handleCategoryChecked} />}
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
             label="Top"
             value="1"
           />
           <FormControlLabel
             className={classes.itemContainer}
-<<<<<<< HEAD
             control={<StyledCheckBox onClick={handleCategoryChecked} />}
-=======
-            control={<StyledCheckbox onClick={handleCategoryChecked} />}
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
             label="Bottom"
             value="2"
           />
           <FormControlLabel
             className={classes.itemContainer}
-<<<<<<< HEAD
             control={<StyledCheckBox onClick={handleCategoryChecked} />}
-=======
-            control={<StyledCheckbox onClick={handleCategoryChecked} />}
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
             label="Shoes"
             value="3"
           />
           <FormControlLabel
             className={classes.itemContainer}
-<<<<<<< HEAD
             control={<StyledCheckBox onClick={handleCategoryChecked} />}
-=======
-            control={<StyledCheckbox onClick={handleCategoryChecked} />}
->>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
             label="Acc"
             value="4"
           />

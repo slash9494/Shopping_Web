@@ -47,27 +47,32 @@ const HeaderContainer = styled.div`
 
 const LogoContainer = styled.div`
   width: 20vw;
-  padding-left: 6vw;
-  padding-top: 1.5vh;
-  height: 120px;
+  height: 90px;
   margin: 0;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @media screen and (max-width: 960px) {
     width: 80vw;
     margin: 0px;
     padding: 0;
     height: 90px;
-    justify-content: flex-end;
     display: flex;
-    padding-right: 36vw;
+    padding-right: 20vw;
     padding-top: 20px;
   }
 `;
 
 const LogoLink = styled.a`
-  width: 0;
-  height: 0;
+  width: 9vw;
+  height: 70px;
   cursor: pointer;
+  @media screen and (max-width: 960px) {
+    width: 60vw;
+    height: 50px;
+    justify-content: center;
+    display: flex;
+  }
 `;
 
 const LeftMenuContainer = styled.div`

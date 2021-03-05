@@ -1,6 +1,7 @@
 import { AsyncState } from "./utils/reducerUtil";
 import { ActionType } from "typesafe-actions";
 import * as actions from "./actions";
+import { number } from "prop-types";
 
 export type Action = ActionType<typeof actions>;
 
@@ -55,14 +56,47 @@ export interface UploadProductInfo {
   uploadProductSuccess: boolean;
 }
 
+interface ProductsInfo {
+  id: String;
+  writer: String;
+  title: String;
+  price: Number;
+  images: ImageData[];
+  category: Number;
+  size: Number[];
+  sold: Number;
+}
+
 export interface LoadProductsInfo {
-  manProducts: any[];
-  womanProducts: any[];
-  kidProduct: any[];
+  manProducts: ProductsInfo[];
+  womanProducts: ProductsInfo[];
+  kidProduct: ProductsInfo[];
+}
+
+interface ProductByIdInfo {
+  title: string;
+  descriptionTitle: string;
+  description: string;
+  size: Number[];
+  amountOfS: Number;
+  amountOfM: Number;
+  amountOfL: Number;
+  color: string;
+  price: Number;
+  images: ImageData[];
+  category: Number;
+  sold: Number;
+  views: Number;
+  id: Number;
+}
+
+export interface LoadProductByIdInfo {
+  productInfo: ProductByIdInfo;
 }
 
 export interface ProductState {
   fileUploadInfo?: AsyncState<FileUploadInfo, Error>;
   uploadProductInfo?: AsyncState<UploadProductInfo, Error>;
   loadProductsInfo?: AsyncState<LoadProductsInfo, Error>;
+  loadProductByIdInfo?: AsyncState<LoadProductByIdInfo, Error>;
 }

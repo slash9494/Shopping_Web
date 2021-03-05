@@ -6,6 +6,15 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import Description from "../../../components/productDetail/Description";
 import ProductDetail from "../../../components/productDetail/ProductDetail";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  authCheckDummyActionAsync,
+  loadProductByIdActionAsync,
+} from "../../../modules";
+import { createSelector } from "reselect";
+import { stat } from "fs";
+import { RootState } from "../../../modules/reducers";
+import productReducer from "../../../modules/reducers/ProductReducer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -103,17 +112,30 @@ function DetailProduct() {
   const router = useRouter();
   const { id } = router.query;
   const classes = useStyles();
+  const [product, setProduct] = useState([]);
   const [showThumbNail, setShowThumbNail] = useState(true);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     if (window.innerWidth <= 1024) {
       return setShowThumbNail(false);
     }
+    dispatch(loadProductByIdActionAsync.request("id"));
+    dispatch(authCheckDummyActionAsync.success(""));
   }, []);
+  const checkLoadProductInfo = createSelector(
+    (state: RootState) => state.productReducer,
+    (productReducer) => productReducer.loadProductByIdInfo
+  );
+  const loadProductByIdInfo = useSelector(checkLoadProductInfo);
   return (
     <AppContainer>
       <DescriptionContainer>
-        <Description />
+        <Description
+          description={loadProductByIdInfo?.data?.productInfo.description}
+          descriptionTitle={
+            loadProductByIdInfo?.data?.productInfo.descriptionTitle
+          }
+        />
       </DescriptionContainer>
       <ImageContainer>
         <ImageGallery
