@@ -55,7 +55,13 @@ export const LOAD_MAN_PRODUCTS_REQUEST = "LOAD_MAN_PRODUCTS_REQUEST";
 export const LOAD_MAN_PRODUCTS_SUCCESS = "LOAD_MAN_PRODUCTS_SUCCESS";
 export const LOAD_MAN_PRODUCTS_FAILURE = "LOAD_MAN_PRODUCTS_FAILURE";
 
+<<<<<<< HEAD
 // User ActionCreator //
+=======
+export const LOAD_MAN_PRODUCTS_REQUEST = "LOAD_MAN_PRODUCTS_REQUEST";
+export const LOAD_MAN_PRODUCTS_SUCCESS = "LOAD_MAN_PRODUCTS_SUCCESS";
+export const LOAD_MAN_PRODUCTS_FAILURE = "LOAD_MAN_PRODUCTS_FAILURE";
+>>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
 
 export const loginActionAsync = createAsyncAction(
   LOG_IN_REQUEST,
@@ -131,4 +137,8 @@ export const loadManProductsActionAsync = createAsyncAction(
   LOAD_MAN_PRODUCTS_REQUEST,
   LOAD_MAN_PRODUCTS_SUCCESS,
   LOAD_MAN_PRODUCTS_FAILURE
+<<<<<<< HEAD
 )<void, LoadProductsInfo, AxiosError>();
+=======
+)<void, LoadProductsInfo, Error>();
+>>>>>>> abfcd9156d59bd7c143f1857316786ed948ff28b
