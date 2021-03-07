@@ -17,6 +17,26 @@ import {
 } from "../actions";
 import { produce } from "immer";
 
+const productByIdInfo = {
+  productInfo: {
+    title: "",
+    descriptionTitle: "string;",
+    description: "string",
+    size: [],
+    amountOfS: 0,
+    amountOfM: 0,
+    amountOfL: 0,
+    color: "string;",
+    price: 0,
+    images: [],
+
+    category: 0,
+    sold: 0,
+    views: 0,
+    id: 0,
+  },
+};
+
 export const initialState: ProductState = {
   fileUploadInfo: asyncState.initial(),
   uploadProductInfo: asyncState.initial(),
@@ -63,7 +83,7 @@ const productReducer = createReducer<ProductState, Action>(initialState, {
   }),
   [LOAD_PRODUCT_BY_ID_REQUEST]: (state, action) => ({
     ...state,
-    loadProductByIdInfo: asyncState.load(action.payload),
+    loadProductByIdInfo: asyncState.load(state.loadProductByIdInfo?.data),
   }),
   [LOAD_PRODUCT_BY_ID_SUCCESS]: (state, action) => ({
     ...state,

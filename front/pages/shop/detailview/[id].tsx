@@ -10,11 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   authCheckDummyActionAsync,
   loadProductByIdActionAsync,
+  ProductByIdInfo,
 } from "../../../modules";
 import { createSelector } from "reselect";
 import { stat } from "fs";
 import { RootState } from "../../../modules/reducers";
 import productReducer from "../../../modules/reducers/ProductReducer";
+import { original } from "immer";
+interface Images {
+  original: ImageData;
+  thumbnail: ImageData;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -69,7 +75,7 @@ const DescriptionContainer = styled.div`
   }
 `;
 
-const images = [
+const dummyImages = [
   {
     original:
       "https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
@@ -112,34 +118,44 @@ function DetailProduct() {
   const router = useRouter();
   const { id } = router.query;
   const classes = useStyles();
-  const [product, setProduct] = useState([]);
   const [showThumbNail, setShowThumbNail] = useState(true);
+  const [imageState, setImageState] = useState<Array<any>>([]);
   const dispatch = useDispatch();
   useEffect(() => {
     if (window.innerWidth <= 1024) {
       return setShowThumbNail(false);
     }
     dispatch(loadProductByIdActionAsync.request("id"));
-    dispatch(authCheckDummyActionAsync.success(""));
   }, []);
+  useEffect(() => {
+    if (imagesArray) {
+      setImageState(imagesArray);
+    }
+  }, [dispatch]);
   const checkLoadProductInfo = createSelector(
     (state: RootState) => state.productReducer,
     (productReducer) => productReducer.loadProductByIdInfo
   );
   const loadProductByIdInfo = useSelector(checkLoadProductInfo);
+  const images = loadProductByIdInfo?.data?.images;
+  const imagesArray = images?.map((image: any) => {
+    return {
+      original: image,
+      thumbnail: image,
+    };
+  });
+  console.log(imageState);
   return (
     <AppContainer>
       <DescriptionContainer>
         <Description
-          description={loadProductByIdInfo?.data?.productInfo.description}
-          descriptionTitle={
-            loadProductByIdInfo?.data?.productInfo.descriptionTitle
-          }
+          description={loadProductByIdInfo?.data?.description}
+          descriptionTitle={loadProductByIdInfo?.data?.descriptionTitle}
         />
       </DescriptionContainer>
       <ImageContainer>
         <ImageGallery
-          items={images}
+          items={imageState}
           showPlayButton={false}
           showFullscreenButton={false}
           showThumbnails={showThumbNail}

@@ -155,7 +155,7 @@ function loadDummyManProductsAPI() {
 
 const fakeImages = () => {
   const randomNumber = Math.floor(Math.random() * 1000);
-  return `https://source.unsplash.com/1600x900/?man-model&sig=${randomNumber}`;
+  return `https://source.unsplash.com/2000x1200/?man-model&sig=${randomNumber}`;
 };
 
 const generateDummyManProduct = (number: Number) =>

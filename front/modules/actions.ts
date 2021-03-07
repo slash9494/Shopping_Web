@@ -9,6 +9,7 @@ import {
   UploadProductInfo,
   LoadProductsInfo,
   LoadProductByIdInfo,
+  ProductByIdInfo,
 } from "./types";
 
 // User Action //
@@ -147,4 +148,4 @@ export const loadProductByIdActionAsync = createAsyncAction(
   LOAD_PRODUCT_BY_ID_REQUEST,
   LOAD_PRODUCT_BY_ID_SUCCESS,
   LOAD_PRODUCT_BY_ID_FAILURE
-)<any, LoadProductByIdInfo, AxiosError>();
+)<any, ProductByIdInfo, AxiosError>();

@@ -2,6 +2,7 @@ import { AsyncState } from "./utils/reducerUtil";
 import { ActionType } from "typesafe-actions";
 import * as actions from "./actions";
 import { number } from "prop-types";
+import { ReactImageGalleryItem } from "react-image-gallery";
 
 export type Action = ActionType<typeof actions>;
 
@@ -73,7 +74,12 @@ export interface LoadProductsInfo {
   kidProduct: ProductsInfo[];
 }
 
-interface ProductByIdInfo {
+interface ImagesData {
+  original: string;
+  thumbnail: string;
+}
+
+export interface ProductByIdInfo {
   title: string;
   descriptionTitle: string;
   description: string;
@@ -83,7 +89,7 @@ interface ProductByIdInfo {
   amountOfL: Number;
   color: string;
   price: Number;
-  images: ImageData[];
+  images: Array<any>;
   category: Number;
   sold: Number;
   views: Number;
@@ -98,5 +104,5 @@ export interface ProductState {
   fileUploadInfo?: AsyncState<FileUploadInfo, Error>;
   uploadProductInfo?: AsyncState<UploadProductInfo, Error>;
   loadProductsInfo?: AsyncState<LoadProductsInfo, Error>;
-  loadProductByIdInfo?: AsyncState<LoadProductByIdInfo, Error>;
+  loadProductByIdInfo?: AsyncState<ProductByIdInfo, Error>;
 }
