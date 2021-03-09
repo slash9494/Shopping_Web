@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid, CardMedia, Divider, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { authCheckDummyActionAsync } from "../modules";
+import { authCheckDummyActionAsync, ProductByIdInfo } from "../modules";
 import { createSelector } from "reselect";
 import { RootState } from "../modules/reducers";
 const useStyles = makeStyles({
@@ -55,9 +55,18 @@ const PayButton = styled.button`
     background: #495057;
   }
 `;
+
+export interface UserCartInfo {
+  id: number;
+  quantity: number;
+  date: number;
+}
+
 function cart() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [total, setTotal] = useState(0);
+  const [showTotal, setShowTotal] = useState();
   const checkUserDataInfo = createSelector(
     (state: RootState) => state.userReducer,
     (userReducer) => userReducer.userData
@@ -67,13 +76,22 @@ function cart() {
     let cartItemsId = [];
     if (userData?.data?.cart) {
       if (userData.data.cart.length > 0) {
-        userData.data.cart.forEach((item) => {
+        userData.data.cart.forEach((item: UserCartInfo) => {
           cartItemsId.push(item.id);
         });
       }
     }
     dispatch(authCheckDummyActionAsync.success(""));
   }, []);
+
+  const calculateTotal = (productInfo: ProductByIdInfo) => {
+    let total = 0;
+  };
+
+  const handleRemoveItem = () => {
+    // dispatch()
+  };
+
   return (
     <AppContainer>
       <h2>장바구니</h2>
@@ -100,13 +118,13 @@ function cart() {
             <Divider />
             <p>2개</p>
             <IconButton edge="start" className={classes.button}>
-              <DeleteIcon fontSize="small" />
+              <DeleteIcon fontSize="small" onClick={handleRemoveItem} />
             </IconButton>
           </ItemDetailContainer>
         </Grid>
       </Grid>
       <PayContainer>
-        <h2>총 230,000원</h2>
+        <h2>총 {total}원</h2>
         <PayButton>결제하기</PayButton>
       </PayContainer>
     </AppContainer>

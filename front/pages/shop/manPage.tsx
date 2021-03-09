@@ -15,7 +15,7 @@ import ItemFilter from "../../components/itemFilter/ItemFilter";
 
 import { price } from "../../components/itemFilter/priceData";
 
-type Filters = {
+export type Filters = {
   size: number[];
   category: number[];
   price: number[];
@@ -78,8 +78,25 @@ const AppContainer = styled.ul`
 function manPage() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadManProductsActionAsync.request());
+    let body = {
+      skip: skip,
+      limit: limit,
+    };
+
+    dispatch(loadManProductsActionAsync.request(body));
   }, []);
+  const loadMoreProducts = () => {
+    let changeSkip = skip + limit;
+
+    let body = {
+      skip: changeSkip,
+      bodu: limit,
+      loadMore: true,
+    };
+    dispatch(loadManProductsActionAsync.request(body));
+    setSkip(changeSkip);
+  };
+
   const classes = useStyles();
   const checkUploadProductInfo = createSelector(
     (state: RootState) => state.productReducer,
@@ -94,6 +111,7 @@ function manPage() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(16);
   const handleFilters = (propedFilters: number[] | number, kind: string) => {
     const newFilters = { ...filters };
     newFilters[kind] = propedFilters;
@@ -118,10 +136,11 @@ function manPage() {
   const showFilteredResults = (filters: Filters) => {
     const variables = {
       skip: 0,
-      limit: "",
+      limit: limit,
       filters: filters,
     };
     setSkip(0);
+    dispatch(loadManProductsActionAsync.request(variables));
     // getProduct(variables)
   };
   const upDateSearchTerm = (newValue: string) => {
@@ -132,8 +151,8 @@ function manPage() {
       searchTerm: newValue,
     };
     setSearchTerm(newValue);
+    dispatch(loadManProductsActionAsync.request(variables));
     setSkip(0);
-    // getProduct(variables)
   };
 
   return (
@@ -172,6 +191,7 @@ function manPage() {
           );
         })}
       </Grid>
+      <Button onClick={loadMoreProducts}>더보기</Button>
     </AppContainer>
   );
 }

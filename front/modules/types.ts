@@ -22,7 +22,7 @@ export interface LogOutInfo {
 }
 
 interface CartInfo {
-  id: string;
+  id: number;
   quantity: number;
   date: Date;
 }
@@ -58,7 +58,7 @@ export interface UploadProductInfo {
 }
 
 interface ProductsInfo {
-  id: String;
+  id: number;
   writer: String;
   title: String;
   price: Number;
@@ -94,6 +94,7 @@ export interface ProductByIdInfo {
   sold: Number;
   views: Number;
   id: Number;
+  quantity?: number;
 }
 
 export interface LoadProductByIdInfo {

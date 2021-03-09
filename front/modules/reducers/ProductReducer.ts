@@ -69,9 +69,9 @@ const productReducer = createReducer<ProductState, Action>(initialState, {
     ...state,
     uploadProductInfo: asyncState.error(action.payload),
   }),
-  [LOAD_MAN_PRODUCTS_REQUEST]: (state) => ({
+  [LOAD_MAN_PRODUCTS_REQUEST]: (state, action) => ({
     ...state,
-    loadProductsInfo: asyncState.load(),
+    loadProductsInfo: asyncState.load(action.payload),
   }),
   [LOAD_MAN_PRODUCTS_SUCCESS]: (state, action) => ({
     ...state,

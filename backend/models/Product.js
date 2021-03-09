@@ -69,11 +69,13 @@ const productSchema = mongoose.Schema(
 productSchema.index(
   {
     title: "text",
+    descriptionTitle: "text",
     description: "text",
   },
   {
     weights: {
-      name: 5,
+      title: 5,
+      descriptionTitle: 2,
       description: 1,
     },
   }

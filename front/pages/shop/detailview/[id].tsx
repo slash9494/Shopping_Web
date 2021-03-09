@@ -11,12 +11,13 @@ import {
   authCheckDummyActionAsync,
   loadProductByIdActionAsync,
   ProductByIdInfo,
+  loadManProductsActionAsync,
 } from "../../../modules";
 import { createSelector } from "reselect";
 import { stat } from "fs";
 import { RootState } from "../../../modules/reducers";
-import productReducer from "../../../modules/reducers/ProductReducer";
-import { original } from "immer";
+import CardMedia from "@material-ui/core/CardMedia";
+
 interface Images {
   original: ImageData;
   thumbnail: ImageData;
@@ -33,6 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       justifyContent: "center",
       height: "100%",
+    },
+    media: {
+      paddingTop: "130%",
+      cursor: "pointer",
     },
   })
 );
@@ -119,32 +124,41 @@ function DetailProduct() {
   const { id } = router.query;
   const classes = useStyles();
   const [showThumbNail, setShowThumbNail] = useState(true);
-  const [imageState, setImageState] = useState<Array<any>>([]);
+  const [imageState, setImageState] = useState<any>([]);
+  const [open, setOpen] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(loadProductByIdActionAsync.request("id"));
+
     if (window.innerWidth <= 1024) {
       return setShowThumbNail(false);
     }
-    dispatch(loadProductByIdActionAsync.request("id"));
   }, []);
   useEffect(() => {
-    if (imagesArray) {
-      setImageState(imagesArray);
-    }
+    // let images: any[] = [];
+    // // loadProductByIdInfo?.data?.images.map((item: any) => {
+    // //   images.push({
+    // //     original: item,
+    // //     thumbnail: item,
+    // //   });
+    // // });
+    // // console.log(images);
+    // // return setImageState(images);
+    const images = loadProductByIdInfo?.data?.images;
+    const imagesArray = images?.map((image: any) => {
+      return {
+        original: image,
+        thumbnail: image,
+      };
+    });
+    setImageState(imagesArray);
   }, [dispatch]);
   const checkLoadProductInfo = createSelector(
     (state: RootState) => state.productReducer,
     (productReducer) => productReducer.loadProductByIdInfo
   );
   const loadProductByIdInfo = useSelector(checkLoadProductInfo);
-  const images = loadProductByIdInfo?.data?.images;
-  const imagesArray = images?.map((image: any) => {
-    return {
-      original: image,
-      thumbnail: image,
-    };
-  });
-  console.log(imageState);
+
   return (
     <AppContainer>
       <DescriptionContainer>

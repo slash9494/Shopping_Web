@@ -1,4 +1,4 @@
-import { Action } from "./../types";
+import { Action, ProductByIdInfo } from "./../types";
 import { response } from "express";
 import shortId from "shortid";
 import faker from "faker";
@@ -24,7 +24,8 @@ import createAsyncSaga, {
 } from "../utils/createAsyncSaga";
 import { takeEvery, all, fork, takeLatest, delay } from "redux-saga/effects";
 import { Images } from "../../pages/uploadProduct";
-import { url } from "inspector";
+import { Filters } from "../../pages/shop/manPage";
+import { UserCartInfo } from "../../pages/cart";
 
 export type Config = {
   data: {
@@ -34,6 +35,14 @@ export type Config = {
 export type FileUploadAPIProps = {
   formData: FormData;
   config: Config;
+};
+
+export type LoadManProductsAPIProps = {
+  skip: number;
+  limit: number;
+  loadMore?: boolean;
+  filters?: Filters;
+  searchTerm?: string;
 };
 
 async function fileUploadAPI({ formData, config }: FileUploadAPIProps) {
@@ -191,6 +200,11 @@ const generateDummyManProduct = (number: Number) =>
       }),
     }));
 
+async function loadManProductsAPI(body: LoadManProductsAPIProps) {
+  const response = await axios.post("api/product/getManProducts", body);
+  return response.data;
+}
+
 const loadManProductAsyncSaga = createAsyncDummySaga(
   loadManProductsActionAsync,
   loadDummyManProductsAPI
@@ -241,6 +255,13 @@ function loadDummyProductByIdAPI() {
   };
 }
 
+async function loadProductByIdAPI() {
+  const response = await axios.get(
+    `/api/product/products_by_id?id=${productId}&type=single`
+  );
+  return response.data;
+}
+
 const loadProductByIdAsyncSaga = createAsyncDummySaga(
   loadProductByIdActionAsync,
   loadDummyProductByIdAPI
@@ -249,6 +270,30 @@ const loadProductByIdAsyncSaga = createAsyncDummySaga(
 function* loadProductByIdSaga() {
   yield takeLatest(LOAD_PRODUCT_BY_ID_REQUEST, loadProductByIdAsyncSaga);
 }
+
+async function loadCartItemsAPI(
+  ProductIds: Array<string>,
+  userCarts: Array<any>
+) {
+  const response = await axios.get(
+    `/api/product/products_by_id?id=${ProductIds}&type=array`
+  );
+  userCarts.forEach((cartItem) => {
+    response.data.forEach((productDetail: ProductByIdInfo, index: number) => {
+      if (cartItem.id === productDetail.id) {
+        response.data[index].quantity = cartItem.quantity;
+      }
+    });
+  });
+
+  return response.data;
+}
+
+// const loadCartItemAsyncSaga = createAsyncSaga()
+
+// function* loadCartItemSaga(){
+//   yield takeLatest()
+// }
 
 export default function* productSaga() {
   yield all([

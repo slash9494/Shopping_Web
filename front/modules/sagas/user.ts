@@ -24,7 +24,8 @@ import {
 import createAsyncSaga, {
   createAsyncDummySaga,
 } from "../utils/createAsyncSaga";
-import { func } from "prop-types";
+import { UserCartInfo } from "../../pages/cart";
+import { ProductByIdInfo } from "../types";
 
 type LoginAPIProps = {
   email: string;
@@ -119,6 +120,11 @@ function duummyAddToCartAPI(productId: any) {
   };
 }
 
+async function addToCartAPI(_id: any) {
+  const response = await axios.get(`/api/users/addToCart?productId=${_id}`);
+  return response.data;
+}
+
 const addToCartAsyncSaga = createAsyncDummySaga(
   addToCartActionAsync,
   duummyAddToCartAPI
@@ -128,6 +134,27 @@ function* addToCartSaga() {
   yield delay(1000);
   yield takeEvery(ADD_TO_CART_REQUEST, addToCartAsyncSaga);
 }
+
+async function removeCartItemAPI(id: string) {
+  const response = await axios.get(`/api/users/removeFromCart?_id=${id}`);
+  response.data.userCart.forEach((cartItem: UserCartInfo) => {
+    response.data.productInfo.forEach(
+      (productItemInfo: ProductByIdInfo, index: any) => {
+        if (cartItem.id === productItemInfo.id) {
+          response.data.userCart[index].quantity = productItemInfo.quantity;
+        }
+      }
+    );
+  });
+
+  return response.data;
+}
+
+// const removeCartItemAsyncSaga = createAsyncSaga()
+
+// function* removeCartItemSaga(){
+//   yield takeLatest()
+// }
 
 export default function* userSaga() {
   yield all([
