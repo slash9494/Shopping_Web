@@ -14,28 +14,23 @@ import {
   LOAD_PRODUCT_BY_ID_REQUEST,
   LOAD_PRODUCT_BY_ID_SUCCESS,
   LOAD_PRODUCT_BY_ID_FAILURE,
+  UPLOAD_MAN_PRODUCT_REQUEST,
+  UPLOAD_MAN_PRODUCT_SUCCESS,
+  UPLOAD_MAN_PRODUCT_FAILURE,
+  UPLOAD_WOMAN_PRODUCT_REQUEST,
+  UPLOAD_WOMAN_PRODUCT_SUCCESS,
+  UPLOAD_WOMAN_PRODUCT_FAILURE,
+  UPLOAD_KID_PRODUCT_REQUEST,
+  UPLOAD_KID_PRODUCT_SUCCESS,
+  UPLOAD_KID_PRODUCT_FAILURE,
+  LOAD_WOMAN_PRODUCTS_REQUEST,
+  LOAD_WOMAN_PRODUCTS_SUCCESS,
+  LOAD_WOMAN_PRODUCTS_FAILURE,
+  LOAD_KID_PRODUCTS_REQUEST,
+  LOAD_KID_PRODUCTS_SUCCESS,
+  LOAD_KID_PRODUCTS_FAILURE,
 } from "../actions";
 import { produce } from "immer";
-
-const productByIdInfo = {
-  productInfo: {
-    title: "",
-    descriptionTitle: "string;",
-    description: "string",
-    size: [],
-    amountOfS: 0,
-    amountOfM: 0,
-    amountOfL: 0,
-    color: "string;",
-    price: 0,
-    images: [],
-
-    category: 0,
-    sold: 0,
-    views: 0,
-    id: 0,
-  },
-};
 
 export const initialState: ProductState = {
   fileUploadInfo: asyncState.initial(),
@@ -57,15 +52,39 @@ const productReducer = createReducer<ProductState, Action>(initialState, {
     ...state,
     fileUploadInfo: asyncState.error(action.payload),
   }),
-  [UPLOAD_DUMMY_MAN_PRODUCT_REQUEST]: (state, action) => ({
+  [UPLOAD_MAN_PRODUCT_REQUEST]: (state, action) => ({
     ...state,
     uploadProductInfo: asyncState.load(action.payload),
   }),
-  [UPLOAD_DUMMY_MAN_PRODUCT_SUCCESS]: (state, action) => ({
+  [UPLOAD_MAN_PRODUCT_SUCCESS]: (state, action) => ({
     ...state,
     uploadProductInfo: asyncState.success(action.payload),
   }),
-  [UPLOAD_DUMMY_MAN_PRODUCT_FAILURE]: (state, action) => ({
+  [UPLOAD_MAN_PRODUCT_FAILURE]: (state, action) => ({
+    ...state,
+    uploadProductInfo: asyncState.error(action.payload),
+  }),
+  [UPLOAD_WOMAN_PRODUCT_REQUEST]: (state, action) => ({
+    ...state,
+    uploadProductInfo: asyncState.load(action.payload),
+  }),
+  [UPLOAD_WOMAN_PRODUCT_SUCCESS]: (state, action) => ({
+    ...state,
+    uploadProductInfo: asyncState.success(action.payload),
+  }),
+  [UPLOAD_WOMAN_PRODUCT_FAILURE]: (state, action) => ({
+    ...state,
+    uploadProductInfo: asyncState.error(action.payload),
+  }),
+  [UPLOAD_KID_PRODUCT_REQUEST]: (state, action) => ({
+    ...state,
+    uploadProductInfo: asyncState.load(action.payload),
+  }),
+  [UPLOAD_KID_PRODUCT_SUCCESS]: (state, action) => ({
+    ...state,
+    uploadProductInfo: asyncState.success(action.payload),
+  }),
+  [UPLOAD_KID_PRODUCT_FAILURE]: (state, action) => ({
     ...state,
     uploadProductInfo: asyncState.error(action.payload),
   }),
@@ -78,6 +97,30 @@ const productReducer = createReducer<ProductState, Action>(initialState, {
     loadProductsInfo: asyncState.success(action.payload),
   }),
   [LOAD_MAN_PRODUCTS_FAILURE]: (state, action) => ({
+    ...state,
+    loadProductsInfo: asyncState.error(action.payload),
+  }),
+  [LOAD_WOMAN_PRODUCTS_REQUEST]: (state, action) => ({
+    ...state,
+    loadProductsInfo: asyncState.load(action.payload),
+  }),
+  [LOAD_WOMAN_PRODUCTS_SUCCESS]: (state, action) => ({
+    ...state,
+    loadProductsInfo: asyncState.success(action.payload),
+  }),
+  [LOAD_WOMAN_PRODUCTS_FAILURE]: (state, action) => ({
+    ...state,
+    loadProductsInfo: asyncState.error(action.payload),
+  }),
+  [LOAD_KID_PRODUCTS_REQUEST]: (state, action) => ({
+    ...state,
+    loadProductsInfo: asyncState.load(action.payload),
+  }),
+  [LOAD_KID_PRODUCTS_SUCCESS]: (state, action) => ({
+    ...state,
+    loadProductsInfo: asyncState.success(action.payload),
+  }),
+  [LOAD_KID_PRODUCTS_FAILURE]: (state, action) => ({
     ...state,
     loadProductsInfo: asyncState.error(action.payload),
   }),

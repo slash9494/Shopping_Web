@@ -27,7 +27,7 @@ interface CartInfo {
   date: Date;
 }
 
-export interface UserData {
+export interface UserInfo {
   _id: string;
   isAdmin: boolean;
   isAuth: boolean;
@@ -42,7 +42,7 @@ export interface UserState {
   loginInfo?: AsyncState<LoginInfo, Error>;
   signUpInfo?: AsyncState<SignUpInfo, Error>;
   logOutInfo?: AsyncState<LogOutInfo, Error>;
-  userData?: AsyncState<UserData, Error>;
+  userInfo?: AsyncState<UserInfo, Error>;
 }
 
 // Product Types //
@@ -54,7 +54,7 @@ export interface FileUploadInfo {
 }
 
 export interface UploadProductInfo {
-  uploadProductSuccess: boolean;
+  upLoadProductSuccess: boolean;
 }
 
 interface ProductsInfo {
@@ -84,11 +84,11 @@ export interface ProductByIdInfo {
   descriptionTitle: string;
   description: string;
   size: Number[];
-  amountOfS: Number;
-  amountOfM: Number;
-  amountOfL: Number;
+  amountOfS: string;
+  amountOfM: string;
+  amountOfL: string;
   color: string;
-  price: Number;
+  price: string;
   images: Array<any>;
   category: Number;
   sold: Number;

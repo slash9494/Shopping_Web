@@ -27,7 +27,7 @@ export const initialState: UserState = {
   loginInfo: asyncState.initial(),
   logOutInfo: asyncState.initial(),
   signUpInfo: asyncState.initial(),
-  userData: asyncState.initial(),
+  userInfo: asyncState.initial(),
 };
 
 const userReducer = createReducer<UserState, Action>(initialState, {
@@ -51,7 +51,7 @@ const userReducer = createReducer<UserState, Action>(initialState, {
     ...state,
     logOutInfo: asyncState.success(action.payload),
     loginInfo: asyncState.initial(),
-    userData: asyncState.initial(),
+    userInfo: asyncState.initial(),
   }),
   [LOG_OUT_FAILURE]: (state, action) => ({
     ...state,
@@ -59,15 +59,15 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   }),
   [AUTH_CHECK_REQUEST]: (state) => ({
     ...state,
-    userData: asyncState.load(state.userData?.data),
+    userInfo: asyncState.load(state.userInfo?.data),
   }),
   [AUTH_CHECK_SUCCESS]: (state, action) => ({
     ...state,
-    userData: asyncState.success(action.payload),
+    userInfo: asyncState.success(action.payload),
   }),
   [AUTH_CHECK_FAILURE]: (state, action) => ({
     ...state,
-    userData: asyncState.error(action.payload),
+    userInfo: asyncState.error(action.payload),
   }),
   [SIGN_UP_REQUEST]: (state) => ({
     ...state,
@@ -83,11 +83,11 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   }),
   [AUTH_DUMMY_REQUEST]: (state, action) => ({
     ...state,
-    userData: action.payload,
+    userInfo: action.payload,
   }),
   [AUTH_DUMMY_SUCCESS]: (state: any) => ({
     ...state,
-    userData: asyncState.success({
+    userInfo: asyncState.success({
       _id: "testId000",
       isAdmin: false,
       isAuth: true,
@@ -102,12 +102,12 @@ const userReducer = createReducer<UserState, Action>(initialState, {
     ...state,
   }),
   [ADD_TO_CART_SUCCESS]: (state, action) => ({
-    ...state.userData,
-    userData: asyncState.success(action.payload),
+    ...state.userInfo,
+    userInfo: asyncState.success(action.payload),
   }),
   [ADD_TO_CART_FAILURE]: (state, action) => ({
     ...state,
-    userData: asyncState.error(action.payload),
+    userInfo: asyncState.error(action.payload),
   }),
 });
 

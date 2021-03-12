@@ -5,7 +5,6 @@ import Dropzone from "react-dropzone";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import { RootState } from "../../modules/reducers";
-import { Alert } from "@material-ui/lab";
 type ImagesState = any[];
 
 type FileUploadProps = {
@@ -67,16 +66,19 @@ function FileUploadForm(props: FileUploadProps) {
 
     dispatch(fileUploadActionAsync.request({ formData, config }));
   };
+  const PropImages = useCallback(() => {
+    props.refreshImages([...Images, fileUploadInfo?.data?.filePath]);
+  }, [fileUploadInfo?.data?.filePath, props]);
 
   useEffect(() => {
     if (fileUploadInfo?.data?.fileUploadSuccess === true) {
       setImages([...Images, fileUploadInfo.data.filePath]);
-      props.refreshImages([...Images, fileUploadInfo?.data?.filePath]);
+      PropImages();
     } else if (fileUploadInfo?.data?.fileUploadSuccess === false) {
-      <Alert severity="error">파일을 업로드하는데 실패했습니다.</Alert>;
+      alert(" 파일을 업로드하는데 실패했습니다.");
     } else return;
   }, [
-    props.refreshImages,
+    // props.refreshImages,
     fileUploadInfo?.data?.filePath,
     fileUploadInfo?.data?.fileUploadSuccess,
   ]);
@@ -104,8 +106,7 @@ function FileUploadForm(props: FileUploadProps) {
       <DroppedImageContainer>
         {Images.map((image, index) => (
           <DroppedImage
-            // src={`http://localhost:5000/${image}`}
-            src="https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951"
+            src={`http://localhost:5000/${image}`}
             alt={`productImg-${index}`}
             key={index}
             onClick={() => {

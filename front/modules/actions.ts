@@ -3,7 +3,7 @@ import { createAction, Action, createAsyncAction } from "typesafe-actions";
 import {
   LoginInfo,
   LogOutInfo,
-  UserData,
+  UserInfo,
   SignUpInfo,
   FileUploadInfo,
   UploadProductInfo,
@@ -91,7 +91,7 @@ export const authCheckActionAsync = createAsyncAction(
   AUTH_CHECK_REQUEST,
   AUTH_CHECK_SUCCESS,
   AUTH_CHECK_FAILURE
-)<void, UserData, AxiosError>();
+)<void, UserInfo, AxiosError>();
 
 export const signUpActionAsync = createAsyncAction(
   SIGN_UP_REQUEST,
@@ -103,7 +103,7 @@ export const addToCartActionAsync = createAsyncAction(
   ADD_TO_CART_REQUEST,
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILURE
-)<any, UserData, AxiosError>();
+)<any, UserInfo, AxiosError>();
 
 //removecartitem
 
@@ -153,6 +153,18 @@ export const loadManProductsActionAsync = createAsyncAction(
   LOAD_MAN_PRODUCTS_FAILURE
 )<any, LoadProductsInfo, AxiosError>();
 
+export const loadWomanProductsActionAsync = createAsyncAction(
+  LOAD_WOMAN_PRODUCTS_REQUEST,
+  LOAD_WOMAN_PRODUCTS_SUCCESS,
+  LOAD_WOMAN_PRODUCTS_FAILURE
+)<any, LoadProductsInfo, AxiosError>();
+
+export const loadKidProductsActionAsync = createAsyncAction(
+  LOAD_KID_PRODUCTS_REQUEST,
+  LOAD_KID_PRODUCTS_SUCCESS,
+  LOAD_KID_PRODUCTS_FAILURE
+)<any, LoadProductsInfo, AxiosError>();
+
 export const loadProductByIdActionAsync = createAsyncAction(
   LOAD_PRODUCT_BY_ID_REQUEST,
   LOAD_PRODUCT_BY_ID_SUCCESS,
@@ -179,7 +191,7 @@ export const loadProductByIdActionAsync = createAsyncAction(
 //   AUTH_CHECK_REQUEST,
 //   AUTH_CHECK_SUCCESS,
 //   AUTH_CHECK_FAILURE
-// )<void, UserData, AxiosError>();
+// )<void, UserInfo, AxiosError>();
 
 // export const signUpActionAsync = createAsyncAction(
 //   SIGN_UP_REQUEST,
@@ -191,7 +203,7 @@ export const loadProductByIdActionAsync = createAsyncAction(
 //   ADD_TO_CART_REQUEST,
 //   ADD_TO_CART_SUCCESS,
 //   ADD_TO_CART_FAILURE
-// )<any, UserData, AxiosError>();
+// )<any, UserInfo, AxiosError>();
 
 // export const authCheckDummyActionAsync = createAsyncAction(
 //   AUTH_DUMMY_REQUEST,

@@ -18,7 +18,7 @@ const productSchema = mongoose.Schema(
       type: String,
     },
     size: {
-      type: Array,
+      type: [Number],
       default: [],
     },
     amountOfS: {

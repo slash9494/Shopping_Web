@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 const config = require("./config/key");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-
+const cors = require("cors");
 mongoose
   .connect(config.mongoURI, {
     useNewUrlParser: true,
@@ -22,7 +22,12 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Hello World!!!");
 });
-
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -33,7 +38,7 @@ app.use(cookieParser());
 app.use("/api/users", require("./routes/users"));
 app.use("/api/product", require("./routes/product"));
 
-app.use("/server/uploads", express.static("server/uploads"));
+app.use("/backend/uploads", express.static("backend/uploads"));
 
 app.get("/api/hello", (req, res) => {
   res.send("hello");

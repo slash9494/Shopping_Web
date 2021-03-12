@@ -18,6 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
 import DrawerList from "./Sections/DrawerList";
+import { createSelector } from "reselect";
 
 const useStyles = makeStyles({
   toolBarContainer: {
@@ -104,7 +105,11 @@ const OptionLink = styled.a`
 
 function Header() {
   const classes = useStyles();
-  const { userData } = useSelector((state: RootState) => state.userReducer);
+  const checkUserDataInfo = createSelector(
+    (state: RootState) => state.userReducer,
+    (userReducer) => userReducer.userInfo
+  );
+  const userInfo = useSelector(checkUserDataInfo);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -137,7 +142,7 @@ function Header() {
       </LogoContainer>
       <Hidden smDown implementation="css">
         <OptionsContainer>
-          {!userData?.data?.isAuth ? <LoggedOutNavBar /> : <LoggedInNavBar />}
+          {!userInfo?.data?.isAuth ? <LoggedOutNavBar /> : <LoggedInNavBar />}
         </OptionsContainer>
       </Hidden>
 

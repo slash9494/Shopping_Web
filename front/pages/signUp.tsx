@@ -2,13 +2,18 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
-import { signUpActionAsync } from "../modules";
+import { signUpActionAsync, authCheckActionAsync } from "../modules";
 
 import { useSelector } from "react-redux";
 
 import { RootState } from "../modules/reducers/index";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import wrapper, { IStore } from "../store/configureStore";
+import axios from "axios";
+import { END } from "redux-saga";
+import { createSelector } from "reselect";
+import SignUpForm from "../components/SignUpForm";
 const RegisterBlock = styled.div`
   display: flex;
   justify-content: center;
@@ -40,73 +45,43 @@ const Button = styled.button`
   }
 `;
 
-function SignUpForm(props: any) {
+function SignUp() {
   const { signUpInfo } = useSelector((state: RootState) => state.userReducer);
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-    name: "",
-    confirmPassword: "",
-  });
-  const { email, password, name, confirmPassword } = inputs;
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
-
-  const dispatch = useDispatch();
+  const checkUserDataInfo = createSelector(
+    (state: RootState) => state.userReducer,
+    (userReducer) => userReducer.userInfo
+  );
+  const userInfo = useSelector(checkUserDataInfo);
   const router = useRouter();
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      return Swal.fire(
-        "패스워드가 일치하지 않습니다.",
-        "패스워드를 동일하게 입력하세요",
-        "error"
-      );
-    }
-
-    return dispatch(signUpActionAsync.request(inputs));
-  };
   useEffect(() => {
     if (signUpInfo?.data?.signUpSuccess === true) {
       Swal.fire("회원가입을 완료했습니다.", "", "success");
-      router.push("/");
+      router.replace("/");
     }
     if (signUpInfo?.data?.signUpSuccess === false) {
       Swal.fire("회원가입하는데 실패했습니다.", "", "error");
     }
-  }, [props.history, signUpInfo?.data?.signUpSuccess]);
-  return (
-    <RegisterBlock>
-      <Form onSubmit={onSubmit}>
-        <label>Name</label>
-        <input type="text" name="name" onChange={onChange} value={name} />
-        <label>Email</label>
-        <input type="email" name="email" onChange={onChange} value={email} />
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          onChange={onChange}
-          value={password}
-        />
-        <label>Comfirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          onChange={onChange}
-          value={confirmPassword}
-        />
-        <br />
-        <Button type="submit">회원가입</Button>
-      </Form>
-    </RegisterBlock>
-  );
+  }, [signUpInfo?.data?.signUpSuccess]);
+  useEffect(() => {
+    if (userInfo?.data?.isAuth) {
+      Swal.fire("이미 로그인이 되어있습니다.", "", "info");
+      router.replace("/");
+    }
+  }, []);
+  return <SignUpForm />;
 }
 
-export default SignUpForm;
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch(authCheckActionAsync.request());
+    context.store.dispatch(END);
+    await (context.store as IStore).sagaTask?.toPromise();
+  }
+);
+
+export default SignUp;

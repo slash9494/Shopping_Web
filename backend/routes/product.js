@@ -3,11 +3,10 @@ const router = express.Router();
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
 const { ManProduct, WomanProduct, KidProduct } = require("../models/Product");
-const Product = require("../models/Product");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "server/uploads/");
+    cb(null, "backend/uploads/");
   },
   filename: function (req, file, cb) {
     cb(null, `${Date.now()}_${file.originalname}`);
@@ -69,8 +68,12 @@ router.post("/getManProducts", (req, res) => {
           $gte: req.body.filters[key][0],
           $lte: req.body.filters[key][1],
         };
+      } else if (key === "size") {
+        findArgs[key] = {
+          $all: req.body.filters[key],
+        };
       } else {
-        findArgs[key] = req.body.fliters[key];
+        findArgs[key] = req.body.filters[key];
       }
     }
   }
@@ -117,11 +120,16 @@ router.post("/getWomanProducts", (req, res) => {
           $gte: req.body.filters[key][0],
           $lte: req.body.filters[key][1],
         };
+      } else if (key === "size") {
+        findArgs[key] = {
+          $all: req.body.filters[key],
+        };
       } else {
-        findArgs[key] = req.body.fliters[key];
+        findArgs[key] = req.body.filters[key];
       }
     }
   }
+
   if (term) {
     WomanProduct.find(findArgs)
       .find({ $text: { $search: term } })
@@ -165,8 +173,12 @@ router.post("/getKidProducts", (req, res) => {
           $gte: req.body.filters[key][0],
           $lte: req.body.filters[key][1],
         };
+      } else if (key === "size") {
+        findArgs[key] = {
+          $all: req.body.filters[key],
+        };
       } else {
-        findArgs[key] = req.body.fliters[key];
+        findArgs[key] = req.body.filters[key];
       }
     }
   }

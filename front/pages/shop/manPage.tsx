@@ -10,10 +10,15 @@ import CardContent from "@material-ui/core/CardContent";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../modules/reducers";
 import { createSelector } from "reselect";
-import { loadManProductsActionAsync } from "../../modules";
+import {
+  loadManProductsActionAsync,
+  authCheckActionAsync,
+} from "../../modules";
 import ItemFilter from "../../components/itemFilter/ItemFilter";
-
 import { price } from "../../components/itemFilter/priceData";
+import wrapper, { IStore } from "../../store/configureStore";
+import axios from "axios";
+import { END } from "redux-saga";
 
 export type Filters = {
   size: number[];
@@ -77,14 +82,6 @@ const AppContainer = styled.ul`
 
 function manPage() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    let body = {
-      skip: skip,
-      limit: limit,
-    };
-
-    dispatch(loadManProductsActionAsync.request(body));
-  }, []);
   const loadMoreProducts = () => {
     let changeSkip = skip + limit;
 
@@ -175,11 +172,14 @@ function manPage() {
         spacing={3}
         className={classes.gridContainer}
       >
-        {loadProductsInfo?.data?.manProducts.map((item: any) => {
+        {loadProductsInfo?.data?.productInfo?.map((item: any) => {
           return (
             <Grid item xs={6} sm={6} md={3} xl={3} className={classes.item}>
               <Link href="/shop/">
-                <CardMedia className={classes.media} image={item.images[0]} />
+                <CardMedia
+                  className={classes.media}
+                  image={`http://localhost:5000/${item.images[0]}`}
+                />
               </Link>
               <CardContent className={classes.cardContent}>
                 <Typography align="left" className={classes.cartText}>
@@ -195,5 +195,21 @@ function manPage() {
     </AppContainer>
   );
 }
-
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    let body = {
+      skip: 0,
+      limit: 16,
+    };
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch(authCheckActionAsync.request());
+    context.store.dispatch(loadManProductsActionAsync.request(body));
+    context.store.dispatch(END);
+    await (context.store as IStore).sagaTask?.toPromise();
+  }
+);
 export default manPage;

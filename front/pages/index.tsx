@@ -1,7 +1,13 @@
 import HomeLayout from "../components/HomeLayout";
-import wrapper from "../store/configureStore";
-import { authCheckDummyActionAsync } from "../modules";
+import wrapper, { IStore } from "../store/configureStore";
+import {
+  authCheckDummyActionAsync,
+  AUTH_DUMMY_REQUEST,
+  loadManProductsActionAsync,
+  authCheckActionAsync,
+} from "../modules";
 import { END } from "redux-saga";
+import axios from "axios";
 interface Props {
   dispatch: any;
   ctx: any;
@@ -12,13 +18,14 @@ const IndexPage = () => <HomeLayout></HomeLayout>;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
-    context.store.dispatch(authCheckDummyActionAsync.request(""));
-    // if (!context.store.getState().rdcExample.placeholderData) {
-    //     context.store.dispatch();
-    //         context.store.dispatch(END);
-    //   }
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch(authCheckActionAsync.request());
     context.store.dispatch(END);
-    await context.store.sagaTask?.toPromise();
+    await (context.store as IStore).sagaTask?.toPromise();
   }
 );
 

@@ -4,6 +4,7 @@ import {
   compose,
   Store,
   CombinedState,
+  AnyAction,
 } from "redux";
 import createSagaMiddleware, { Task } from "redux-saga";
 import { createWrapper } from "next-redux-wrapper";
@@ -12,7 +13,7 @@ import { Action } from "../modules/types";
 import rootReducer from "../modules/reducers";
 import { rootSaga } from "../modules/sagas";
 
-interface IStore extends Store<CombinedState<any>, Action> {
+export interface IStore extends Store<CombinedState<any>, AnyAction> {
   sagaTask?: Task;
 }
 

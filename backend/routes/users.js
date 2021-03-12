@@ -4,15 +4,27 @@ const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 const { ManProduct, WomanProduct, KidProduct } = require("../models/Product");
 
-router.post("/signUp", (req, res) => {
+router.post("/signUp", async (req, res, next) => {
   const user = new User(req.body);
-
-  user.save((err, userInfo) => {
-    if (err) return res.json({ signUpSuccess: false, err });
-    return res.status(200).json({
-      signUpSuccess: true,
+  try {
+    const exUser = await User.findOne({
+      where: {
+        email: req.body.email,
+      },
     });
-  });
+    if (exUser) {
+      return res
+        .status(403)
+        .json({ signUpSuccess: false, text: "이미 사용 중인 아이디입니다." });
+    }
+  } catch {
+    user.save((err, userInfo) => {
+      if (err) return res.status(500).json({ signUpSuccess: false, err });
+      return res.status(200).json({
+        signUpSuccess: true,
+      });
+    });
+  }
 });
 
 router.post("/login", (req, res) => {

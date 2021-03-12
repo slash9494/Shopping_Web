@@ -2,13 +2,10 @@ import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { loginActionAsync } from "../modules/actions";
-
 import { useSelector } from "react-redux";
-
-// import { withRouter } from "react-router-dom";
-
 import { RootState } from "../modules/reducers";
 import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 const Form = styled.form`
   display: flex;
@@ -48,7 +45,7 @@ function LoginForm(props: any) {
     password: "",
   });
   const { email, password } = inputs;
-
+  const router = useRouter();
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setInputs({
@@ -68,7 +65,7 @@ function LoginForm(props: any) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (loginInfo?.data?.loginSuccess === true) {
-      props.history.push("/");
+      router.push("/");
     }
     if (loginInfo?.data?.loginSuccess === false) {
       const message = loginInfo.data.message;

@@ -1,15 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-
 import { signUpActionAsync } from "../modules";
-
-import { useSelector } from "react-redux";
-// import { withRouter } from "react-router-dom";
-
-import { RootState } from "../modules/reducers/index";
 import Swal from "sweetalert2";
-
 const RegisterBlock = styled.div`
   display: flex;
   justify-content: center;
@@ -41,8 +34,7 @@ const Button = styled.button`
   }
 `;
 
-function SignUpForm(props: any) {
-  const { signUpInfo } = useSelector((state: RootState) => state.userReducer);
+function SignUpForm() {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -50,7 +42,6 @@ function SignUpForm(props: any) {
     confirmPassword: "",
   });
   const { email, password, name, confirmPassword } = inputs;
-
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setInputs({
@@ -58,7 +49,6 @@ function SignUpForm(props: any) {
       [name]: value,
     });
   };
-
   const dispatch = useDispatch();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,15 +62,6 @@ function SignUpForm(props: any) {
 
     return dispatch(signUpActionAsync.request(inputs));
   };
-  useEffect(() => {
-    if (signUpInfo?.data?.signUpSuccess === true) {
-      Swal.fire("회원가입을 완료했습니다.", "", "success");
-      props.history.push("/");
-    }
-    if (signUpInfo?.data?.signUpSuccess === false) {
-      Swal.fire("회원가입하는데 실패했습니다.", "", "error");
-    }
-  }, [props.history, signUpInfo?.data?.signUpSuccess]);
   return (
     <RegisterBlock>
       <Form onSubmit={onSubmit}>

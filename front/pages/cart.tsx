@@ -69,7 +69,7 @@ function cart() {
   const [showTotal, setShowTotal] = useState();
   const checkUserDataInfo = createSelector(
     (state: RootState) => state.userReducer,
-    (userReducer) => userReducer.userData
+    (userReducer) => userReducer.userInfo
   );
   const userData = useSelector(checkUserDataInfo);
   useEffect(() => {

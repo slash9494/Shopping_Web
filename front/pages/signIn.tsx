@@ -1,102 +1,53 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import {
-  loginActionAsync,
-  authCheckDummyActionAsync,
-  AUTH_DUMMY_SUCCESS,
-} from "../modules/actions";
+import React, { useEffect } from "react";
+import { authCheckActionAsync } from "../modules/actions";
 import { useRouter } from "next/router";
-
 import { useSelector } from "react-redux";
-
-// import { withRouter } from "react-router-dom";
-
 import { RootState } from "../modules/reducers";
 import Swal from "sweetalert2";
+import { createSelector } from "reselect";
+import wrapper, { IStore } from "../store/configureStore";
+import axios from "axios";
+import { END } from "redux-saga";
+import LoginForm from "../components/LoginForm";
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Button = styled.button`
-  background: black;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
-  height: 100%;
-  font-weight: bold;
-  &:hover {
-    background: #495057;
-  }
-`;
-
-const LoginBlock = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-  padding-bottom: 40vh;
-`;
-
-function LoginForm(props: any) {
+function SignIn(props: any) {
   const { loginInfo } = useSelector((state: RootState) => state.userReducer);
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-  });
-  const { email, password } = inputs;
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const checkUserDataInfo = createSelector(
+    (state: RootState) => state.userReducer,
+    (userReducer) => userReducer.userInfo
+  );
+  const userInfo = useSelector(checkUserDataInfo);
 
-    try {
-      dispatch(authCheckDummyActionAsync.success(inputs));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
     if (loginInfo?.data?.loginSuccess === true) {
-      router.push("/");
+      router.replace("/");
     }
     if (loginInfo?.data?.loginSuccess === false) {
       const message = loginInfo.data.message;
       Swal.fire(`${message}`, "", "error");
     }
   }, [loginInfo?.data?.loginSuccess, loginInfo?.data?.message, props.history]);
-  return (
-    <LoginBlock>
-      <Form onSubmit={onSubmit}>
-        <label>Email</label>
-        <input type="email" name="email" onChange={onChange} value={email} />
-        <label>Password</label>
-        <input
-          type="password"
-          name="password"
-          onChange={onChange}
-          value={password}
-        />
-        <br />
-        <Button type="submit">Login</Button>
-      </Form>
-    </LoginBlock>
-  );
+  useEffect(() => {
+    if (userInfo?.data?.isAuth) {
+      Swal.fire("이미 로그인이 되어있습니다.", "", "info");
+      router.replace("/");
+    }
+  }, []);
+  return <LoginForm />;
 }
 
-export default LoginForm;
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch(authCheckActionAsync.request());
+    context.store.dispatch(END);
+    await (context.store as IStore).sagaTask?.toPromise();
+  }
+);
+
+export default SignIn;
