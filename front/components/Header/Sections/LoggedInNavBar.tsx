@@ -1,15 +1,26 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  withStyles,
+  Theme,
+  createStyles,
+} from "@material-ui/core/styles";
 import { logOutActionAsync } from "../../../modules";
-import Link from "next/link";
+import ShoppingBag from "../../../images/Shopping-bag.svg";
+import { Badge } from "@material-ui/core";
+interface LogInNavBarProps {
+  badgeCount: number;
+}
 
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 956px) {
+    flex-direction: column;
+  }
 `;
 
 const OptionLink = styled.a`
@@ -19,14 +30,36 @@ const OptionLink = styled.a`
   text-decoration: none;
   color: black;
 `;
-
+const BagOptionLink = styled.a`
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  color: black;
+  @media screen and (max-width: 956px) {
+    display: none;
+  }
+`;
 const useStyles = makeStyles({
   button: {
     fontSize: "1rem",
   },
 });
-
-function LoggedInNavBar() {
+export const StyledBadge = withStyles((theme: Theme) =>
+  createStyles({
+    badge: {
+      right: 21,
+      top: 25,
+      fontSize: 15,
+      [theme.breakpoints.down("sm")]: {
+        top: 20,
+        right: 16,
+        fontSize: 14,
+      },
+    },
+  })
+)(Badge);
+function LoggedInNavBar(props: LogInNavBarProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -40,8 +73,16 @@ function LoggedInNavBar() {
           SIGN OUT
         </Button>
       </form>
-
       <OptionLink href="/upLoadProduct">UPLOAD</OptionLink>
+      <BagOptionLink href="/uploadProduct">
+        <StyledBadge
+          badgeContent={props.badgeCount}
+          color="default"
+          showZero={true}
+        >
+          <ShoppingBag width={40} height={40} />
+        </StyledBadge>
+      </BagOptionLink>
     </Container>
   );
 }

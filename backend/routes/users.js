@@ -4,8 +4,7 @@ const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 const { ManProduct, WomanProduct, KidProduct } = require("../models/Product");
 
-router.post("/signUp", async (req, res, next) => {
-  const user = new User(req.body);
+router.post("/signUp", async (req, res) => {
   try {
     const exUser = await User.findOne({
       where: {
@@ -13,17 +12,20 @@ router.post("/signUp", async (req, res, next) => {
       },
     });
     if (exUser) {
-      return res
-        .status(403)
-        .json({ signUpSuccess: false, text: "이미 사용 중인 아이디입니다." });
+      return res.status(403).json({
+        signUpSuccess: false,
+        message: "이미 사용 중인 아이디입니다.",
+      });
     }
-  } catch {
-    user.save((err, userInfo) => {
+    const user = new User(req.body);
+    await user.save((err, userInfo) => {
       if (err) return res.status(500).json({ signUpSuccess: false, err });
       return res.status(200).json({
         signUpSuccess: true,
       });
     });
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -92,7 +94,7 @@ router.get("/addToCart", auth, (req, res) => {
         { new: true },
         (err, userInfo) => {
           if (err) return res.json({ addToCartSuccess: false, err });
-          res.status(200).json(userInfo.cart);
+          res.status(200).json({ addToCartSuccess: true, cart: userInfo.cart });
         }
       );
     } else {
@@ -110,7 +112,7 @@ router.get("/addToCart", auth, (req, res) => {
         { new: true },
         (err, userInfo) => {
           if (err) return res.json({ addToCartSuccess: false, err });
-          res.status(200).json(userInfo.cart);
+          res.status(200).json({ addToCartSuccess: true, cart: userInfo.cart });
         }
       );
     }

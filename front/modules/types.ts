@@ -15,6 +15,7 @@ export interface LoginInfo {
 
 export interface SignUpInfo {
   signUpSuccess: boolean | null;
+  message: string | null;
 }
 
 export interface LogOutInfo {
@@ -22,6 +23,7 @@ export interface LogOutInfo {
 }
 
 interface CartInfo {
+  addToCartSuccess: boolean | null;
   id: number;
   quantity: number;
   date: Date;
@@ -69,9 +71,7 @@ interface ProductsInfo {
 }
 
 export interface LoadProductsInfo {
-  manProducts: ProductsInfo[];
-  womanProducts: ProductsInfo[];
-  kidProduct: ProductsInfo[];
+  productsInfo: ProductsInfo;
 }
 
 interface ImagesData {
@@ -83,7 +83,7 @@ export interface ProductByIdInfo {
   title: string;
   descriptionTitle: string;
   description: string;
-  size: Number[];
+  size: number[];
   amountOfS: string;
   amountOfM: string;
   amountOfL: string;

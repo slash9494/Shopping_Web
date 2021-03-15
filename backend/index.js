@@ -40,10 +40,6 @@ app.use("/api/product", require("./routes/product"));
 
 app.use("/backend/uploads", express.static("backend/uploads"));
 
-app.get("/api/hello", (req, res) => {
-  res.send("hello");
-});
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

@@ -52,6 +52,9 @@ function SignUpForm() {
   const dispatch = useDispatch();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!email || !password || !name) {
+      return Swal.fire("빈칸을 모두 채워주세요", "", "info");
+    }
     if (password !== confirmPassword) {
       return Swal.fire(
         "패스워드가 일치하지 않습니다.",
@@ -59,9 +62,12 @@ function SignUpForm() {
         "error"
       );
     }
-
-    return dispatch(signUpActionAsync.request(inputs));
+    if (password.length < 7) {
+      return Swal.fire("패스워드는 최소 8자 이상이여야 합니다.", "", "warning");
+    }
+    dispatch(signUpActionAsync.request(inputs));
   };
+
   return (
     <RegisterBlock>
       <Form onSubmit={onSubmit}>

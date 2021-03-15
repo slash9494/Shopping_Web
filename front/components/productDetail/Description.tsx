@@ -3,10 +3,6 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import "react-image-gallery/styles/css/image-gallery.css";
 import styled from "styled-components";
-import { RootState } from "../../modules/reducers";
-import productReducer from "../../modules/reducers/ProductReducer";
-import { createSelector } from "reselect";
-import { useSelector } from "react-redux";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     descriptionTitle: {

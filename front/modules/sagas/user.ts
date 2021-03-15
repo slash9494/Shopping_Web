@@ -114,25 +114,15 @@ function* authCheckSaga() {
   yield takeEvery(AUTH_CHECK_REQUEST, authCheckAsyncSaga);
 }
 
-function duummyAddToCartAPI(productId: any) {
-  return {
-    cart: [{ id: productId, quantity: 1, date: Date.now() }],
-  };
-}
-
-async function addToCartAPI(_id: any) {
+async function addToCartAPI(_id: string) {
   const response = await axios.get(`/api/users/addToCart?productId=${_id}`);
   return response.data;
 }
 
-const addToCartAsyncSaga = createAsyncDummySaga(
-  addToCartActionAsync,
-  duummyAddToCartAPI
-);
+const addToCartAsyncSaga = createAsyncSaga(addToCartActionAsync, addToCartAPI);
 
 function* addToCartSaga() {
-  yield delay(1000);
-  yield takeEvery(ADD_TO_CART_REQUEST, addToCartAsyncSaga);
+  yield takeLatest(ADD_TO_CART_REQUEST, addToCartAsyncSaga);
 }
 
 async function removeCartItemAPI(id: string) {

@@ -27,7 +27,7 @@ function Footer() {
         <Box className={classes.root}>
           <Typography variant="body2" color="textSecondary" align="center">
             {"Copyright © "}
-            LEEYH&nbsp;
+            LYH&nbsp;
             {new Date().getFullYear()}
             {"."}
           </Typography>

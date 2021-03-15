@@ -1,5 +1,4 @@
 import React from "react";
-
 import styled from "styled-components";
 
 const OptionLink = styled.a`
@@ -9,14 +8,19 @@ const OptionLink = styled.a`
   text-decoration: none;
   color: black;
 `;
-
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 956px) {
+    flex-direction: column;
+  }
+`;
 function LoggedOutNavBar() {
   return (
-    <div>
+    <Container>
       <OptionLink href="/signUp">SIGN UP</OptionLink>
-
       <OptionLink href="/signIn">SIGN IN</OptionLink>
-    </div>
+    </Container>
   );
 }
 

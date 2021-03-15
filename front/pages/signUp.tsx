@@ -59,7 +59,11 @@ function SignUp() {
       router.replace("/");
     }
     if (signUpInfo?.data?.signUpSuccess === false) {
-      Swal.fire("회원가입하는데 실패했습니다.", "", "error");
+      Swal.fire(
+        "회원가입하는데 실패했습니다.",
+        signUpInfo?.data?.message,
+        "error"
+      );
     }
   }, [signUpInfo?.data?.signUpSuccess]);
   useEffect(() => {

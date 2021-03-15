@@ -81,29 +81,15 @@ const userReducer = createReducer<UserState, Action>(initialState, {
     ...state,
     signUpInfo: asyncState.error(action.payload),
   }),
-  [AUTH_DUMMY_REQUEST]: (state, action) => ({
-    ...state,
-    userInfo: action.payload,
-  }),
-  [AUTH_DUMMY_SUCCESS]: (state: any) => ({
-    ...state,
-    userInfo: asyncState.success({
-      _id: "testId000",
-      isAdmin: false,
-      isAuth: true,
-      email: "test000@naver.com",
-      name: "test000",
-      role: null,
-      cart: [],
-      history: [],
-    }),
-  }),
   [ADD_TO_CART_REQUEST]: (state) => ({
     ...state,
   }),
   [ADD_TO_CART_SUCCESS]: (state, action) => ({
-    ...state.userInfo,
-    userInfo: asyncState.success(action.payload),
+    ...state,
+    userInfo: asyncState.success({
+      ...state.userInfo?.data,
+      cart: action.payload,
+    }),
   }),
   [ADD_TO_CART_FAILURE]: (state, action) => ({
     ...state,

@@ -9,17 +9,12 @@ import {
 import createSagaMiddleware, { Task } from "redux-saga";
 import { createWrapper } from "next-redux-wrapper";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { Action } from "../modules/types";
 import rootReducer from "../modules/reducers";
 import { rootSaga } from "../modules/sagas";
 
 export interface IStore extends Store<CombinedState<any>, AnyAction> {
   sagaTask?: Task;
 }
-
-// function getServerState() {
-//   return JSON.parse(document.getElementById('__NEXT_DATA__').textContent).props.pageProps.initialState;
-// }
 
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();

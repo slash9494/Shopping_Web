@@ -14,12 +14,16 @@ import {
   UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
   loadManProductsActionAsync,
   LOAD_MAN_PRODUCTS_REQUEST,
-  loadProductByIdActionAsync,
-  LOAD_PRODUCT_BY_ID_REQUEST,
   LOAD_WOMAN_PRODUCTS_REQUEST,
   LOAD_KID_PRODUCTS_REQUEST,
   loadWomanProductsActionAsync,
   loadKidProductsActionAsync,
+  loadManProductByIdActionAsync,
+  LOAD_MAN_PRODUCT_BY_ID_REQUEST,
+  loadWomanProductByIdActionAsync,
+  LOAD_WOMAN_PRODUCT_BY_ID_REQUEST,
+  loadKidProductByIdActionAsync,
+  LOAD_KID_PRODUCT_BY_ID_REQUEST,
 } from "./../actions";
 import axios from "axios";
 import { fileUploadActionAsync } from "../actions";
@@ -249,63 +253,56 @@ function* loadKidProductsSaga() {
   yield takeLatest(LOAD_KID_PRODUCTS_REQUEST, loadKidProductAsyncSaga);
 }
 
-function loadDummyProductByIdAPI() {
-  return {
-    title: faker.commerce.productName(),
-    descriptionTitle: faker.name.title(),
-    description: faker.commerce.productDescription(),
-    size: [
-      faker.random.number({
-        min: 1,
-        max: 3,
-      }),
-      faker.random.number({
-        min: 1,
-        max: 3,
-      }),
-      faker.random.number({
-        min: 1,
-        max: 3,
-      }),
-    ],
-    amountOfS: faker.random.number({
-      min: 0,
-      max: 2,
-    }),
-    amountOfM: faker.random.number({
-      min: 0,
-      max: 2,
-    }),
-    amountOfL: faker.random.number({
-      min: 0,
-      max: 2,
-    }),
-    color: faker.commerce.color(),
-    price: faker.random.number({
-      min: 20000,
-      max: 110000,
-    }),
-    images: [fakeImages(), fakeImages(), fakeImages()],
-    id: faker.random.uuid(),
-  };
-}
-
-async function loadProductByIdAPI() {
+async function loadManProductByIdAPI(productId: string) {
   const response = await axios.get(
-    `/api/product/products_by_id?id=${productId}&type=single`
+    `/api/product/manProductById?id=${productId}&type=single`
   );
   return response.data;
 }
 
-const loadProductByIdAsyncSaga = createAsyncDummySaga(
-  loadProductByIdActionAsync,
-  loadDummyProductByIdAPI
+const loadManProductByIdAsyncSaga = createAsyncSaga(
+  loadManProductByIdActionAsync,
+  loadManProductByIdAPI
 );
 
-function* loadProductByIdSaga() {
-  yield takeLatest(LOAD_PRODUCT_BY_ID_REQUEST, loadProductByIdAsyncSaga);
+function* loadManProductByIdSaga() {
+  yield takeLatest(LOAD_MAN_PRODUCT_BY_ID_REQUEST, loadManProductByIdAsyncSaga);
 }
 
+async function loadWomanProductByIdAPI(productId: string) {
+  const response = await axios.get(
+    `/api/product/womanProductById?id=${productId}&type=single`
+  );
+  return response.data;
+}
+
+const loadWomanProductByIdAsyncSaga = createAsyncSaga(
+  loadWomanProductByIdActionAsync,
+  loadWomanProductByIdAPI
+);
+
+function* loadWomanProductByIdSaga() {
+  yield takeLatest(
+    LOAD_WOMAN_PRODUCT_BY_ID_REQUEST,
+    loadWomanProductByIdAsyncSaga
+  );
+}
+
+async function loadKidProductByIdAPI(productId: string) {
+  const response = await axios.get(
+    `/api/product/kidProductById?id=${productId}&type=single`
+  );
+  return response.data;
+}
+
+const loadKidProductByIdAsyncSaga = createAsyncSaga(
+  loadKidProductByIdActionAsync,
+  loadKidProductByIdAPI
+);
+
+function* loadKidProductByIdSaga() {
+  yield takeLatest(LOAD_KID_PRODUCT_BY_ID_REQUEST, loadKidProductByIdAsyncSaga);
+}
 async function loadCartItemsAPI(
   ProductIds: Array<string>,
   userCarts: Array<any>
@@ -340,6 +337,8 @@ export default function* productSaga() {
     fork(loadManProductsSaga),
     fork(loadWomanProductsSaga),
     fork(loadKidProductsSaga),
-    fork(loadProductByIdSaga),
+    fork(loadManProductByIdSaga),
+    fork(loadWomanProductByIdSaga),
+    fork(loadKidProductByIdSaga),
   ]);
 }

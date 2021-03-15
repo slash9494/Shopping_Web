@@ -167,10 +167,10 @@ function womanPage() {
         spacing={3}
         className={classes.gridContainer}
       >
-        {loadProductsInfo?.data?.productInfo?.map((item: any) => {
+        {loadProductsInfo?.data?.productsInfo?.map((item: any) => {
           return (
             <Grid item xs={6} sm={6} md={3} xl={3} className={classes.item}>
-              <Link href="/shop/">
+              <Link href={`/shop/detailview/womanProduct/${item._id}`}>
                 <CardMedia
                   className={classes.media}
                   image={`http://localhost:5000/${item.images[0]}`}

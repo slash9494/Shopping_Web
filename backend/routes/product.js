@@ -83,12 +83,12 @@ router.post("/getManProducts", (req, res) => {
       .populate("writer")
       .skip(skip)
       .limit(limit)
-      .exec((err, productInfo) => {
+      .exec((err, productsInfo) => {
         if (err) return res.status(400).json({ success: false, err });
         res.status(200).json({
           getProductSuccess: true,
-          productInfo,
-          postSize: productInfo.length,
+          productsInfo,
+          postSize: productsInfo.length,
         });
       });
   } else {
@@ -96,12 +96,12 @@ router.post("/getManProducts", (req, res) => {
       .populate("writer")
       .skip(skip)
       .limit(limit)
-      .exec((err, productInfo) => {
+      .exec((err, productsInfo) => {
         if (err) return res.status(400).json({ success: false, err });
         res.status(200).json({
           getProductSuccess: true,
-          productInfo,
-          postSize: productInfo.length,
+          productsInfo,
+          postSize: productsInfo.length,
         });
       });
   }
@@ -136,12 +136,12 @@ router.post("/getWomanProducts", (req, res) => {
       .populate("writer")
       .skip(skip)
       .limit(limit)
-      .exec((err, productInfo) => {
+      .exec((err, productsInfo) => {
         if (err) return res.status(400).json({ success: false, err });
         res.status(200).json({
           getProductSuccess: true,
-          productInfo,
-          postSize: productInfo.length,
+          productsInfo,
+          postSize: productsInfo.length,
         });
       });
   } else {
@@ -149,12 +149,12 @@ router.post("/getWomanProducts", (req, res) => {
       .populate("writer")
       .skip(skip)
       .limit(limit)
-      .exec((err, productInfo) => {
+      .exec((err, productsInfo) => {
         if (err) return res.status(400).json({ success: false, err });
         res.status(200).json({
           getProductSuccess: true,
-          productInfo,
-          postSize: productInfo.length,
+          productsInfo,
+          postSize: productsInfo.length,
         });
       });
   }
@@ -188,12 +188,12 @@ router.post("/getKidProducts", (req, res) => {
       .populate("writer")
       .skip(skip)
       .limit(limit)
-      .exec((err, productInfo) => {
+      .exec((err, productsInfo) => {
         if (err) return res.status(400).json({ success: false, err });
         res.status(200).json({
           getProductSuccess: true,
-          productInfo,
-          postSize: productInfo.length,
+          productsInfo,
+          postSize: productsInfo.length,
         });
       });
   } else {
@@ -201,19 +201,18 @@ router.post("/getKidProducts", (req, res) => {
       .populate("writer")
       .skip(skip)
       .limit(limit)
-      .exec((err, productInfo) => {
+      .exec((err, productsInfo) => {
         if (err) return res.status(400).json({ success: false, err });
         res.status(200).json({
           getProductSuccess: true,
-          productInfo,
-          postSize: productInfo.length,
+          productsInfo,
+          postSize: productsInfo.length,
         });
       });
   }
 });
 
-router.get("productsById", (req, res) => {
-  //주소의 id값
+router.get("/manProductById", (req, res) => {
   let type = req.query.type;
   let productIds = req.query.id;
 
@@ -224,24 +223,49 @@ router.get("productsById", (req, res) => {
       return item;
     });
   }
-
   ManProduct.find({ _id: { $in: productIds } })
     .populate("writer")
-    .exec((err, product) => {
+    .exec((err, productInfo) => {
       if (err) return res.status(400).send(err);
-      return res.status(200).json({ product });
+      return res.status(200).json({ productInfo });
     });
+});
+
+router.get("/womanProductById", (req, res) => {
+  let type = req.query.type;
+  let productIds = req.query.id;
+
+  if (type === "array") {
+    let ids = req.query.id.split(",");
+    productIds = [];
+    productIds = ids.map((item) => {
+      return item;
+    });
+  }
   WomanProduct.find({ _id: { $in: productIds } })
     .populate("writer")
-    .exec((err, product) => {
+    .exec((err, productInfo) => {
       if (err) return res.status(400).send(err);
-      return res.status(200).json({ product });
+      return res.status(200).json({ productInfo });
     });
+});
+
+router.get("/kidProductById", (req, res) => {
+  let type = req.query.type;
+  let productIds = req.query.id;
+
+  if (type === "array") {
+    let ids = req.query.id.split(",");
+    productIds = [];
+    productIds = ids.map((item) => {
+      return item;
+    });
+  }
   KidProduct.find({ _id: { $in: productIds } })
     .populate("writer")
-    .exec((err, product) => {
+    .exec((err, productInfo) => {
       if (err) return res.status(400).send(err);
-      return res.status(200).json({ product });
+      return res.status(200).json({ productInfo });
     });
 });
 

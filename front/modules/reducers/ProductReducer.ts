@@ -5,15 +5,9 @@ import {
   FILE_UPLOAD_REQUEST,
   FILE_UPLOAD_SUCCESS,
   FILE_UPLOAD_FAILURE,
-  UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
-  UPLOAD_DUMMY_MAN_PRODUCT_SUCCESS,
-  UPLOAD_DUMMY_MAN_PRODUCT_FAILURE,
   LOAD_MAN_PRODUCTS_REQUEST,
   LOAD_MAN_PRODUCTS_SUCCESS,
   LOAD_MAN_PRODUCTS_FAILURE,
-  LOAD_PRODUCT_BY_ID_REQUEST,
-  LOAD_PRODUCT_BY_ID_SUCCESS,
-  LOAD_PRODUCT_BY_ID_FAILURE,
   UPLOAD_MAN_PRODUCT_REQUEST,
   UPLOAD_MAN_PRODUCT_SUCCESS,
   UPLOAD_MAN_PRODUCT_FAILURE,
@@ -29,6 +23,15 @@ import {
   LOAD_KID_PRODUCTS_REQUEST,
   LOAD_KID_PRODUCTS_SUCCESS,
   LOAD_KID_PRODUCTS_FAILURE,
+  LOAD_MAN_PRODUCT_BY_ID_REQUEST,
+  LOAD_MAN_PRODUCT_BY_ID_SUCCESS,
+  LOAD_MAN_PRODUCT_BY_ID_FAILURE,
+  LOAD_WOMAN_PRODUCT_BY_ID_REQUEST,
+  LOAD_WOMAN_PRODUCT_BY_ID_SUCCESS,
+  LOAD_WOMAN_PRODUCT_BY_ID_FAILURE,
+  LOAD_KID_PRODUCT_BY_ID_REQUEST,
+  LOAD_KID_PRODUCT_BY_ID_SUCCESS,
+  LOAD_KID_PRODUCT_BY_ID_FAILURE,
 } from "../actions";
 import { produce } from "immer";
 
@@ -124,15 +127,39 @@ const productReducer = createReducer<ProductState, Action>(initialState, {
     ...state,
     loadProductsInfo: asyncState.error(action.payload),
   }),
-  [LOAD_PRODUCT_BY_ID_REQUEST]: (state, action) => ({
+  [LOAD_MAN_PRODUCT_BY_ID_REQUEST]: (state) => ({
     ...state,
     loadProductByIdInfo: asyncState.load(state.loadProductByIdInfo?.data),
   }),
-  [LOAD_PRODUCT_BY_ID_SUCCESS]: (state, action) => ({
+  [LOAD_MAN_PRODUCT_BY_ID_SUCCESS]: (state, action) => ({
     ...state,
     loadProductByIdInfo: asyncState.success(action.payload),
   }),
-  [LOAD_PRODUCT_BY_ID_FAILURE]: (state, action) => ({
+  [LOAD_MAN_PRODUCT_BY_ID_FAILURE]: (state, action) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.error(action.payload),
+  }),
+  [LOAD_WOMAN_PRODUCT_BY_ID_REQUEST]: (state) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.load(state.loadProductByIdInfo?.data),
+  }),
+  [LOAD_WOMAN_PRODUCT_BY_ID_SUCCESS]: (state, action) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.success(action.payload),
+  }),
+  [LOAD_WOMAN_PRODUCT_BY_ID_FAILURE]: (state, action) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.error(action.payload),
+  }),
+  [LOAD_KID_PRODUCT_BY_ID_REQUEST]: (state) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.load(state.loadProductByIdInfo?.data),
+  }),
+  [LOAD_KID_PRODUCT_BY_ID_SUCCESS]: (state, action) => ({
+    ...state,
+    loadProductByIdInfo: asyncState.success(action.payload),
+  }),
+  [LOAD_KID_PRODUCT_BY_ID_FAILURE]: (state, action) => ({
     ...state,
     loadProductByIdInfo: asyncState.error(action.payload),
   }),

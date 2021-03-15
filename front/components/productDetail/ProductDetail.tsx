@@ -12,10 +12,21 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import Popover from "@material-ui/core/Popover";
 import HelpIcon from "@material-ui/icons/Help";
 import Description from "./Description";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCartActionAsync } from "../../modules";
 import Swal from "sweetalert2";
-
+import { createSelector } from "reselect";
+import { RootState } from "../../modules/reducers";
+import { Snackbar } from "@material-ui/core";
+interface ProductDetailProps {
+  title: string;
+  price: number;
+  color: string;
+  size: Array<number>;
+  id: string;
+  description: string;
+  descriptionTitle: string;
+}
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
@@ -86,11 +97,17 @@ const PopOverButton = styled.button`
   }
 `;
 
-function ProductDetail() {
+function ProductDetail(props: ProductDetailProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const checkUpUserInfo = createSelector(
+    (state: RootState) => state.userReducer,
+    (userReducer) => userReducer.userInfo
+  );
+  const userInfo = useSelector(checkUpUserInfo);
   const [size, setSize] = useState<string | number>("");
   const [open, setOpen] = useState(false);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const PopOverOpen = Boolean(anchorEl);
   const popOverId = open ? "simple-popover" : undefined;
@@ -103,6 +120,9 @@ function ProductDetail() {
   const handleOpen = () => {
     setOpen(true);
   };
+  const snackBarHandleClose = () => {
+    setSnackBarOpen(false);
+  };
   const touchOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -110,19 +130,22 @@ function ProductDetail() {
     setAnchorEl(null);
   };
   const handleAddToCart = () => {
-    const productId = "testProductId000";
+    const productId = props.id;
     if (size === "") {
       Swal.fire("사이즈를 선택해주세요", "", "info");
       return;
     } else {
       dispatch(addToCartActionAsync.request(productId));
+      if (userInfo.data?.cart?.addToCartSuccess === true) {
+        setSnackBarOpen(true);
+      }
     }
   };
   return (
     <ProductDetailContainer>
       <CardContent>
         <Typography variant="h6" className={classes.title}>
-          울 후드 코트 &nbsp;
+          {props.title} &nbsp;
           <PopOverButton onClick={touchOpen}>
             <HelpIcon fontSize="small" />
             자세히 알아보기
@@ -141,13 +164,16 @@ function ProductDetail() {
               horizontal: "center",
             }}
           >
-            <Description />
+            <Description
+              description={props.description}
+              descriptionTitle={props.descriptionTitle}
+            />
           </Popover>
         </Typography>
         <Typography variant="body2">
-          199,000 원
+          {props.price} 원
           <br />
-          색상: 네이비
+          색상: {props.color}
         </Typography>
       </CardContent>
       <Divider classes={{ root: classes.divider }} />
@@ -165,9 +191,15 @@ function ProductDetail() {
           <MenuItem value="">
             <em>사이즈 선택</em>
           </MenuItem>
-          <MenuItem value={10}>S</MenuItem>
-          <MenuItem value={20}>M</MenuItem>
-          <MenuItem value={30}>L</MenuItem>
+          {props.size?.find((values) => values === 1) ? (
+            <MenuItem value={10}>S</MenuItem>
+          ) : null}
+          {props.size?.find((values) => values === 2) ? (
+            <MenuItem value={20}>M</MenuItem>
+          ) : null}
+          {props.size?.find((values) => values === 3) ? (
+            <MenuItem value={30}>L</MenuItem>
+          ) : null}
         </Select>
       </FormControl>
 
@@ -175,6 +207,13 @@ function ProductDetail() {
       <Button type="submit" onClick={handleAddToCart}>
         장바구니
       </Button>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={snackBarOpen}
+        onClose={snackBarHandleClose}
+        message="장바구니에 담겼습니다."
+        key={"bottom" + "right"}
+      />
     </ProductDetailContainer>
   );
 }
