@@ -21,9 +21,11 @@ code {
 
 .image-gallery {
   height: 79vh;
+
   @media screen and (max-width: 1025px) {
     width: 60vw;
   }
+
   .image-gallery-thumbnails-wrapper.right {
     position: absolute;
     height: 79vh !important;
@@ -31,6 +33,7 @@ code {
     -moz-transition: opacity 0.33s ease-in-out;
     -webkit-transition: opacity 0.33s ease-in-out;
     opacity: 0;
+
     @media screen and (max-width: 1025px) {
       opacity: 0;
     }
@@ -44,6 +47,7 @@ code {
     transition: opacity 0.33s ease-in-out;
     -moz-transition: opacity 0.33s ease-in-out;
     -webkit-transition: opacity 0.33s ease-in-out;
+
     @media screen and (max-width: 1025px) {
       opacity: 0;
     }
@@ -53,6 +57,7 @@ code {
 .image-gallery-slides {
   height: 79vh;
   width: 30vw;
+
   @media screen and (max-width: 1025px) {
     width: 60vw;
   }
@@ -69,6 +74,7 @@ code {
 
 .image-gallery-slide-wrapper.right {
   width: 30vw !important;
+
   @media screen and (max-width: 1025px) {
     width: 60vw !important;
   }

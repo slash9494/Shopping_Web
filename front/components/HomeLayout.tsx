@@ -1,33 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Menu, { MenuProps } from "@material-ui/core/Menu";
 import CardMedia from "@material-ui/core/CardMedia";
 import ManImage from "../images/ManCategory.jpg";
 import WomanImage from "../images/WomanCategory.jpg";
 import KidImage from "../images/KidCategory.jpg";
-
-// interface Props {
-//   children: ReactElement;
-// }
-
-const useStyles = makeStyles({
-  container: {
-    height: 50,
-  },
-  imageStyle: {
-    height: "100%",
-    width: "100%",
-    paddingTop: "100%",
-    boxSizing: "border-box",
-  },
-  imageHover: {
-    cursor: "pointer",
-    transform: "scale(1.1)",
-    transition: "transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95)",
-  },
-});
 
 const styles = {
   imageStyle: {
@@ -37,26 +14,6 @@ const styles = {
     boxSizing: "border-box",
   },
 } as const;
-
-const StyledMenu = withStyles({
-  paper: {
-    border: "1px solid #d3d4d5",
-  },
-})((props: MenuProps) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "center",
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "center",
-    }}
-    {...props}
-  />
-));
 
 const LandingPageContainer = styled.div`
   display: flex;
@@ -139,8 +96,6 @@ const ContentContainer = styled.div`
 `;
 
 function HomeLayout() {
-  const classes = useStyles();
-
   return (
     <LandingPageContainer>
       <DirectoryContainer>

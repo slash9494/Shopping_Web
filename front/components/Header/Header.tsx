@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import Logo from "../../images/LYH.svg";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../modules/reducers";
 import LoggedOutNavBar from "./Sections/LoggedOutNavBar";
 import LoggedInNavBar, { StyledBadge } from "./Sections/LoggedInNavBar";
@@ -15,6 +14,31 @@ import { makeStyles } from "@material-ui/core/styles";
 import DrawerList from "./Sections/DrawerList";
 import { createSelector } from "reselect";
 import ShoppingBag from "../../images/Shopping-bag.svg";
+import { useRouter } from "next/router";
+import {
+  HeaderContainer,
+  LeftMenuContainer,
+  OptionLink,
+  LogoContainer,
+  LogoLink,
+  OptionsContainer,
+  BagContainer,
+} from "./HeaderContainer";
+import ItemFilter from "./Sections/itemFilter/ItemFilter";
+import { price } from "./Sections/itemFilter/priceData";
+import {
+  loadManProductsActionAsync,
+  loadWomanProductsActionAsync,
+  loadKidProductsActionAsync,
+} from "../../modules";
+import CartDrawer from "./Sections/CartDrawer";
+export type Filters = {
+  size: number[];
+  category: number[];
+  price: number[];
+  [prop: string]: any;
+};
+
 const useStyles = makeStyles({
   toolBarContainer: {
     height: "1rem",
@@ -25,89 +49,12 @@ const useStyles = makeStyles({
   },
 });
 
-const HeaderContainer = styled.div`
-  height: 90px;
-  width: 100vw;
-  display: flex;
-  /* flex-shrink: 0; */
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  z-index: 5;
-  background-color: transparent;
-  @media screen and (max-width: 960px) {
-    margin: 0px;
-  }
-`;
-
-const LogoContainer = styled.div`
-  width: 20vw;
-  height: 90px;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @media screen and (max-width: 960px) {
-    width: 60vw;
-    margin: 0px;
-    padding: 0;
-    height: 90px;
-    display: flex;
-    padding-top: 20px;
-  }
-`;
-
-const LogoLink = styled.a`
-  width: 9vw;
-  height: 70px;
-  cursor: pointer;
-  @media screen and (max-width: 960px) {
-    width: 60vw;
-    height: 50px;
-    justify-content: center;
-    display: flex;
-  }
-`;
-
-const LeftMenuContainer = styled.div`
-  margin: 0;
-  width: 40vw;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 6vw;
-`;
-
-const OptionsContainer = styled.div`
-  width: 40vw;
-  height: 80px;
-  display: flex;
-  justify-content: flex-end;
-  padding-right: 6vw;
-  align-items: center;
-`;
-
-export const OptionLink = styled.a`
-  padding: 10px 15px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none;
-  color: black;
-`;
-
-const BagContainer = styled.div`
-  width: 20vw;
-  padding: 0;
-  padding-left: 10vw;
-  padding-right: 3vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 function Header() {
+  const router = useRouter();
+  const pathName = router.pathname;
+  console.log(pathName);
   const classes = useStyles();
+  const dispatch = useDispatch();
   const checkUserDataInfo = createSelector(
     (state: RootState) => state.userReducer,
     (userReducer) => userReducer.userInfo
@@ -123,63 +70,151 @@ function Header() {
       setBadgeCount(userInfo.data?.cart?.length);
     }
   }, [userInfo.data?.cart]);
+  const [filters, setFilters] = useState<Filters>({
+    size: [],
+    category: [],
+    price: [],
+  });
+
+  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(16);
+  const handleFilters = (propedFilters: number[] | number, kind: string) => {
+    const newFilters = { ...filters };
+    newFilters[kind] = propedFilters;
+    if (kind === "price") {
+      let priceValues = handlePrice(propedFilters);
+      newFilters[kind] = priceValues;
+    }
+    setFilters(newFilters);
+    showFilteredResults(newFilters);
+  };
+  const handlePrice = (value: any) => {
+    const data = price;
+    let array = [];
+    for (let key in data) {
+      if (data[key].id === parseInt(value)) {
+        array = data[key].array;
+      }
+    }
+    return array;
+  };
+  const showFilteredResults = (filters: Filters) => {
+    const variables = {
+      skip: 0,
+      limit: limit,
+      filters: filters,
+    };
+    setSkip(0);
+    if (pathName === "/shop/manPage") {
+      dispatch(loadManProductsActionAsync.request(variables));
+    } else if (pathName === "/shop/womanPage") {
+      dispatch(loadWomanProductsActionAsync.request(variables));
+    } else if (pathName === "/shop/kidPage") {
+      dispatch(loadKidProductsActionAsync.request(variables));
+    } else return;
+  };
+  const upDateSearchTerm = (newValue: string) => {
+    const variables = {
+      skip: 0,
+      limit: "",
+      filters: filters,
+      searchTerm: newValue,
+    };
+    if (pathName === "/shop/manPage") {
+      dispatch(loadManProductsActionAsync.request(variables));
+    } else if (pathName === "/shop/womanPage") {
+      dispatch(loadWomanProductsActionAsync.request(variables));
+    } else if (pathName === "/shop/kidPage") {
+      dispatch(loadKidProductsActionAsync.request(variables));
+    } else return;
+    setSkip(0);
+  };
+  const [open, setOpen] = useState(false);
+  const showCartDrawer = () => {
+    setOpen(true);
+  };
+  const closeCartDrawer = () => {
+    setOpen(false);
+  };
   return (
-    <HeaderContainer>
-      <Hidden mdUp>
-        <Toolbar className={classes.toolBarContainer}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerToggle}
-          >
-            <Menu />
-          </IconButton>
-        </Toolbar>
-      </Hidden>
-      <Hidden smDown implementation="css">
-        <LeftMenuContainer>
-          <OptionLink href="/contact">CONTACT</OptionLink>
-          <OptionLink href="/uploadProduct">VIDEO BOOK</OptionLink>
-        </LeftMenuContainer>
-      </Hidden>
-      <LogoContainer>
-        <LogoLink href="/">
-          <Logo height={"100%"} width={"100%"} />
-        </LogoLink>
-      </LogoContainer>
-      <Hidden smDown implementation="css">
-        <OptionsContainer>
-          {!userInfo?.data?.isAuth ? (
-            <LoggedOutNavBar />
-          ) : (
-            <LoggedInNavBar badgeCount={badgeCount} />
-          )}
-        </OptionsContainer>
-      </Hidden>
-      <Hidden mdUp implementation="css">
-        <Drawer
-          variant="temporary"
-          anchor={"left"}
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-        >
-          <DrawerList userInfo={userInfo} />
-        </Drawer>
-      </Hidden>
-      <Hidden mdUp implementation="css">
-        <BagContainer>
-          <OptionLink href="/uploadProduct">
-            <StyledBadge
-              badgeContent={badgeCount}
-              color="default"
-              showZero={true}
+    <>
+      <HeaderContainer>
+        <Hidden mdUp>
+          <Toolbar className={classes.toolBarContainer}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerToggle}
             >
-              <ShoppingBag width={30} height={30} />
-            </StyledBadge>
-          </OptionLink>
-        </BagContainer>
-      </Hidden>
-    </HeaderContainer>
+              <Menu />
+            </IconButton>
+          </Toolbar>
+        </Hidden>
+        <Hidden smDown implementation="css">
+          <LeftMenuContainer>
+            <OptionLink href="/contact">CONTACT</OptionLink>
+            <OptionLink href="/uploadProduct">VIDEO BOOK</OptionLink>
+          </LeftMenuContainer>
+        </Hidden>
+        <LogoContainer>
+          <LogoLink href="/">
+            <Logo height={"100%"} width={"100%"} />
+          </LogoLink>
+        </LogoContainer>
+        <Hidden smDown implementation="css">
+          <OptionsContainer>
+            {!userInfo?.data?.isAuth ? (
+              <LoggedOutNavBar />
+            ) : (
+              <LoggedInNavBar
+                badgeCount={badgeCount}
+                showCartDrawer={showCartDrawer}
+              />
+            )}
+          </OptionsContainer>
+        </Hidden>
+        <Hidden mdUp implementation="css">
+          <Drawer
+            variant="temporary"
+            anchor={"left"}
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+          >
+            <DrawerList userInfo={userInfo} />
+          </Drawer>
+        </Hidden>
+        <Hidden mdUp implementation="css">
+          <BagContainer>
+            <OptionLink href="/uploadProduct">
+              <StyledBadge
+                badgeContent={badgeCount}
+                color="default"
+                showZero={true}
+              >
+                <ShoppingBag width={30} height={30} />
+              </StyledBadge>
+            </OptionLink>
+          </BagContainer>
+        </Hidden>
+      </HeaderContainer>
+      {pathName === "/shop/womanPage" ||
+      pathName === "/shop/manPage" ||
+      pathName === "/shop/kidPage" ? (
+        <ItemFilter
+          sizeFilters={(propedSizeFilters: number[]) =>
+            handleFilters(propedSizeFilters, "size")
+          }
+          categoryFilters={(propedCategoryFilters: number[]) =>
+            handleFilters(propedCategoryFilters, "category")
+          }
+          priceFilters={(propedPriceFilters: number) =>
+            handleFilters(propedPriceFilters, "price")
+          }
+          searchValue={upDateSearchTerm}
+        />
+      ) : null}
+      <CartDrawer open={open} closeCartDrawer={closeCartDrawer} />
+    </>
   );
 }
 

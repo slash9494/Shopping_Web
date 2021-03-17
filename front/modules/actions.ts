@@ -33,9 +33,6 @@ export const REMOVE_CART_ITEM_REQUEST = "REMOVE_CART_ITEM_REQUEST";
 export const REMOVE_CART_ITEM_SUCCESS = "REMOVE_CART_ITEM_SUCCESS";
 export const REMOVE_CART_ITEM_FAILURE = "REMOVE_CART_ITEM_FAILURE";
 
-export const AUTH_DUMMY_REQUEST = "AUTH_DUMMY_REQUEST";
-export const AUTH_DUMMY_SUCCESS = "AUTH_DUMMY_SUCCESS";
-export const AUTH_DUMMY_FAILURE = "AUTH_DUMMY_FAILURE";
 // Upload Action //
 export const FILE_UPLOAD_REQUEST = "FILE_UPLOAD_REQUEST";
 export const FILE_UPLOAD_SUCCESS = "FILE_UPLOAD_SUCCESS";
@@ -50,12 +47,6 @@ export const UPLOAD_KID_PRODUCT_REQUEST = "UPLOAD_KID_PRODUCT_REQUEST";
 export const UPLOAD_KID_PRODUCT_SUCCESS = "UPLOAD_KID_PRODUCT_SUCCESS";
 export const UPLOAD_KID_PRODUCT_FAILURE = "UPLOAD_KID_PRODUCT_FAILURE";
 
-export const UPLOAD_DUMMY_MAN_PRODUCT_REQUEST =
-  "UPLOAD_DUMMY_MAN_PRODUCT_REQUEST";
-export const UPLOAD_DUMMY_MAN_PRODUCT_SUCCESS =
-  "UPLOAD_DUMMY_MAN_PRODUCT_SUCCESS";
-export const UPLOAD_DUMMY_MAN_PRODUCT_FAILURE =
-  "UPLOAD_DUMMY_MAN_PRODUCT_FAILURE";
 // Load Product Action //
 export const LOAD_MAN_PRODUCTS_REQUEST = "LOAD_MAN_PRODUCTS_REQUEST";
 export const LOAD_MAN_PRODUCTS_SUCCESS = "LOAD_MAN_PRODUCTS_SUCCESS";
@@ -78,9 +69,6 @@ export const LOAD_WOMAN_PRODUCT_BY_ID_FAILURE =
 export const LOAD_KID_PRODUCT_BY_ID_REQUEST = "LOAD_KID_PRODUCT_BY_ID_REQUEST";
 export const LOAD_KID_PRODUCT_BY_ID_SUCCESS = "LOAD_KID_PRODUCT_BY_ID_SUCCESS";
 export const LOAD_KID_PRODUCT_BY_ID_FAILURE = "LOAD_KID_PRODUCT_BY_ID_FAILURE";
-
-// const LOG_IN = asyncActionCreator(`LOG_IN`);
-// export const loginActionAsync = createAsyncAction(LOG_IN)
 
 // User ActionCreator //
 
@@ -116,12 +104,6 @@ export const addToCartActionAsync = createAsyncAction(
 
 //removecartitem
 
-export const authCheckDummyActionAsync = createAsyncAction(
-  AUTH_DUMMY_REQUEST,
-  AUTH_DUMMY_SUCCESS,
-  AUTH_DUMMY_FAILURE
-)<any, any, AxiosError>();
-
 // Upload ActionCreator //
 
 export const fileUploadActionAsync = createAsyncAction(
@@ -146,12 +128,6 @@ export const uploadKidProductActionAsync = createAsyncAction(
   UPLOAD_KID_PRODUCT_REQUEST,
   UPLOAD_KID_PRODUCT_SUCCESS,
   UPLOAD_KID_PRODUCT_FAILURE
-)<any, UploadProductInfo, AxiosError>();
-
-export const uploadDummyManProductActionAsync = createAsyncAction(
-  UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
-  UPLOAD_DUMMY_MAN_PRODUCT_SUCCESS,
-  UPLOAD_DUMMY_MAN_PRODUCT_FAILURE
 )<any, UploadProductInfo, AxiosError>();
 
 // Load Product ActionCreator //

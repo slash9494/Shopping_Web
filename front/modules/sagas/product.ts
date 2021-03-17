@@ -10,8 +10,6 @@ import {
   UPLOAD_WOMAN_PRODUCT_REQUEST,
   uploadKidProductActionAsync,
   UPLOAD_KID_PRODUCT_REQUEST,
-  uploadDummyManProductActionAsync,
-  UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
   loadManProductsActionAsync,
   LOAD_MAN_PRODUCTS_REQUEST,
   LOAD_WOMAN_PRODUCTS_REQUEST,
@@ -31,9 +29,7 @@ import createAsyncSaga, {
   createAsyncDummySaga,
 } from "../utils/createAsyncSaga";
 import { takeEvery, all, fork, takeLatest, delay } from "redux-saga/effects";
-import { Images } from "../../components/productUpload/UploadProductForm";
-import { Filters } from "../../pages/shop/manPage";
-import { UserCartInfo } from "../../pages/cart";
+import { Filters } from "../../components/Header/Header";
 
 export type Config = {
   data: {
@@ -68,22 +64,6 @@ const fileUploadAsyncSaga = createAsyncSaga(
   fileUploadAPI
 );
 
-function fileUploadDummyAPI() {
-  return {
-    fileUploadSuccess: true,
-    filePath: [
-      "https://images.pexels.com/photos/6386963/pexels-photo-6386963.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
-      "https://static.zara.net/photos///2021/V/0/2/p/0029/820/401/2/w/742/0029820401_2_3_1.jpg?ts=1611309533951",
-    ],
-    fillName: "testUploadImage",
-  };
-}
-
-const fileUploadDummyAsyncSaga = createAsyncDummySaga(
-  fileUploadActionAsync,
-  fileUploadDummyAPI
-);
-
 function* fileUploadSaga() {
   yield takeEvery(FILE_UPLOAD_REQUEST, fileUploadAsyncSaga);
 }
@@ -114,10 +94,6 @@ const uploadManProductAsyncSaga = createAsyncSaga(
   uploadManProductActionAsync,
   uploadManProductAPI
 );
-
-// function* uploadManProductAsyncSaga() {
-//   return { upLoadProductSuccess: true };
-// }
 
 function* uploadManProductSaga() {
   yield takeLatest(UPLOAD_MAN_PRODUCT_REQUEST, uploadManProductAsyncSaga);
@@ -150,66 +126,6 @@ const uploadKidProductAsyncSaga = createAsyncSaga(
 function* uploadKidProductSaga() {
   yield takeLatest(UPLOAD_KID_PRODUCT_REQUEST, uploadKidProductAsyncSaga);
 }
-
-function uploadDummyManProductAPI() {
-  return { uploadProductSuccess: true };
-}
-
-const uploadDummyManProductAsyncSaga = createAsyncDummySaga(
-  uploadDummyManProductActionAsync,
-  uploadDummyManProductAPI
-);
-
-function* uploadDummyManProductSaga() {
-  yield takeLatest(
-    UPLOAD_DUMMY_MAN_PRODUCT_REQUEST,
-    uploadDummyManProductAsyncSaga
-  );
-}
-
-function loadDummyManProductsAPI() {
-  return {
-    manProducts: generateDummyManProduct(20),
-  };
-}
-
-const fakeImages = () => {
-  const randomNumber = Math.floor(Math.random() * 1000);
-  return `https://source.unsplash.com/2000x1200/?man-model&sig=${randomNumber}`;
-};
-
-const generateDummyManProduct = (number: Number) =>
-  Array(number)
-    .fill(20)
-    .map(() => ({
-      id: shortId.generate(),
-      writer: faker.name.findName(),
-      title: faker.commerce.productName(),
-      price: faker.commerce.price(10000, 110000),
-      images: [fakeImages(), fakeImages(), fakeImages()],
-      category: faker.random.number({
-        min: 1,
-        max: 4,
-      }),
-      size: [
-        faker.random.number({
-          min: 1,
-          max: 3,
-        }),
-        faker.random.number({
-          min: 1,
-          max: 3,
-        }),
-        faker.random.number({
-          min: 1,
-          max: 3,
-        }),
-      ],
-      sold: faker.random.number({
-        min: 0,
-        max: 3,
-      }),
-    }));
 
 async function loadManProductsAPI(body: LoadProductsAPIProps) {
   const response = await axios.post("api/product/getManProducts", body);
@@ -333,7 +249,6 @@ export default function* productSaga() {
     fork(uploadManProductSaga),
     fork(uploadWomanProductSaga),
     fork(uploadKidProductSaga),
-    fork(uploadDummyManProductSaga),
     fork(loadManProductsSaga),
     fork(loadWomanProductsSaga),
     fork(loadKidProductsSaga),

@@ -14,18 +14,9 @@ import {
   loadManProductsActionAsync,
   authCheckActionAsync,
 } from "../../modules";
-import ItemFilter from "../../components/itemFilter/ItemFilter";
-import { price } from "../../components/itemFilter/priceData";
 import wrapper, { IStore } from "../../store/configureStore";
 import axios from "axios";
 import { END } from "redux-saga";
-
-export type Filters = {
-  size: number[];
-  category: number[];
-  price: number[];
-  [prop: string]: any;
-};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     gridContainer: {
       [theme.breakpoints.down("xs")]: {
-        padding: "10vh 0 0 0",
+        padding: "90px 0 0 0",
       },
     },
   })
@@ -100,72 +91,11 @@ function manPage() {
     (productReducer) => productReducer.loadProductsInfo
   );
   const loadProductsInfo = useSelector(checkUploadProductInfo);
-  const [filters, setFilters] = useState<Filters>({
-    size: [],
-    category: [],
-    price: [],
-  });
-
-  const [searchTerm, setSearchTerm] = useState("");
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(16);
-  const handleFilters = (propedFilters: number[] | number, kind: string) => {
-    const newFilters = { ...filters };
-    newFilters[kind] = propedFilters;
-    if (kind === "price") {
-      let priceValues = handlePrice(propedFilters);
-      newFilters[kind] = priceValues;
-    }
-    console.log(newFilters);
-    setFilters(newFilters);
-    showFilteredResults(newFilters);
-  };
-  const handlePrice = (value: any) => {
-    const data = price;
-    let array = [];
-    for (let key in data) {
-      if (data[key].id === parseInt(value)) {
-        array = data[key].array;
-      }
-    }
-    return array;
-  };
-  const showFilteredResults = (filters: Filters) => {
-    const variables = {
-      skip: 0,
-      limit: limit,
-      filters: filters,
-    };
-    setSkip(0);
-    dispatch(loadManProductsActionAsync.request(variables));
-    // getProduct(variables)
-  };
-  const upDateSearchTerm = (newValue: string) => {
-    const variables = {
-      skip: 0,
-      limit: "",
-      filters: filters,
-      searchTerm: newValue,
-    };
-    setSearchTerm(newValue);
-    dispatch(loadManProductsActionAsync.request(variables));
-    setSkip(0);
-  };
 
   return (
     <AppContainer className={classes.root}>
-      <ItemFilter
-        sizeFilters={(propedSizeFilters: number[]) =>
-          handleFilters(propedSizeFilters, "size")
-        }
-        categoryFilters={(propedCategoryFilters: number[]) =>
-          handleFilters(propedCategoryFilters, "category")
-        }
-        priceFilters={(propedPriceFilters: number) =>
-          handleFilters(propedPriceFilters, "price")
-        }
-        searchValue={upDateSearchTerm}
-      />
       <Grid
         container
         justify="center"

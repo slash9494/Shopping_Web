@@ -16,11 +16,9 @@ import {
   AUTH_CHECK_REQUEST,
   AUTH_CHECK_SUCCESS,
   AUTH_CHECK_FAILURE,
-  AUTH_DUMMY_SUCCESS,
   ADD_TO_CART_REQUEST,
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILURE,
-  AUTH_DUMMY_REQUEST,
 } from "../actions";
 
 export const initialState: UserState = {

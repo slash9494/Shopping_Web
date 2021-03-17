@@ -14,12 +14,12 @@ import {
   loadWomanProductsActionAsync,
   authCheckActionAsync,
 } from "../../modules";
-import ItemFilter from "../../components/itemFilter/ItemFilter";
-import { price } from "../../components/itemFilter/priceData";
+import ItemFilter from "../../components/Header/Sections/itemFilter/ItemFilter";
+import { price } from "../../components/Header/Sections/itemFilter/priceData";
 import wrapper, { IStore } from "../../store/configureStore";
 import axios from "axios";
 import { END } from "redux-saga";
-import { Filters } from "./manPage";
+import { Filters } from "../../components/Header/Header";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -99,68 +99,10 @@ function womanPage() {
     category: [],
     price: [],
   });
-
-  const [searchTerm, setSearchTerm] = useState("");
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(16);
-  const handleFilters = (propedFilters: number[] | number, kind: string) => {
-    const newFilters = { ...filters };
-    newFilters[kind] = propedFilters;
-    if (kind === "price") {
-      let priceValues = handlePrice(propedFilters);
-      newFilters[kind] = priceValues;
-    }
-
-    setFilters(newFilters);
-    showFilteredResults(newFilters);
-  };
-  const handlePrice = (value: any) => {
-    const data = price;
-    let array = [];
-    for (let key in data) {
-      if (data[key].id === parseInt(value)) {
-        array = data[key].array;
-      }
-    }
-    return array;
-  };
-  const showFilteredResults = (filters: Filters) => {
-    const variables = {
-      skip: 0,
-      limit: limit,
-      filters: filters,
-    };
-    console.log(variables);
-    setSkip(0);
-    dispatch(loadWomanProductsActionAsync.request(variables));
-    // getProduct(variables)
-  };
-  const upDateSearchTerm = (newValue: string) => {
-    const variables = {
-      skip: 0,
-      limit: "",
-      filters: filters,
-      searchTerm: newValue,
-    };
-    setSearchTerm(newValue);
-    dispatch(loadWomanProductsActionAsync.request(variables));
-    setSkip(0);
-  };
-
   return (
     <AppContainer className={classes.root}>
-      <ItemFilter
-        sizeFilters={(propedSizeFilters: number[]) =>
-          handleFilters(propedSizeFilters, "size")
-        }
-        categoryFilters={(propedCategoryFilters: number[]) =>
-          handleFilters(propedCategoryFilters, "category")
-        }
-        priceFilters={(propedPriceFilters: number) =>
-          handleFilters(propedPriceFilters, "price")
-        }
-        searchValue={upDateSearchTerm}
-      />
       <Grid
         container
         justify="center"

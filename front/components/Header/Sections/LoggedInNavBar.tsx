@@ -10,14 +10,16 @@ import {
 } from "@material-ui/core/styles";
 import { logOutActionAsync } from "../../../modules";
 import ShoppingBag from "../../../images/Shopping-bag.svg";
-import { Badge } from "@material-ui/core";
+import { Badge, Drawer } from "@material-ui/core";
 interface LogInNavBarProps {
   badgeCount: number;
+  showCartDrawer: any;
 }
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
+
   @media screen and (max-width: 956px) {
     flex-direction: column;
   }
@@ -43,6 +45,10 @@ const BagOptionLink = styled.a`
 const useStyles = makeStyles({
   button: {
     fontSize: "1rem",
+  },
+  drawer: {
+    zIndex: 10,
+    position: "fixed",
   },
 });
 export const StyledBadge = withStyles((theme: Theme) =>
@@ -79,6 +85,8 @@ function LoggedInNavBar(props: LogInNavBarProps) {
           badgeContent={props.badgeCount}
           color="default"
           showZero={true}
+          className="badge"
+          onMouseEnter={props.showCartDrawer}
         >
           <ShoppingBag width={40} height={40} />
         </StyledBadge>

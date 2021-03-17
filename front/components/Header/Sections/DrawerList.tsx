@@ -2,7 +2,7 @@ import React from "react";
 import { Divider, List, ListItem, ListItemText } from "@material-ui/core";
 import LoggedOutNavBar from "./LoggedOutNavBar";
 import LoggedInNavBar, { Container } from "./LoggedInNavBar";
-import { OptionLink } from "../Header";
+import { OptionLink } from "../HeaderContainer";
 
 function DrawerList(props: any) {
   return (

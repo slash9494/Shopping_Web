@@ -1,11 +1,6 @@
 import HomeLayout from "../components/HomeLayout";
 import wrapper, { IStore } from "../store/configureStore";
-import {
-  authCheckDummyActionAsync,
-  AUTH_DUMMY_REQUEST,
-  loadManProductsActionAsync,
-  authCheckActionAsync,
-} from "../modules";
+import { authCheckActionAsync } from "../modules";
 import { END } from "redux-saga";
 import axios from "axios";
 interface Props {

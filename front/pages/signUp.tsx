@@ -1,11 +1,6 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
-import styled from "styled-components";
-import { useDispatch } from "react-redux";
-
-import { signUpActionAsync, authCheckActionAsync } from "../modules";
-
+import React, { useEffect } from "react";
+import { authCheckActionAsync } from "../modules";
 import { useSelector } from "react-redux";
-
 import { RootState } from "../modules/reducers/index";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
@@ -14,36 +9,6 @@ import axios from "axios";
 import { END } from "redux-saga";
 import { createSelector } from "reselect";
 import SignUpForm from "../components/SignUpForm";
-const RegisterBlock = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-  padding-bottom: 35vh;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Button = styled.button`
-  background: black;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
-  height: 100%;
-  font-weight: bold;
-  &:hover {
-    background: #495057;
-  }
-`;
 
 function SignUp() {
   const { signUpInfo } = useSelector((state: RootState) => state.userReducer);
