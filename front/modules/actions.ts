@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { createAction, Action, createAsyncAction } from "typesafe-actions";
+import { createAction, createAsyncAction } from "typesafe-actions";
 import {
   LoginInfo,
   LogOutInfo,
@@ -9,9 +9,7 @@ import {
   UploadProductInfo,
   LoadProductsInfo,
   LoadProductByIdInfo,
-  ProductByIdInfo,
 } from "./types";
-// import { createAsyncAction, asyncActionCreator } from "./utils/actionUtil";
 
 // User Action //
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
@@ -69,6 +67,9 @@ export const LOAD_WOMAN_PRODUCT_BY_ID_FAILURE =
 export const LOAD_KID_PRODUCT_BY_ID_REQUEST = "LOAD_KID_PRODUCT_BY_ID_REQUEST";
 export const LOAD_KID_PRODUCT_BY_ID_SUCCESS = "LOAD_KID_PRODUCT_BY_ID_SUCCESS";
 export const LOAD_KID_PRODUCT_BY_ID_FAILURE = "LOAD_KID_PRODUCT_BY_ID_FAILURE";
+export const LOAD_CART_PRODUCTS_REQUEST = "LOAD_CART_PRODUCTS_REQUEST";
+export const LOAD_CART_PRODUCTS_SUCCESS = "LOAD_CART_PRODUCTS_SUCCESS";
+export const LOAD_CART_PRODUCTS_FAILURE = "LOAD_CART_PRODUCTS_FAILURE";
 
 // User ActionCreator //
 
@@ -154,16 +155,16 @@ export const loadManProductByIdActionAsync = createAsyncAction(
   LOAD_MAN_PRODUCT_BY_ID_REQUEST,
   LOAD_MAN_PRODUCT_BY_ID_SUCCESS,
   LOAD_MAN_PRODUCT_BY_ID_FAILURE
-)<any, ProductByIdInfo, AxiosError>();
+)<any, LoadProductByIdInfo, AxiosError>();
 
 export const loadWomanProductByIdActionAsync = createAsyncAction(
   LOAD_WOMAN_PRODUCT_BY_ID_REQUEST,
   LOAD_WOMAN_PRODUCT_BY_ID_SUCCESS,
   LOAD_WOMAN_PRODUCT_BY_ID_FAILURE
-)<any, ProductByIdInfo, AxiosError>();
+)<any, LoadProductByIdInfo, AxiosError>();
 
 export const loadKidProductByIdActionAsync = createAsyncAction(
   LOAD_KID_PRODUCT_BY_ID_REQUEST,
   LOAD_KID_PRODUCT_BY_ID_SUCCESS,
   LOAD_KID_PRODUCT_BY_ID_FAILURE
-)<any, ProductByIdInfo, AxiosError>();
+)<any, LoadProductByIdInfo, AxiosError>();

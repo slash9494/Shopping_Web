@@ -4,7 +4,7 @@ import { Grid, CardMedia, Divider, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { authCheckDummyActionAsync, ProductByIdInfo } from "../modules";
+import { ProductByIdInfo } from "../modules";
 import { createSelector } from "reselect";
 import { RootState } from "../modules/reducers";
 const useStyles = makeStyles({
@@ -57,7 +57,7 @@ const PayButton = styled.button`
 `;
 
 export interface UserCartInfo {
-  id: number;
+  id: string;
   quantity: number;
   date: number;
 }
@@ -81,7 +81,7 @@ function cart() {
         });
       }
     }
-    dispatch(authCheckDummyActionAsync.success(""));
+    // dispatch(authCheckDummyActionAsync.success(""));
   }, []);
 
   const calculateTotal = (productInfo: ProductByIdInfo) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
@@ -13,20 +13,19 @@ import Popover from "@material-ui/core/Popover";
 import HelpIcon from "@material-ui/icons/Help";
 import Description from "./Description";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCartActionAsync } from "../../modules";
+import {
+  addToCartActionAsync,
+  ADD_TO_CART_REQUEST,
+  CartProductInfo,
+} from "../../modules";
 import Swal from "sweetalert2";
 import { createSelector } from "reselect";
 import { RootState } from "../../modules/reducers";
 import { Snackbar } from "@material-ui/core";
 interface ProductDetailProps {
-  title: string;
-  price: number;
-  color: string;
-  size: Array<number>;
-  id: string;
-  description: string;
-  descriptionTitle: string;
+  cartProductInfo: CartProductInfo;
 }
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
@@ -130,22 +129,38 @@ function ProductDetail(props: ProductDetailProps) {
     setAnchorEl(null);
   };
   const handleAddToCart = () => {
-    const productId = props.id;
+    const productId = props.cartProductInfo._id;
+    const cartProductInfo = {
+      title: props.cartProductInfo.title,
+      size: size,
+      price: props.cartProductInfo.price,
+      image: props.cartProductInfo.images[0],
+      section: props.cartProductInfo.section,
+      color: props.cartProductInfo.color,
+      _id: props.cartProductInfo._id,
+    };
     if (size === "") {
       Swal.fire("사이즈를 선택해주세요", "", "info");
       return;
     } else {
-      dispatch(addToCartActionAsync.request(productId));
-      if (userInfo.data?.cart?.addToCartSuccess === true) {
-        setSnackBarOpen(true);
-      }
+      dispatch({
+        type: ADD_TO_CART_REQUEST,
+        id: productId,
+        cartProductInfo: cartProductInfo,
+      });
     }
   };
+  useEffect(() => {
+    if (userInfo.data?.cart?.addToCartSuccess === true) {
+      setSnackBarOpen(true);
+    }
+  }, [userInfo.data?.cart?.addToCartSuccess]);
+
   return (
     <ProductDetailContainer>
       <CardContent>
         <Typography variant="h6" className={classes.title}>
-          {props.title} &nbsp;
+          {props.cartProductInfo.title} &nbsp;
           <PopOverButton onClick={touchOpen}>
             <HelpIcon fontSize="small" />
             자세히 알아보기
@@ -165,15 +180,15 @@ function ProductDetail(props: ProductDetailProps) {
             }}
           >
             <Description
-              description={props.description}
-              descriptionTitle={props.descriptionTitle}
+              description={props.cartProductInfo.description}
+              descriptionTitle={props.cartProductInfo.descriptionTitle}
             />
           </Popover>
         </Typography>
         <Typography variant="body2">
-          {props.price} 원
+          {props.cartProductInfo.price} 원
           <br />
-          색상: {props.color}
+          색상: {props.cartProductInfo.color}
         </Typography>
       </CardContent>
       <Divider classes={{ root: classes.divider }} />
@@ -191,14 +206,14 @@ function ProductDetail(props: ProductDetailProps) {
           <MenuItem value="">
             <em>사이즈 선택</em>
           </MenuItem>
-          {props.size?.find((values) => values === 1) ? (
-            <MenuItem value={10}>S</MenuItem>
+          {props.cartProductInfo.size?.find((values) => values === 1) ? (
+            <MenuItem value={1}>S</MenuItem>
           ) : null}
-          {props.size?.find((values) => values === 2) ? (
-            <MenuItem value={20}>M</MenuItem>
+          {props.cartProductInfo.size?.find((values) => values === 2) ? (
+            <MenuItem value={2}>M</MenuItem>
           ) : null}
-          {props.size?.find((values) => values === 3) ? (
-            <MenuItem value={30}>L</MenuItem>
+          {props.cartProductInfo.size?.find((values) => values === 3) ? (
+            <MenuItem value={3}>L</MenuItem>
           ) : null}
         </Select>
       </FormControl>

@@ -1,8 +1,6 @@
 import { AsyncState } from "./utils/reducerUtil";
 import { ActionType } from "typesafe-actions";
 import * as actions from "./actions";
-import { number } from "prop-types";
-import { ReactImageGalleryItem } from "react-image-gallery";
 
 export type Action = ActionType<typeof actions>;
 
@@ -22,11 +20,24 @@ export interface LogOutInfo {
   logOutSuccess: boolean | null;
 }
 
+export interface CartProductInfo {
+  title: string;
+  price: number;
+  color: string;
+  size: Array<number>;
+  _id: string;
+  description: string;
+  descriptionTitle: string;
+  images: Array<string>;
+  section: string;
+}
+
 interface CartInfo {
   addToCartSuccess: boolean | null;
   id: number;
   quantity: number;
   date: Date;
+  productInfo: CartProductInfo;
 }
 
 export interface UserInfo {
@@ -59,7 +70,7 @@ export interface UploadProductInfo {
   upLoadProductSuccess: boolean;
 }
 
-interface ProductsInfo {
+export interface ProductsInfo {
   id: number;
   writer: String;
   title: String;
@@ -72,11 +83,8 @@ interface ProductsInfo {
 
 export interface LoadProductsInfo {
   productsInfo: ProductsInfo;
-}
-
-interface ImagesData {
-  original: string;
-  thumbnail: string;
+  getProductsSuccess: boolean;
+  postSize: number;
 }
 
 export interface ProductByIdInfo {
@@ -93,17 +101,16 @@ export interface ProductByIdInfo {
   category: Number;
   sold: Number;
   views: Number;
-  id: Number;
-  quantity?: number;
+  _id: string;
 }
 
 export interface LoadProductByIdInfo {
-  productInfo: ProductByIdInfo;
+  productByIdInfo: ProductByIdInfo;
 }
 
 export interface ProductState {
   fileUploadInfo?: AsyncState<FileUploadInfo, Error>;
   uploadProductInfo?: AsyncState<UploadProductInfo, Error>;
   loadProductsInfo?: AsyncState<LoadProductsInfo, Error>;
-  loadProductByIdInfo?: AsyncState<ProductByIdInfo, Error>;
+  loadProductByIdInfo?: AsyncState<LoadProductByIdInfo, Error>;
 }

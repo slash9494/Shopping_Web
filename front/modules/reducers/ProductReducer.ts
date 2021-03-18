@@ -33,7 +33,6 @@ import {
   LOAD_KID_PRODUCT_BY_ID_SUCCESS,
   LOAD_KID_PRODUCT_BY_ID_FAILURE,
 } from "../actions";
-import { produce } from "immer";
 
 export const initialState: ProductState = {
   fileUploadInfo: asyncState.initial(),

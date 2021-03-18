@@ -82,6 +82,7 @@ export type UploadProductAPIProps = {
     price: string;
     images: Array<any>;
     category: number;
+    section: string;
   };
 };
 
@@ -219,16 +220,16 @@ const loadKidProductByIdAsyncSaga = createAsyncSaga(
 function* loadKidProductByIdSaga() {
   yield takeLatest(LOAD_KID_PRODUCT_BY_ID_REQUEST, loadKidProductByIdAsyncSaga);
 }
-async function loadCartItemsAPI(
-  ProductIds: Array<string>,
+async function loadCartProductsAPI(
+  productIds: Array<string>,
   userCarts: Array<any>
 ) {
   const response = await axios.get(
-    `/api/product/products_by_id?id=${ProductIds}&type=array`
+    `/api/product/products_by_id?id=${productIds}&type=array`
   );
   userCarts.forEach((cartItem) => {
     response.data.forEach((productDetail: ProductByIdInfo, index: number) => {
-      if (cartItem.id === productDetail.id) {
+      if (cartItem.id === productDetail._id) {
         response.data[index].quantity = cartItem.quantity;
       }
     });

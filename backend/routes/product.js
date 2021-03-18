@@ -227,7 +227,7 @@ router.get("/manProductById", (req, res) => {
     .populate("writer")
     .exec((err, productInfo) => {
       if (err) return res.status(400).send(err);
-      return res.status(200).json({ productInfo });
+      return res.status(200).send({ productInfo });
     });
 });
 

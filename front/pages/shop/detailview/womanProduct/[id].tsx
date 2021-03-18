@@ -56,7 +56,7 @@ const DescriptionContainer = styled.div`
 
 function DetailProduct() {
   const router = useRouter();
-  const { id } = router.query;
+  const pathName = router.pathname;
   const [showThumbNail, setShowThumbNail] = useState(true);
   const [imageState, setImageState] = useState<any>([]);
   const [ImageLoading, setImageLoading] = useState(false);
@@ -103,15 +103,7 @@ function DetailProduct() {
         />
       </ImageContainer>
       <ProductDetail
-        title={loadProductByIdInfo?.data?.productInfo[0]?.title}
-        price={loadProductByIdInfo?.data?.productInfo[0]?.price}
-        color={loadProductByIdInfo?.data?.productInfo[0]?.color}
-        size={loadProductByIdInfo?.data?.productInfo[0]?.size}
-        id={loadProductByIdInfo?.data?.productInfo[0]?._id}
-        description={loadProductByIdInfo?.data?.productInfo[0]?.description}
-        descriptionTitle={
-          loadProductByIdInfo?.data?.productInfo[0]?.descriptionTitle
-        }
+        cartProductInfo={loadProductByIdInfo?.data?.productInfo[0]}
       />
     </AppContainer>
   );

@@ -1,3 +1,8 @@
+import {
+  ADD_TO_CART_FAILURE,
+  ADD_TO_CART_SUCCESS,
+  LOAD_CART_PRODUCTS_SUCCESS,
+} from "./../actions";
 import axios from "axios";
 import {
   all,
@@ -64,22 +69,6 @@ async function logOutAPI() {
   const response = await axios.get("/api/users/logout");
   return response.data;
 }
-// function* logOut() {
-//   try {
-//     const result = yield call(logOutAPI);
-
-//     yield put({
-//       type: LOG_OUT_SUCCESS,
-//       payload: result,
-//     });
-//   } catch (e) {
-//     console.error(e);
-//     yield put({
-//       type: LOG_OUT_FAILURE,
-//       payload: e,
-//     });
-//   }
-// }
 
 const logOutAsyncSaga = createAsyncSaga(logOutActionAsync, logOutAPI);
 
@@ -92,34 +81,41 @@ async function authCheckAPI() {
   return response.data;
 }
 
-// function* authCheck() {
-//   try {
-//     const result = yield call(authCheckAPI);
-//     yield put({
-//       type: AUTH_CHECK_SUCCESS,
-//       payload: result,
-//     });
-//   } catch (e) {
-//     console.error(e);
-//     yield put({
-//       type: AUTH_CHECK_FAILURE,
-//       payload: e,
-//     });
-//   }
-// }
-
 const authCheckAsyncSaga = createAsyncSaga(authCheckActionAsync, authCheckAPI);
 
 function* authCheckSaga() {
   yield takeEvery(AUTH_CHECK_REQUEST, authCheckAsyncSaga);
 }
 
-async function addToCartAPI(_id: string) {
-  const response = await axios.get(`/api/users/addToCart?productId=${_id}`);
+async function addToCartAPI(_id: string, productInfo: ProductByIdInfo) {
+  const response = await axios.post(
+    `/api/users/addToCart?productId=${_id}`,
+    productInfo
+  );
   return response.data;
 }
 
-const addToCartAsyncSaga = createAsyncSaga(addToCartActionAsync, addToCartAPI);
+// const addToCartAsyncSaga = createAsyncSaga(addToCartActionAsync, addToCartAPI);
+
+function* addToCartAsyncSaga(action: any) {
+  try {
+    const addToCartResult = yield call(
+      addToCartAPI,
+      action.id,
+      action.productInfo
+    );
+    yield put({
+      type: ADD_TO_CART_SUCCESS,
+      payload: addToCartResult,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: ADD_TO_CART_FAILURE,
+      payload: error.response.data,
+    });
+  }
+}
 
 function* addToCartSaga() {
   yield takeLatest(ADD_TO_CART_REQUEST, addToCartAsyncSaga);
@@ -130,7 +126,7 @@ async function removeCartItemAPI(id: string) {
   response.data.userCart.forEach((cartItem: UserCartInfo) => {
     response.data.productInfo.forEach(
       (productItemInfo: ProductByIdInfo, index: any) => {
-        if (cartItem.id === productItemInfo.id) {
+        if (cartItem.id === productItemInfo._id) {
           response.data.userCart[index].quantity = productItemInfo.quantity;
         }
       }

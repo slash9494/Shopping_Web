@@ -92,7 +92,6 @@ function UploadProductForm(props: any) {
     color: null,
   });
   const [images, setImages] = useState<Images>([]);
-  console.log(images);
   const [category, setCategory] = useState<number | string>("");
   const [section, setSection] = useState("");
   const [sizeValues, setSizeValues] = useState<number[]>([]);
@@ -167,8 +166,9 @@ function UploadProductForm(props: any) {
       color: color,
       images: images,
       category: category,
+      section: section,
     };
-    console.log(body);
+
     if (section === "man") {
       dispatch(uploadManProductActionAsync.request(body));
     }

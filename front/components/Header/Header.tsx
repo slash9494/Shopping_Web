@@ -52,7 +52,6 @@ const useStyles = makeStyles({
 function Header() {
   const router = useRouter();
   const pathName = router.pathname;
-  console.log(pathName);
   const classes = useStyles();
   const dispatch = useDispatch();
   const checkUserDataInfo = createSelector(
@@ -213,7 +212,11 @@ function Header() {
           searchValue={upDateSearchTerm}
         />
       ) : null}
-      <CartDrawer open={open} closeCartDrawer={closeCartDrawer} />
+      <CartDrawer
+        open={open}
+        closeCartDrawer={closeCartDrawer}
+        userCartInfo={userInfo.data?.cart}
+      />
     </>
   );
 }

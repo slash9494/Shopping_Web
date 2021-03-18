@@ -77,7 +77,8 @@ router.get("/logout", auth, (req, res) => {
   });
 });
 
-router.get("/addToCart", auth, (req, res) => {
+router.post("/addToCart", auth, (req, res) => {
+  const productInfo = req.body;
   User.findOne({ _id: req.user._id }, (err, userInfo) => {
     let duplicate = false;
 
@@ -103,8 +104,9 @@ router.get("/addToCart", auth, (req, res) => {
         {
           $push: {
             cart: {
-              id: req.query.productId,
               quantity: 1,
+              id: req.query.productId,
+              productInfo,
               date: Date.now(),
             },
           },

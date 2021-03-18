@@ -1,10 +1,7 @@
-import { Action } from "../modules/types";
 import React, { useEffect, Dispatch } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { RootState } from "../modules/reducers";
-import { AUTH_CHECK_REQUEST, authCheckActionAsync } from "../modules/actions";
-import userReducer from "../modules";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
 function Auth(
