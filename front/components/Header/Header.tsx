@@ -30,6 +30,7 @@ import {
   loadManProductsActionAsync,
   loadWomanProductsActionAsync,
   loadKidProductsActionAsync,
+  authCheckActionAsync,
 } from "../../modules";
 import CartDrawer from "./Sections/CartDrawer";
 export type Filters = {
@@ -184,7 +185,7 @@ function Header() {
         </Hidden>
         <Hidden mdUp implementation="css">
           <BagContainer>
-            <OptionLink href="/uploadProduct">
+            <OptionLink href="/cart">
               <StyledBadge
                 badgeContent={badgeCount}
                 color="default"
@@ -212,11 +213,11 @@ function Header() {
           searchValue={upDateSearchTerm}
         />
       ) : null}
-      <CartDrawer
+      {/* <CartDrawer
         open={open}
         closeCartDrawer={closeCartDrawer}
         userCartInfo={userInfo.data?.cart}
-      />
+      /> */}
     </>
   );
 }

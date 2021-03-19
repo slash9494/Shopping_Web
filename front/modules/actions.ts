@@ -10,6 +10,7 @@ import {
   LoadProductsInfo,
   LoadProductByIdInfo,
 } from "./types";
+import { any } from "prop-types";
 
 // User Action //
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
@@ -103,7 +104,11 @@ export const addToCartActionAsync = createAsyncAction(
   ADD_TO_CART_FAILURE
 )<any, UserInfo, AxiosError>();
 
-//removecartitem
+export const removeCartActionAsync = createAsyncAction(
+  REMOVE_CART_ITEM_REQUEST,
+  REMOVE_CART_ITEM_SUCCESS,
+  REMOVE_CART_ITEM_FAILURE
+)<any, UserInfo, AxiosError>();
 
 // Upload ActionCreator //
 

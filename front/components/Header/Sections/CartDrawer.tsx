@@ -5,7 +5,6 @@ import {
   Theme,
   createStyles,
   Grid,
-  CardMedia,
   CardContent,
   Typography,
   Divider,
@@ -19,14 +18,26 @@ interface CartDrawerProps {
 }
 
 const CartDrawerContainer = styled.div`
-  width: 30vw;
+  @media screen and (min-width: 1600px) {
+    width: 500px;
+  }
+  @media screen and (max-width: 1600px) and (min-width: 1300px) {
+    width: 400px;
+  }
+  width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 `;
 
 const Footer = styled.div`
-  width: 30%;
+  width: 250px;
+  @media screen and (min-width: 1600px) {
+    width: 500px;
+  }
+  @media screen and (max-width: 1600px) and (min-width: 1300px) {
+    width: 400px;
+  }
   height: 70px;
   padding: 10px;
   display: flex;
@@ -56,13 +67,12 @@ const Button = styled.a`
 const ImageContainer = styled.div`
   width: 50%;
   height: 100%;
-  padding: 0% 10%;
-  @media screen and (max-width: 1300px) {
-    padding: 3% 5%;
-  }
-  @media screen and (min-width: 1900px) {
-    padding: 0% 13%;
-  }
+`;
+
+const Img = styled.img`
+  width: 100%;
+  height: 100%;
+  padding: 10% 20%;
 `;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -70,20 +80,11 @@ const useStyles = makeStyles((theme: Theme) =>
     item: {
       padding: theme.spacing(2),
       display: "flex",
-      textAlign: "center",
       maxWidth: "100%",
       border: "transparent",
       boxShadow: "none",
-      height: "300px",
-      [theme.breakpoints.up("xl")]: {
-        height: "30vh",
-      },
-    },
-    media: {
-      paddingTop: "150%",
-      [theme.breakpoints.up("xl")]: {
-        height: "22vh",
-      },
+      height: "15vw",
+      maxHeight: "300px",
     },
     cardContent: {
       width: "50%",
@@ -91,38 +92,59 @@ const useStyles = makeStyles((theme: Theme) =>
     gridContainer: {
       height: "100%",
     },
+    text: {
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "1vw",
+      },
+    },
   })
 );
 
 function CartDrawer(props: CartDrawerProps) {
   const classes = useStyles();
   return (
-    <Drawer open={true} anchor="right" variant="persistent">
-      <CartDrawerContainer onMouseLeave={props.closeCartDrawer}>
+    <Drawer
+      open={props.open}
+      anchor="right"
+      variant="persistent"
+      onMouseLeave={props.closeCartDrawer}
+      transitionDuration={600}
+    >
+      <CartDrawerContainer>
         <Grid container direction="column" className={classes.gridContainer}>
           {props.userCartInfo?.map((item: any) => {
             return (
               <>
                 <Grid item className={classes.item}>
                   <ImageContainer>
-                    <CardMedia
-                      className={classes.media}
-                      image={`http://localhost:5000/${item.productInfo.image}`}
+                    <Img
+                      src={`http://localhost:5000/${item.productInfo.image}`}
                     />
                   </ImageContainer>
                   <CardContent className={classes.cardContent}>
                     <Typography align="left">
-                      <h3> {item.productInfo.title} </h3>
-                      <div>{item.productInfo.price}원</div>
-                      <div></div>
-                      <div>
+                      <Typography
+                        variant="subtitle1"
+                        style={{ fontWeight: "bold" }}
+                        className={classes.text}
+                      >
+                        {" "}
+                        {item.productInfo.title}
+                      </Typography>
+                      <Typography className={classes.text}>
+                        {item.productInfo.price}원
+                      </Typography>
+
+                      <Typography className={classes.text}>
                         {item.productInfo.size === 1
                           ? "S"
                           : item.productInfo.size === 2
                           ? "M"
                           : "L"}
-                      </div>
-                      <h3>{item.quantity}개</h3>
+                      </Typography>
+                      <Typography variant="subtitle2" className={classes.text}>
+                        {item.quantity}개
+                      </Typography>
                     </Typography>
                   </CardContent>
                 </Grid>

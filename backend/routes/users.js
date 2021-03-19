@@ -121,43 +121,17 @@ router.post("/addToCart", auth, (req, res) => {
   });
 });
 
-router.get("/removeFromCart", auth, (req, res) => {
+router.post("/removeFromCart", auth, (req, res) => {
+  const size = req.size;
   User.findOneAndUpdate(
-    { _id: req.user._id },
+    { _id: req.user._id, "cart.id": req.query.productId, "cart.size": size },
     {
-      $pull: { cart: { id: req.query._id } },
+      $pull: { cart: { id: req.query.productId } },
     },
     { new: true },
     (err, userInfo) => {
-      let userCart = userInfo.cart;
-      let array = cart.map((item) => {
-        return item.id;
-      });
-
-      ManProduct.find({ _id: { $in: array } })
-        .populate("writer")
-        .exec((err, productInfo) => {
-          return res.status(200).json({
-            productInfo,
-            userCart,
-          });
-        });
-      WomanProduct.find({ _id: { $in: array } })
-        .populate("writer")
-        .exec((err, productInfo) => {
-          return res.status(200).json({
-            productInfo,
-            userCart,
-          });
-        });
-      KidProduct.find({ _id: { $in: array } })
-        .populate("writer")
-        .exec((err, productInfo) => {
-          return res.status(200).json({
-            productInfo,
-            userCart,
-          });
-        });
+      if (err) return res.json({ removeCartSuccess: false, err });
+      res.status(200).json({ removeCartSuccess: true, cart: userInfo.cart });
     }
   );
 });

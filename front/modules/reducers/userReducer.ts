@@ -19,6 +19,9 @@ import {
   ADD_TO_CART_REQUEST,
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILURE,
+  REMOVE_CART_ITEM_FAILURE,
+  REMOVE_CART_ITEM_REQUEST,
+  REMOVE_CART_ITEM_SUCCESS,
 } from "../actions";
 
 export const initialState: UserState = {
@@ -92,6 +95,20 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   [ADD_TO_CART_FAILURE]: (state, action) => ({
     ...state,
     userInfo: asyncState.error(action.payload),
+  }),
+  [REMOVE_CART_ITEM_FAILURE]: (state, action) => ({
+    ...state,
+    userInfo: asyncState.error(action.payload),
+  }),
+  [REMOVE_CART_ITEM_REQUEST]: (state) => ({
+    ...state,
+  }),
+  [REMOVE_CART_ITEM_SUCCESS]: (state, action) => ({
+    ...state,
+    userInfo: asyncState.success({
+      ...state.userInfo?.data,
+      cart: action.payload,
+    }),
   }),
 });
 

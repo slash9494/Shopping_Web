@@ -74,9 +74,7 @@ export const OptionLink = styled.a`
 
 export const BagContainer = styled.div`
   width: 20vw;
-  padding: 0;
-  padding-left: 10vw;
-  padding-right: 3vw;
+  padding: 5px 3vw 0 10vw;
   display: flex;
   justify-content: center;
   align-items: center;

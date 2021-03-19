@@ -160,7 +160,7 @@ function ProductDetail(props: ProductDetailProps) {
     <ProductDetailContainer>
       <CardContent>
         <Typography variant="h6" className={classes.title}>
-          {props.cartProductInfo.title} &nbsp;
+          {props.cartProductInfo?.title} &nbsp;
           <PopOverButton onClick={touchOpen}>
             <HelpIcon fontSize="small" />
             자세히 알아보기
@@ -180,15 +180,15 @@ function ProductDetail(props: ProductDetailProps) {
             }}
           >
             <Description
-              description={props.cartProductInfo.description}
-              descriptionTitle={props.cartProductInfo.descriptionTitle}
+              description={props.cartProductInfo?.description}
+              descriptionTitle={props.cartProductInfo?.descriptionTitle}
             />
           </Popover>
         </Typography>
         <Typography variant="body2">
-          {props.cartProductInfo.price} 원
+          {props.cartProductInfo?.price} 원
           <br />
-          색상: {props.cartProductInfo.color}
+          색상: {props.cartProductInfo?.color}
         </Typography>
       </CardContent>
       <Divider classes={{ root: classes.divider }} />
@@ -206,13 +206,13 @@ function ProductDetail(props: ProductDetailProps) {
           <MenuItem value="">
             <em>사이즈 선택</em>
           </MenuItem>
-          {props.cartProductInfo.size?.find((values) => values === 1) ? (
+          {props.cartProductInfo?.size?.find((values) => values === 1) ? (
             <MenuItem value={1}>S</MenuItem>
           ) : null}
-          {props.cartProductInfo.size?.find((values) => values === 2) ? (
+          {props.cartProductInfo?.size?.find((values) => values === 2) ? (
             <MenuItem value={2}>M</MenuItem>
           ) : null}
-          {props.cartProductInfo.size?.find((values) => values === 3) ? (
+          {props.cartProductInfo?.size?.find((values) => values === 3) ? (
             <MenuItem value={3}>L</MenuItem>
           ) : null}
         </Select>

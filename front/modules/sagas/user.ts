@@ -2,6 +2,11 @@ import {
   ADD_TO_CART_FAILURE,
   ADD_TO_CART_SUCCESS,
   LOAD_CART_PRODUCTS_SUCCESS,
+  removeCartActionAsync,
+  REMOVE_CART_ITEM_REQUEST,
+  REMOVE_CART_ITEM_FAILURE,
+  REMOVE_CART_ITEM_SUCCESS,
+  AUTH_CHECK_SUCCESS,
 } from "./../actions";
 import axios from "axios";
 import {
@@ -108,6 +113,12 @@ function* addToCartAsyncSaga(action: any) {
       type: ADD_TO_CART_SUCCESS,
       payload: addToCartResult,
     });
+    const updateUserInfo = yield call(authCheckAPI);
+    console.log(updateUserInfo);
+    yield put({
+      type: AUTH_CHECK_SUCCESS,
+      payload: updateUserInfo,
+    });
   } catch (error) {
     console.error(error);
     yield put({
@@ -121,26 +132,37 @@ function* addToCartSaga() {
   yield takeLatest(ADD_TO_CART_REQUEST, addToCartAsyncSaga);
 }
 
-async function removeCartItemAPI(id: string) {
-  const response = await axios.get(`/api/users/removeFromCart?_id=${id}`);
-  response.data.userCart.forEach((cartItem: UserCartInfo) => {
-    response.data.productInfo.forEach(
-      (productItemInfo: ProductByIdInfo, index: any) => {
-        if (cartItem.id === productItemInfo._id) {
-          response.data.userCart[index].quantity = productItemInfo.quantity;
-        }
-      }
-    );
-  });
-
+async function removeCartItemAPI(id: string, size: number) {
+  const response = await axios.post(
+    `/api/users/removeFromCart?productId=${id}`,
+    size
+  );
   return response.data;
 }
 
-// const removeCartItemAsyncSaga = createAsyncSaga()
+function* removeCartItemAsyncSaga(action: any) {
+  try {
+    const removeCartItemResult = yield call(
+      removeCartItemAPI,
+      action.id,
+      action.size
+    );
+    yield put({
+      type: REMOVE_CART_ITEM_SUCCESS,
+      payload: removeCartItemResult,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: REMOVE_CART_ITEM_FAILURE,
+      payload: error.response.data,
+    });
+  }
+}
 
-// function* removeCartItemSaga(){
-//   yield takeLatest()
-// }
+function* removeCartItemSaga() {
+  yield takeLatest(REMOVE_CART_ITEM_REQUEST, removeCartItemAsyncSaga);
+}
 
 export default function* userSaga() {
   yield all([
@@ -149,5 +171,6 @@ export default function* userSaga() {
     fork(logOutSaga),
     fork(authCheckSaga),
     fork(addToCartSaga),
+    fork(removeCartItemSaga),
   ]);
 }

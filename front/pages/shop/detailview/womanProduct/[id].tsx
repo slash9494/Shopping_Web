@@ -70,6 +70,7 @@ function DetailProduct() {
     (productReducer) => productReducer.loadProductByIdInfo
   );
   const loadProductByIdInfo = useSelector(checkLoadProductInfo);
+
   useEffect(() => {
     if (loadProductByIdInfo?.data?.productInfo[0]?.images.length > 0) {
       const images = loadProductByIdInfo?.data?.productInfo[0]?.images;

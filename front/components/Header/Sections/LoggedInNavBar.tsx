@@ -34,7 +34,6 @@ const OptionLink = styled.a`
 `;
 const BagOptionLink = styled.a`
   padding: 10px 15px;
-  cursor: pointer;
   font-size: 1rem;
   text-decoration: none;
   color: black;
@@ -80,7 +79,7 @@ function LoggedInNavBar(props: LogInNavBarProps) {
         </Button>
       </form>
       <OptionLink href="/upLoadProduct">UPLOAD</OptionLink>
-      <BagOptionLink href="/uploadProduct">
+      <BagOptionLink>
         <StyledBadge
           badgeContent={props.badgeCount}
           color="default"
