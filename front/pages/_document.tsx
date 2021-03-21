@@ -40,6 +40,7 @@ export default class MyDocument extends Document {
         <Head />
         <body style={{ paddingTop: "90px" }}>
           <script src="https://polyfill.io/v3/polyfill.min.js?features=es2015%2Ces2016%2Ces2017%2Ces2018%2Ces2019" />
+          {/* <script src="https://www.paypalobjects.com/api/checkout.js" /> */}
           <Main />
           <NextScript />
         </body>

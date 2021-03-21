@@ -10,6 +10,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import styled from "styled-components";
+import Link from "next/link";
 
 interface CartDrawerProps {
   open: boolean;
@@ -38,7 +39,7 @@ const Footer = styled.div`
   @media screen and (max-width: 1600px) and (min-width: 1300px) {
     width: 400px;
   }
-  height: 70px;
+  height: 100px;
   padding: 10px;
   display: flex;
   justify-content: center;
@@ -48,12 +49,12 @@ const Footer = styled.div`
   top: 90%;
 `;
 
-const Button = styled.a`
+const Button = styled.div`
   background: black;
   color: white;
   cursor: pointer;
   font-size: 15px;
-  height: 80%;
+  height: 30px;
   width: 100%;
   &:hover {
     background: #495057;
@@ -112,50 +113,56 @@ function CartDrawer(props: CartDrawerProps) {
     >
       <CartDrawerContainer>
         <Grid container direction="column" className={classes.gridContainer}>
-          {props.userCartInfo?.map((item: any) => {
-            return (
-              <>
-                <Grid item className={classes.item}>
-                  <ImageContainer>
-                    <Img
-                      src={`http://localhost:5000/${item.productInfo.image}`}
-                    />
-                  </ImageContainer>
-                  <CardContent className={classes.cardContent}>
-                    <Typography align="left">
-                      <Typography
-                        variant="subtitle1"
-                        style={{ fontWeight: "bold" }}
-                        className={classes.text}
-                      >
-                        {" "}
-                        {item.productInfo.title}
-                      </Typography>
-                      <Typography className={classes.text}>
-                        {item.productInfo.price}원
-                      </Typography>
+          {props.userCartInfo?.length > 0 &&
+            props.userCartInfo?.map((item: any) => {
+              return (
+                <>
+                  <Grid item className={classes.item}>
+                    <ImageContainer>
+                      <Img
+                        src={`http://localhost:5000/${item.productInfo.image}`}
+                      />
+                    </ImageContainer>
+                    <CardContent className={classes.cardContent}>
+                      <Typography align="left">
+                        <Typography
+                          variant="subtitle1"
+                          style={{ fontWeight: "bold" }}
+                          className={classes.text}
+                        >
+                          {" "}
+                          {item.productInfo.title}
+                        </Typography>
+                        <Typography className={classes.text}>
+                          {item.productInfo.price}원
+                        </Typography>
 
-                      <Typography className={classes.text}>
-                        {item.productInfo.size === 1
-                          ? "S"
-                          : item.productInfo.size === 2
-                          ? "M"
-                          : "L"}
+                        <Typography className={classes.text}>
+                          {item.productInfo.size === 1
+                            ? "S"
+                            : item.productInfo.size === 2
+                            ? "M"
+                            : "L"}
+                        </Typography>
+                        <Typography
+                          variant="subtitle2"
+                          className={classes.text}
+                        >
+                          {item.quantity}개
+                        </Typography>
                       </Typography>
-                      <Typography variant="subtitle2" className={classes.text}>
-                        {item.quantity}개
-                      </Typography>
-                    </Typography>
-                  </CardContent>
-                </Grid>
-                <Divider variant="middle" />
-              </>
-            );
-          })}
+                    </CardContent>
+                  </Grid>
+                  <Divider variant="middle" />
+                </>
+              );
+            })}
         </Grid>
       </CartDrawerContainer>
       <Footer>
-        <Button href="/cart">장바구니로 가기</Button>
+        <Link href="/cart">
+          <Button>장바구니로 가기</Button>
+        </Link>
       </Footer>
     </Drawer>
   );

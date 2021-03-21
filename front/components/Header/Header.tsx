@@ -18,7 +18,7 @@ import { useRouter } from "next/router";
 import {
   HeaderContainer,
   LeftMenuContainer,
-  OptionLink,
+  LinkContainer,
   LogoContainer,
   LogoLink,
   OptionsContainer,
@@ -68,6 +68,8 @@ function Header() {
   useEffect(() => {
     if (userInfo.data?.cart?.length > 0) {
       setBadgeCount(userInfo.data?.cart?.length);
+    } else {
+      setBadgeCount(0);
     }
   }, [userInfo.data?.cart]);
   const [filters, setFilters] = useState<Filters>({
@@ -152,13 +154,19 @@ function Header() {
         </Hidden>
         <Hidden smDown implementation="css">
           <LeftMenuContainer>
-            <OptionLink href="/contact">CONTACT</OptionLink>
-            <OptionLink href="/uploadProduct">VIDEO BOOK</OptionLink>
+            <Link href="/contact">
+              <LinkContainer>CONTACT</LinkContainer>
+            </Link>
+            <Link href="/uploadProduct">
+              <LinkContainer>VIDEO BOOK</LinkContainer>
+            </Link>
           </LeftMenuContainer>
         </Hidden>
         <LogoContainer>
-          <LogoLink href="/">
-            <Logo height={"100%"} width={"100%"} />
+          <LogoLink>
+            <Link href="/">
+              <Logo height={"100%"} width={"100%"} />
+            </Link>
           </LogoLink>
         </LogoContainer>
         <Hidden smDown implementation="css">
@@ -185,15 +193,17 @@ function Header() {
         </Hidden>
         <Hidden mdUp implementation="css">
           <BagContainer>
-            <OptionLink href="/cart">
-              <StyledBadge
-                badgeContent={badgeCount}
-                color="default"
-                showZero={true}
-              >
-                <ShoppingBag width={30} height={30} />
-              </StyledBadge>
-            </OptionLink>
+            <Link href="/cart">
+              <LinkContainer>
+                <StyledBadge
+                  badgeContent={badgeCount}
+                  color="default"
+                  showZero={true}
+                >
+                  <ShoppingBag width={30} height={30} />
+                </StyledBadge>
+              </LinkContainer>
+            </Link>
           </BagContainer>
         </Hidden>
       </HeaderContainer>
@@ -213,11 +223,11 @@ function Header() {
           searchValue={upDateSearchTerm}
         />
       ) : null}
-      {/* <CartDrawer
+      <CartDrawer
         open={open}
         closeCartDrawer={closeCartDrawer}
         userCartInfo={userInfo.data?.cart}
-      /> */}
+      />
     </>
   );
 }

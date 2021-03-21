@@ -147,6 +147,7 @@ function ProductDetail(props: ProductDetailProps) {
         type: ADD_TO_CART_REQUEST,
         id: productId,
         cartProductInfo: cartProductInfo,
+        size: size,
       });
     }
   };

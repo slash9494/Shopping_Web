@@ -5,6 +5,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import ManImage from "../images/ManCategory.jpg";
 import WomanImage from "../images/WomanCategory.jpg";
 import KidImage from "../images/KidCategory.jpg";
+import Link from "next/link";
 
 const styles = {
   imageStyle: {
@@ -37,7 +38,7 @@ const DirectoryContainer = styled.div`
   }
 `;
 
-const MenuItemContainer = styled.a`
+const MenuItemContainer = styled.div`
   height: 80vh;
   min-width: 30%;
   width: 22vw;
@@ -99,35 +100,39 @@ function HomeLayout() {
   return (
     <LandingPageContainer>
       <DirectoryContainer>
-        <MenuItemContainer href="/shop/manPage">
-          <CardMedia
-            className="image"
-            style={styles.imageStyle}
-            image={ManImage}
-            title="Man"
-          />
-          <ContentContainer>MAN</ContentContainer>
-        </MenuItemContainer>
-
-        <MenuItemContainer href="/shop/womanPage">
-          <CardMedia
-            className="image"
-            style={styles.imageStyle}
-            image={WomanImage}
-            title="Man"
-          />
-          <ContentContainer>WOMAN</ContentContainer>
-        </MenuItemContainer>
-
-        <MenuItemContainer href="/shop/kidPage">
-          <CardMedia
-            className="image"
-            style={styles.imageStyle}
-            image={KidImage}
-            title="Man"
-          />
-          <ContentContainer>KID</ContentContainer>
-        </MenuItemContainer>
+        <Link href="/shop/manPage">
+          <MenuItemContainer>
+            <CardMedia
+              className="image"
+              style={styles.imageStyle}
+              image={ManImage}
+              title="Man"
+            />
+            <ContentContainer>MAN</ContentContainer>
+          </MenuItemContainer>
+        </Link>
+        <Link href="/shop/womanPage">
+          <MenuItemContainer>
+            <CardMedia
+              className="image"
+              style={styles.imageStyle}
+              image={WomanImage}
+              title="Man"
+            />
+            <ContentContainer>WOMAN</ContentContainer>
+          </MenuItemContainer>
+        </Link>
+        <Link href="/shop/kidPage">
+          <MenuItemContainer>
+            <CardMedia
+              className="image"
+              style={styles.imageStyle}
+              image={KidImage}
+              title="Man"
+            />
+            <ContentContainer>KID</ContentContainer>
+          </MenuItemContainer>
+        </Link>
       </DirectoryContainer>
     </LandingPageContainer>
   );

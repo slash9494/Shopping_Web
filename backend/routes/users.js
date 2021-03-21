@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
-const { ManProduct, WomanProduct, KidProduct } = require("../models/Product");
 
 router.post("/signUp", async (req, res) => {
   try {
@@ -78,24 +77,34 @@ router.get("/logout", auth, (req, res) => {
 });
 
 router.post("/addToCart", auth, (req, res) => {
-  const productInfo = req.body;
+  const productInfo = req.body.productInfo;
+  const size = req.body.size;
   User.findOne({ _id: req.user._id }, (err, userInfo) => {
     let duplicate = false;
 
     userInfo.cart.forEach((item) => {
       if (item.id == req.query.productId) {
-        duplicate = true;
+        if (item.productInfo.size == size) {
+          duplicate = true;
+        }
       }
     });
 
     if (duplicate) {
       User.findOneAndUpdate(
-        { _id: req.user._id, "cart.id": req.query.productId },
+        {
+          _id: req.user._id,
+          "cart.id": req.query.productId,
+          "cart.productInfo.size": size,
+        },
         { $inc: { "cart.$.quantity": 1 } },
         { new: true },
         (err, userInfo) => {
           if (err) return res.json({ addToCartSuccess: false, err });
-          res.status(200).json({ addToCartSuccess: true, cart: userInfo.cart });
+          res.status(200).json({
+            addToCartSuccess: true,
+            cart: userInfo.cart,
+          });
         }
       );
     } else {
@@ -122,11 +131,21 @@ router.post("/addToCart", auth, (req, res) => {
 });
 
 router.post("/removeFromCart", auth, (req, res) => {
-  const size = req.size;
+  const size = req.body.size;
+
   User.findOneAndUpdate(
-    { _id: req.user._id, "cart.id": req.query.productId, "cart.size": size },
     {
-      $pull: { cart: { id: req.query.productId } },
+      _id: req.user._id,
+      "cart.id": req.query.productId,
+      "cart.productInfo.size": size,
+    },
+    {
+      $pull: {
+        cart: {
+          "productInfo._id": req.query.productId,
+          "productInfo.size": size,
+        },
+      },
     },
     { new: true },
     (err, userInfo) => {

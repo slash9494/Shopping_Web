@@ -1,8 +1,6 @@
 import {
   ADD_TO_CART_FAILURE,
   ADD_TO_CART_SUCCESS,
-  LOAD_CART_PRODUCTS_SUCCESS,
-  removeCartActionAsync,
   REMOVE_CART_ITEM_REQUEST,
   REMOVE_CART_ITEM_FAILURE,
   REMOVE_CART_ITEM_SUCCESS,
@@ -27,14 +25,12 @@ import {
   signUpActionAsync,
   logOutActionAsync,
   authCheckActionAsync,
-  addToCartActionAsync,
   ADD_TO_CART_REQUEST,
 } from "../actions";
 
 import createAsyncSaga, {
   createAsyncDummySaga,
 } from "../utils/createAsyncSaga";
-import { UserCartInfo } from "../../pages/cart";
 import { ProductByIdInfo } from "../types";
 
 type LoginAPIProps = {
@@ -92,29 +88,31 @@ function* authCheckSaga() {
   yield takeEvery(AUTH_CHECK_REQUEST, authCheckAsyncSaga);
 }
 
-async function addToCartAPI(_id: string, productInfo: ProductByIdInfo) {
-  const response = await axios.post(
-    `/api/users/addToCart?productId=${_id}`,
-    productInfo
-  );
+async function addToCartAPI(
+  _id: string,
+  productInfo: ProductByIdInfo,
+  size: number
+) {
+  const response = await axios.post(`/api/users/addToCart?productId=${_id}`, {
+    productInfo,
+    size,
+  });
   return response.data;
 }
-
-// const addToCartAsyncSaga = createAsyncSaga(addToCartActionAsync, addToCartAPI);
 
 function* addToCartAsyncSaga(action: any) {
   try {
     const addToCartResult = yield call(
       addToCartAPI,
       action.id,
-      action.productInfo
+      action.cartProductInfo,
+      action.size
     );
     yield put({
       type: ADD_TO_CART_SUCCESS,
       payload: addToCartResult,
     });
     const updateUserInfo = yield call(authCheckAPI);
-    console.log(updateUserInfo);
     yield put({
       type: AUTH_CHECK_SUCCESS,
       payload: updateUserInfo,
@@ -135,7 +133,7 @@ function* addToCartSaga() {
 async function removeCartItemAPI(id: string, size: number) {
   const response = await axios.post(
     `/api/users/removeFromCart?productId=${id}`,
-    size
+    { size }
   );
   return response.data;
 }
@@ -150,6 +148,11 @@ function* removeCartItemAsyncSaga(action: any) {
     yield put({
       type: REMOVE_CART_ITEM_SUCCESS,
       payload: removeCartItemResult,
+    });
+    const updateUserInfo = yield call(authCheckAPI);
+    yield put({
+      type: AUTH_CHECK_SUCCESS,
+      payload: updateUserInfo,
     });
   } catch (error) {
     console.error(error);

@@ -33,7 +33,7 @@ export const LogoContainer = styled.div`
   }
 `;
 
-export const LogoLink = styled.a`
+export const LogoLink = styled.div`
   width: 9vw;
   height: 70px;
   cursor: pointer;
@@ -64,7 +64,7 @@ export const OptionsContainer = styled.div`
   align-items: center;
 `;
 
-export const OptionLink = styled.a`
+export const LinkContainer = styled.div`
   padding: 10px 15px;
   cursor: pointer;
   font-size: 1rem;

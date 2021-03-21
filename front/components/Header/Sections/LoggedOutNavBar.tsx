@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import Link from "next/link";
 
-const OptionLink = styled.a`
+const LinkContainer = styled.div`
   padding: 10px 15px;
   cursor: pointer;
   font-size: 1rem;
@@ -18,8 +19,12 @@ const Container = styled.div`
 function LoggedOutNavBar() {
   return (
     <Container>
-      <OptionLink href="/signUp">SIGN UP</OptionLink>
-      <OptionLink href="/signIn">SIGN IN</OptionLink>
+      <Link href="/signUp">
+        <LinkContainer>SIGN UP</LinkContainer>
+      </Link>
+      <Link href="/signIn">
+        <LinkContainer>SIGN IN</LinkContainer>
+      </Link>
     </Container>
   );
 }

@@ -2,7 +2,8 @@ import React from "react";
 import { Divider, List, ListItem, ListItemText } from "@material-ui/core";
 import LoggedOutNavBar from "./LoggedOutNavBar";
 import LoggedInNavBar, { Container } from "./LoggedInNavBar";
-import { OptionLink } from "../HeaderContainer";
+import { LinkContainer } from "../HeaderContainer";
+import Link from "next/link";
 
 function DrawerList(props: any) {
   return (
@@ -15,8 +16,12 @@ function DrawerList(props: any) {
         )}
         <Divider />
         <Container>
-          <OptionLink href="/contact">CONTACT</OptionLink>
-          <OptionLink href="/uploadProduct">VIDEO BOOK</OptionLink>
+          <Link href="/contact">
+            <LinkContainer>CONTACT</LinkContainer>
+          </Link>
+          <Link href="/contact">
+            <LinkContainer>VIDEO BOOK</LinkContainer>
+          </Link>
         </Container>
       </List>
     </div>

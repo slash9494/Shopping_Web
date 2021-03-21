@@ -11,6 +11,7 @@ import {
 import { logOutActionAsync } from "../../../modules";
 import ShoppingBag from "../../../images/Shopping-bag.svg";
 import { Badge, Drawer } from "@material-ui/core";
+import Link from "next/link";
 interface LogInNavBarProps {
   badgeCount: number;
   showCartDrawer: any;
@@ -25,14 +26,14 @@ export const Container = styled.div`
   }
 `;
 
-const OptionLink = styled.a`
+const LinkContainer = styled.div`
   padding: 10px 15px;
   cursor: pointer;
   font-size: 1rem;
   text-decoration: none;
   color: black;
 `;
-const BagOptionLink = styled.a`
+const BagContainer = styled.div`
   padding: 10px 15px;
   font-size: 1rem;
   text-decoration: none;
@@ -78,8 +79,10 @@ function LoggedInNavBar(props: LogInNavBarProps) {
           SIGN OUT
         </Button>
       </form>
-      <OptionLink href="/upLoadProduct">UPLOAD</OptionLink>
-      <BagOptionLink>
+      <Link href="/upLoadProduct">
+        <LinkContainer>UPLOAD</LinkContainer>
+      </Link>
+      <BagContainer>
         <StyledBadge
           badgeContent={props.badgeCount}
           color="default"
@@ -89,7 +92,7 @@ function LoggedInNavBar(props: LogInNavBarProps) {
         >
           <ShoppingBag width={40} height={40} />
         </StyledBadge>
-      </BagOptionLink>
+      </BagContainer>
     </Container>
   );
 }
