@@ -268,7 +268,7 @@ function UploadProductForm(props: any) {
             <Grid item xs={12} className={classes.sizeContainer}>
               <SizeListContainer>
                 <FormControlLabel
-                  value="1"
+                  value="S"
                   control={
                     <Checkbox
                       color="default"
@@ -292,7 +292,7 @@ function UploadProductForm(props: any) {
               </SizeListContainer>
               <SizeListContainer>
                 <FormControlLabel
-                  value="2"
+                  value="M"
                   control={
                     <Checkbox
                       color="default"
@@ -316,7 +316,7 @@ function UploadProductForm(props: any) {
               </SizeListContainer>
               <SizeListContainer>
                 <FormControlLabel
-                  value="3"
+                  value="L"
                   control={
                     <Checkbox
                       color="default"

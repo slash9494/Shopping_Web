@@ -65,11 +65,12 @@ export const OptionsContainer = styled.div`
 `;
 
 export const LinkContainer = styled.div`
-  padding: 10px 15px;
+  padding: 10px 0.8vw;
   cursor: pointer;
   font-size: 1rem;
   text-decoration: none;
   color: black;
+  font-weight: bold;
 `;
 
 export const BagContainer = styled.div`

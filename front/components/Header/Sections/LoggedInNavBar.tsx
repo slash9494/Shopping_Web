@@ -12,15 +12,18 @@ import { logOutActionAsync } from "../../../modules";
 import ShoppingBag from "../../../images/Shopping-bag.svg";
 import { Badge, Drawer } from "@material-ui/core";
 import Link from "next/link";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 interface LogInNavBarProps {
   badgeCount: number;
   showCartDrawer: any;
+  userName: string;
 }
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
-
+  justify-content: flex-start;
   @media screen and (max-width: 956px) {
     flex-direction: column;
   }
@@ -45,6 +48,7 @@ const BagContainer = styled.div`
 const useStyles = makeStyles({
   button: {
     fontSize: "1rem",
+    fontWeight: "bold",
   },
   drawer: {
     zIndex: 10,
@@ -72,23 +76,52 @@ function LoggedInNavBar(props: LogInNavBarProps) {
     e.preventDefault();
     dispatch(logOutActionAsync.request());
   };
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Container>
-      <form onSubmit={onSubmit}>
-        <Button type="submit" className={classes.button}>
-          SIGN OUT
-        </Button>
-      </form>
-      <Link href="/upLoadProduct">
-        <LinkContainer>UPLOAD</LinkContainer>
-      </Link>
+      <Button
+        aria-haspopup="true"
+        onClick={handleClick}
+        className="classes.button"
+      >
+        <div style={{ fontSize: "16px" }}>{props.userName}</div>
+      </Button>
+      <Menu
+        id="userMenu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <Link href="/payHistoryPage">
+          <LinkContainer>결제내역</LinkContainer>
+        </Link>
+        <Link href="/upLoadProduct">
+          <LinkContainer>업로드</LinkContainer>
+        </Link>
+        <form
+          onSubmit={onSubmit}
+          style={{ paddingLeft: "8px", fontWeight: "bold" }}
+        >
+          <Button type="submit" className={classes.button}>
+            로그아웃
+          </Button>
+        </form>
+      </Menu>
       <BagContainer>
         <StyledBadge
           badgeContent={props.badgeCount}
           color="default"
           showZero={true}
           className="badge"
-          onMouseEnter={props.showCartDrawer}
+          onMouseOver={props.showCartDrawer}
         >
           <ShoppingBag width={40} height={40} />
         </StyledBadge>

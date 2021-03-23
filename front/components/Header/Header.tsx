@@ -34,7 +34,7 @@ import {
 } from "../../modules";
 import CartDrawer from "./Sections/CartDrawer";
 export type Filters = {
-  size: number[];
+  size: string[];
   category: number[];
   price: number[];
   [prop: string]: any;
@@ -80,7 +80,7 @@ function Header() {
 
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(16);
-  const handleFilters = (propedFilters: number[] | number, kind: string) => {
+  const handleFilters = (propedFilters: any[] | any, kind: string) => {
     const newFilters = { ...filters };
     newFilters[kind] = propedFilters;
     if (kind === "price") {
@@ -157,7 +157,7 @@ function Header() {
             <Link href="/contact">
               <LinkContainer>CONTACT</LinkContainer>
             </Link>
-            <Link href="/uploadProduct">
+            <Link href="/videoBook">
               <LinkContainer>VIDEO BOOK</LinkContainer>
             </Link>
           </LeftMenuContainer>
@@ -177,6 +177,7 @@ function Header() {
               <LoggedInNavBar
                 badgeCount={badgeCount}
                 showCartDrawer={showCartDrawer}
+                userName={userInfo?.data?.name}
               />
             )}
           </OptionsContainer>
@@ -211,7 +212,7 @@ function Header() {
       pathName === "/shop/manPage" ||
       pathName === "/shop/kidPage" ? (
         <ItemFilter
-          sizeFilters={(propedSizeFilters: number[]) =>
+          sizeFilters={(propedSizeFilters: string[]) =>
             handleFilters(propedSizeFilters, "size")
           }
           categoryFilters={(propedCategoryFilters: number[]) =>

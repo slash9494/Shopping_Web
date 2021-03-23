@@ -31,6 +31,9 @@ export const ADD_TO_CART_FAILURE = "ADD_TO_CART_FAILURE";
 export const REMOVE_CART_ITEM_REQUEST = "REMOVE_CART_ITEM_REQUEST";
 export const REMOVE_CART_ITEM_SUCCESS = "REMOVE_CART_ITEM_SUCCESS";
 export const REMOVE_CART_ITEM_FAILURE = "REMOVE_CART_ITEM_FAILURE";
+export const BUY_PRODUCTS_REQUEST = "BUY_PRODUCTS_REQUEST";
+export const BUY_PRODUCTS_SUCCESS = "BUY_PRODUCTS_SUCCESS";
+export const BUY_PRODUCTS_FAILURE = "BUY_PRODUCTS_FAILURE";
 
 // Upload Action //
 export const FILE_UPLOAD_REQUEST = "FILE_UPLOAD_REQUEST";
@@ -108,6 +111,12 @@ export const removeCartActionAsync = createAsyncAction(
   REMOVE_CART_ITEM_REQUEST,
   REMOVE_CART_ITEM_SUCCESS,
   REMOVE_CART_ITEM_FAILURE
+)<any, UserInfo, AxiosError>();
+
+export const buyProductsActionAsync = createAsyncAction(
+  BUY_PRODUCTS_REQUEST,
+  BUY_PRODUCTS_SUCCESS,
+  BUY_PRODUCTS_FAILURE
 )<any, UserInfo, AxiosError>();
 
 // Upload ActionCreator //

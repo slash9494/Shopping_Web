@@ -1,7 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User");
+const { ManProduct, WomanProduct, KidProduct } = require("../models/Product");
+const { Payment } = require("../models/Payment");
 const { auth } = require("../middleware/auth");
+const async = require("async");
+const moment = require("moment");
+require("moment-timezone");
 
 router.post("/signUp", async (req, res) => {
   try {
@@ -153,6 +158,203 @@ router.post("/removeFromCart", auth, (req, res) => {
       res.status(200).json({ removeCartSuccess: true, cart: userInfo.cart });
     }
   );
+});
+
+router.post("/successBuy", auth, (req, res) => {
+  let history = [];
+  let transactionData = {
+    user: {},
+    product: {},
+    data: {},
+  };
+  moment.tz.setDefault("Asia/Seoul");
+  const date = moment().format("YYYY-MM-DD HH:mm:ss");
+
+  req.body.cartInfo.forEach((item) => {
+    history.push({
+      dateOfPurchase: date,
+      name: item.productInfo.title,
+      id: item.id,
+      price: item.productInfo.price,
+      quantity: item.quantity,
+      paymentId: req.body.paymentData.id,
+      section: item.productInfo.section,
+      size: item.productInfo.size,
+    });
+  });
+  transactionData.user = {
+    id: req.user._id,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    email: req.user.email,
+  };
+  transactionData.data = {
+    payer: req.body.paymentData.payer,
+    purchaseUnits: req.body.paymentData.purchase_units,
+  };
+  transactionData.product = history;
+
+  User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $push: { history: history }, $set: { cart: [] } },
+    { new: true },
+    (err, user) => {
+      if (err) return res.json({ userPayInfoSuccess: false, err });
+      console.log(transactionData);
+      const payment = new Payment(transactionData);
+      payment.save((err, userInfo) => {
+        if (err) return res.json({ paymentUpdateSuccess: false, err });
+
+        let cartProductsForUpdate = [];
+
+        userInfo.product.forEach((item) => {
+          cartProductsForUpdate.push({
+            id: item.id,
+            quantity: item.quantity,
+            size: item.size,
+            section: item.section,
+          });
+        });
+
+        async.eachSeries(
+          cartProductsForUpdate,
+          (item, callback) => {
+            if (item.section === "man") {
+              if (item.size === 1) {
+                ManProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfS: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              } else if (item.size === 2) {
+                ManProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfM: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              } else {
+                ManProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfL: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              }
+            } else if (item.section === "woman") {
+              if (item.size === 1) {
+                WomanProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfS: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              } else if (item.size === 2) {
+                WomanProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfM: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              } else {
+                WomanProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfL: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              }
+            } else if (item.section === "kid") {
+              if (item.size === 1) {
+                WomanProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfS: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              } else if (item.size === 2) {
+                WomanProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfM: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              } else {
+                WomanProduct.update(
+                  { _id: item.id },
+                  {
+                    $inc: {
+                      sold: item.quantity,
+                      amountOfL: -item.quantity,
+                    },
+                  },
+                  { new: false },
+                  callback
+                );
+              }
+            }
+          },
+          (err) => {
+            if (err) return res.json({ productBuySuccess: false, err });
+            res.status(200).json({
+              productBuySuccess: true,
+            });
+          }
+        );
+      });
+    }
+  );
+
+  router.get("/getHistory", auth, (req, res) => {
+    User.findOne({ _id: req.user._id }, (err, userInfo) => {
+      let history = userInfo.history;
+      if (err) return res.status(400).send(err);
+      return res
+        .status(200)
+        .json({ getHistorySuccess: true, history: history });
+    });
+  });
 });
 
 module.exports = router;

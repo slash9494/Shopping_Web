@@ -32,7 +32,7 @@ export interface CartProductInfo {
   section: string;
 }
 
-interface CartInfo {
+export interface CartInfo {
   addToCartSuccess: boolean | null;
   id: number;
   quantity: number;

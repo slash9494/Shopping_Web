@@ -1,3 +1,4 @@
+import { ProductsInfo } from "./../types";
 import {
   ADD_TO_CART_FAILURE,
   ADD_TO_CART_SUCCESS,
@@ -5,6 +6,9 @@ import {
   REMOVE_CART_ITEM_FAILURE,
   REMOVE_CART_ITEM_SUCCESS,
   AUTH_CHECK_SUCCESS,
+  BUY_PRODUCTS_SUCCESS,
+  BUY_PRODUCTS_FAILURE,
+  BUY_PRODUCTS_REQUEST,
 } from "./../actions";
 import axios from "axios";
 import {
@@ -15,6 +19,7 @@ import {
   takeLatest,
   takeEvery,
   delay,
+  SagaReturnType,
 } from "redux-saga/effects";
 import {
   LOG_IN_REQUEST,
@@ -31,18 +36,25 @@ import {
 import createAsyncSaga, {
   createAsyncDummySaga,
 } from "../utils/createAsyncSaga";
-import { ProductByIdInfo } from "../types";
+import { ProductByIdInfo, CartInfo } from "../types";
 
-type LoginAPIProps = {
+interface LoginAPIProps {
   email: string;
   password: string;
-};
+}
 
-type SignUpProps = {
+interface SignUpProps {
   email: string;
   password: string;
   name: string;
-};
+}
+
+interface AddToCartAPIProps {
+  addToCartAPI: Promise<any>;
+  id: string;
+  size: number;
+  cartProductInfo: ProductsInfo;
+}
 
 async function loginAPI(loginData: LoginAPIProps) {
   const response = await axios.post("/api/users/login", loginData);
@@ -99,6 +111,8 @@ async function addToCartAPI(
   });
   return response.data;
 }
+
+type AddToCartAPI = SagaReturnType<typeof addToCartAPI>;
 
 function* addToCartAsyncSaga(action: any) {
   try {
@@ -167,6 +181,43 @@ function* removeCartItemSaga() {
   yield takeLatest(REMOVE_CART_ITEM_REQUEST, removeCartItemAsyncSaga);
 }
 
+async function buyProductsAPI(cartInfo: Array<CartInfo>, paymentData: any[]) {
+  const response = await axios.post("/api/users/successBuy", {
+    cartInfo: cartInfo,
+    paymentData: paymentData,
+  });
+  return response.data;
+}
+
+function* buyProductsAsyncSaga(action: any) {
+  try {
+    const buyProductsResult = yield call(
+      buyProductsAPI,
+      action.cartInfo,
+      action.paymentData
+    );
+    yield put({
+      type: BUY_PRODUCTS_SUCCESS,
+      payload: buyProductsResult,
+    });
+    const updateUserInfo = yield call(authCheckAPI);
+    yield put({
+      type: AUTH_CHECK_SUCCESS,
+      payload: updateUserInfo,
+    });
+  } catch (error) {
+    console.log(error);
+    yield put({
+      type: BUY_PRODUCTS_FAILURE,
+      payload: error.response.data,
+    });
+  }
+}
+
+function* buyProductsSaga() {
+  yield takeLatest(BUY_PRODUCTS_REQUEST, buyProductsAsyncSaga);
+}
+
 export default function* userSaga() {
   yield all([
     fork(logInSaga),
@@ -175,5 +226,6 @@ export default function* userSaga() {
     fork(authCheckSaga),
     fork(addToCartSaga),
     fork(removeCartItemSaga),
+    fork(buyProductsSaga),
   ]);
 }

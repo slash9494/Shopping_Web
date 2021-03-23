@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Grid, Divider, Typography, colors } from "@material-ui/core";
+import { Grid, Divider, Typography } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { authCheckActionAsync, REMOVE_CART_ITEM_REQUEST } from "../modules";
+import {
+  authCheckActionAsync,
+  REMOVE_CART_ITEM_REQUEST,
+  BUY_PRODUCTS_REQUEST,
+} from "../modules";
 import { createSelector } from "reselect";
 import { RootState } from "../modules/reducers";
 import wrapper, { IStore } from "../store/configureStore";
@@ -12,7 +16,8 @@ import axios from "axios";
 import { END } from "redux-saga";
 import { useRouter } from "next/router";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import PayPal from "../components/utils/PayPal";
+import Swal from "sweetalert2";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     itemContainer: {
@@ -82,21 +87,15 @@ const PayContainer = styled.div`
   flex-direction: column;
 `;
 
-const PayButton = styled.button`
-  background: black;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
-  height: 100%;
-  font-weight: bold;
-  &:hover {
-    background: #495057;
-  }
+const EmptyContainer = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  background: url("https://images.unsplash.com/photo-1542790292-fdfbc3d343a7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80")
+    no-repeat top;
+  padding-top: 50px;
 `;
 
 export interface UserCartInfo {
@@ -140,14 +139,40 @@ function cart() {
       return router.push(`/shop/detailview/kidProduct/${id}`);
     }
   };
+  const onApprove = (
+    data: any,
+    actions: { order: { capture: () => Promise<any> } }
+  ) => {
+    return actions.order
+      .capture()
+      .then(function (details: { payer: any }) {
+        dispatch({
+          type: BUY_PRODUCTS_REQUEST,
+          cartInfo: userInfo.data?.cart,
+          paymentData: details,
+        });
+      })
+      .catch((err: any) => alert(`결제하는데 실패했습니다. : ${err}`));
+  };
+
   useEffect(() => {
     calculateTotal();
   }, [userInfo?.data?.cart]);
+  useEffect(() => {
+    if (userInfo?.data?.cart?.productBuySuccess === true) {
+      Swal.fire({
+        title: "결제를 완료했습니다.",
+        icon: "success",
+        html: '<a href="/payHistoryPage"><b>결제내역 조회하기</b></a> ',
+      });
+    }
+  }, [userInfo?.data?.cart?.productBuySuccess]);
+
   return (
     <AppContainer>
-      <h2>장바구니</h2>
+      {userInfo.data?.cart.length > 0 ? <h2>장바구니</h2> : null}
       <Grid container spacing={2}>
-        {userInfo.data?.cart.length > 0 &&
+        {userInfo.data?.cart.length > 0 ? (
           userInfo?.data?.cart.map((items: any) => {
             return (
               <Grid
@@ -201,37 +226,45 @@ function cart() {
                 </ItemDetailContainer>
               </Grid>
             );
-          })}
+          })
+        ) : (
+          <EmptyContainer>
+            <Typography variant="h6">- 장바구니가 비어있습니다 -</Typography>
+          </EmptyContainer>
+        )}
+        {userInfo.data?.cart.length > 0 ? (
+          <PayContainer>
+            <h2>총 {total}원</h2>
+            <PayPalScriptProvider
+              options={{
+                "client-id":
+                  "AQtOFFRJSeihOZQZ4_cJP67f_2b5ZEoDO9B97g3sMjXs_XhgUie3P0vXXn4rDB6zKT3BvOdDatVDjMVY",
+              }}
+            >
+              <PayPalButtons
+                style={{
+                  layout: "horizontal",
+                  color: "black",
+                  tagline: false,
+                  height: 35,
+                }}
+                createOrder={(data, actions) => {
+                  return actions.order.create({
+                    purchase_units: [
+                      {
+                        amount: {
+                          value: `${total}`,
+                        },
+                      },
+                    ],
+                  });
+                }}
+                onApprove={onApprove}
+              />
+            </PayPalScriptProvider>
+          </PayContainer>
+        ) : null}
       </Grid>
-      <PayContainer>
-        <h2>총 {total}원</h2>
-        <PayPalScriptProvider
-          options={{
-            "client-id":
-              "AQtOFFRJSeihOZQZ4_cJP67f_2b5ZEoDO9B97g3sMjXs_XhgUie3P0vXXn4rDB6zKT3BvOdDatVDjMVY",
-          }}
-        >
-          <PayPalButtons
-            style={{
-              layout: "horizontal",
-              color: "black",
-              tagline: false,
-              height: 35,
-            }}
-            createOrder={(data, actions) => {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    amount: {
-                      value: `${total}`,
-                    },
-                  },
-                ],
-              });
-            }}
-          />
-        </PayPalScriptProvider>
-      </PayContainer>
     </AppContainer>
   );
 }

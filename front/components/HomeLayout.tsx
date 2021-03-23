@@ -20,7 +20,7 @@ const LandingPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 60px 10px 60px;
+  padding: 0 60px 30px 60px;
 `;
 
 const DirectoryContainer = styled.div`
