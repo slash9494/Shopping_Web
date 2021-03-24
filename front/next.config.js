@@ -66,5 +66,9 @@ module.exports = withAssetsImport({
   },
 });
 
+const withTM = require("next-transpile-modules")(["gsap"]);
+
+module.exports = withTM({});
+
 // const withCSS = require("@zeit/next-css");
 // module.exports = withCSS({});
