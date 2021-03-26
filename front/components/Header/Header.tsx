@@ -171,14 +171,14 @@ function Header() {
         </LogoContainer>
         <Hidden smDown implementation="css">
           <OptionsContainer>
-            {!userInfo?.data?.isAuth ? (
-              <LoggedOutNavBar />
-            ) : (
+            {userInfo?.data?.isAuth ? (
               <LoggedInNavBar
                 badgeCount={badgeCount}
                 showCartDrawer={showCartDrawer}
                 userName={userInfo?.data?.name}
               />
+            ) : (
+              <LoggedOutNavBar />
             )}
           </OptionsContainer>
         </Hidden>
@@ -193,19 +193,21 @@ function Header() {
           </Drawer>
         </Hidden>
         <Hidden mdUp implementation="css">
-          <BagContainer>
-            <Link href="/cart">
-              <LinkContainer>
-                <StyledBadge
-                  badgeContent={badgeCount}
-                  color="default"
-                  showZero={true}
-                >
-                  <ShoppingBag width={30} height={30} />
-                </StyledBadge>
-              </LinkContainer>
-            </Link>
-          </BagContainer>
+          {userInfo?.data?.isAuth ? (
+            <BagContainer>
+              <Link href="/cart">
+                <LinkContainer>
+                  <StyledBadge
+                    badgeContent={badgeCount}
+                    color="default"
+                    showZero={true}
+                  >
+                    <ShoppingBag width={30} height={30} />
+                  </StyledBadge>
+                </LinkContainer>
+              </Link>
+            </BagContainer>
+          ) : null}
         </Hidden>
       </HeaderContainer>
       {pathName === "/shop/womanPage" ||

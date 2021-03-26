@@ -22,6 +22,7 @@ import Swal from "sweetalert2";
 import { createSelector } from "reselect";
 import { RootState } from "../../modules/reducers";
 import { Snackbar } from "@material-ui/core";
+import { useRouter } from "next/router";
 interface ProductDetailProps {
   cartProductInfo: CartProductInfo;
 }
@@ -97,6 +98,7 @@ const PopOverButton = styled.button`
 `;
 
 function ProductDetail(props: ProductDetailProps) {
+  const router = useRouter();
   const classes = useStyles();
   const dispatch = useDispatch();
   const checkUpUserInfo = createSelector(
@@ -141,6 +143,10 @@ function ProductDetail(props: ProductDetailProps) {
     };
     if (size === "") {
       Swal.fire("사이즈를 선택해주세요", "", "info");
+      return;
+    } else if (userInfo.data?.isAuth === false) {
+      Swal.fire("로그인을 해주세요", "", "info");
+      router.push("/signIn");
       return;
     } else {
       dispatch({

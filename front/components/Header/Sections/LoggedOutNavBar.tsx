@@ -8,12 +8,17 @@ const LinkContainer = styled.div`
   font-size: 1rem;
   text-decoration: none;
   color: black;
+  @media screen and (max-width: 956px) {
+    flex-direction: column;
+    padding: 10px 1vw;
+  }
 `;
 const Container = styled.div`
   display: flex;
   align-items: center;
   @media screen and (max-width: 956px) {
     flex-direction: column;
+    align-items: flex-start;
   }
 `;
 function LoggedOutNavBar() {

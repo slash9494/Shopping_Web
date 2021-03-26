@@ -116,7 +116,7 @@ function cart() {
   const userInfo = useSelector(checkUserInfo);
   const calculateTotal = () => {
     let priceArray: number[] = [];
-    if (userInfo.data?.cart.length > 0) {
+    if (userInfo.data?.cart?.length > 0) {
       userInfo?.data?.cart.map((items: any) => {
         priceArray.push(items.productInfo.price * items.quantity);
       });
@@ -154,7 +154,12 @@ function cart() {
       })
       .catch((err: any) => alert(`결제하는데 실패했습니다. : ${err}`));
   };
-
+  useEffect(() => {
+    if (!userInfo?.data?.isAuth) {
+      Swal.fire("로그인을 해주세요", "", "info");
+      router.push("/signIn");
+    }
+  }, [userInfo?.data]);
   useEffect(() => {
     calculateTotal();
   }, [userInfo?.data?.cart]);
@@ -170,9 +175,9 @@ function cart() {
 
   return (
     <AppContainer>
-      {userInfo.data?.cart.length > 0 ? <h2>장바구니</h2> : null}
+      {userInfo.data?.cart?.length > 0 ? <h2>장바구니</h2> : null}
       <Grid container spacing={2}>
-        {userInfo.data?.cart.length > 0 ? (
+        {userInfo.data?.cart?.length > 0 ? (
           userInfo?.data?.cart.map((items: any) => {
             return (
               <Grid
@@ -232,7 +237,7 @@ function cart() {
             <Typography variant="h6">- 장바구니가 비어있습니다 -</Typography>
           </EmptyContainer>
         )}
-        {userInfo.data?.cart.length > 0 ? (
+        {userInfo.data?.cart?.length > 0 ? (
           <PayContainer>
             <h2>총 {total}원</h2>
             <PayPalScriptProvider
