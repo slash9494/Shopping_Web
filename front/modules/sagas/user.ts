@@ -1,4 +1,3 @@
-import { ProductsInfo } from "./../types";
 import {
   ADD_TO_CART_FAILURE,
   ADD_TO_CART_SUCCESS,
@@ -18,8 +17,6 @@ import {
   put,
   takeLatest,
   takeEvery,
-  delay,
-  SagaReturnType,
 } from "redux-saga/effects";
 import {
   LOG_IN_REQUEST,
@@ -33,9 +30,7 @@ import {
   ADD_TO_CART_REQUEST,
 } from "../actions";
 
-import createAsyncSaga, {
-  createAsyncDummySaga,
-} from "../utils/createAsyncSaga";
+import createAsyncSaga from "../utils/createAsyncSaga";
 import { ProductByIdInfo, CartInfo } from "../types";
 
 interface LoginAPIProps {
@@ -47,13 +42,6 @@ interface SignUpProps {
   email: string;
   password: string;
   name: string;
-}
-
-interface AddToCartAPIProps {
-  addToCartAPI: Promise<any>;
-  id: string;
-  size: number;
-  cartProductInfo: ProductsInfo;
 }
 
 async function loginAPI(loginData: LoginAPIProps) {
@@ -111,8 +99,6 @@ async function addToCartAPI(
   });
   return response.data;
 }
-
-type AddToCartAPI = SagaReturnType<typeof addToCartAPI>;
 
 function* addToCartAsyncSaga(action: any) {
   try {

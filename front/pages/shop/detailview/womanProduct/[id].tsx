@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import styled from "styled-components";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import Description from "../../../../components/productDetail/Description";
 import ProductDetail from "../../../../components/productDetail/ProductDetail";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   authCheckActionAsync,
   loadWomanProductByIdActionAsync,
@@ -55,11 +54,8 @@ const DescriptionContainer = styled.div`
 `;
 
 function DetailProduct() {
-  const router = useRouter();
-  const pathName = router.pathname;
   const [showThumbNail, setShowThumbNail] = useState(true);
   const [imageState, setImageState] = useState<any>([]);
-  const [ImageLoading, setImageLoading] = useState(false);
   useEffect(() => {
     if (window.innerWidth <= 1024) {
       return setShowThumbNail(false);

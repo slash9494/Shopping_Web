@@ -13,11 +13,7 @@ import Popover from "@material-ui/core/Popover";
 import HelpIcon from "@material-ui/icons/Help";
 import Description from "./Description";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addToCartActionAsync,
-  ADD_TO_CART_REQUEST,
-  CartProductInfo,
-} from "../../modules";
+import { ADD_TO_CART_REQUEST, CartProductInfo } from "../../modules";
 import Swal from "sweetalert2";
 import { createSelector } from "reselect";
 import { RootState } from "../../modules/reducers";

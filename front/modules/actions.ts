@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { createAction, createAsyncAction } from "typesafe-actions";
+import { createAsyncAction } from "typesafe-actions";
 import {
   LoginInfo,
   LogOutInfo,
@@ -10,7 +10,6 @@ import {
   LoadProductsInfo,
   LoadProductByIdInfo,
 } from "./types";
-import { any } from "prop-types";
 
 // User Action //
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";

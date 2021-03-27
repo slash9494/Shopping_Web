@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect, useCallback } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -124,7 +124,7 @@ function UploadProductForm(props: any) {
   const sizeValueChange = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    const parsedValue = parseInt(e.target.value);
+    const parsedValue = parseInt((e.target as HTMLButtonElement).value);
     const currentIndex = sizeValues.indexOf(parsedValue);
     const newSizeValues = [...sizeValues];
     if (currentIndex === -1) {

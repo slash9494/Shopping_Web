@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
-import { Divider, List, ListItem, ListItemText } from "@material-ui/core";
+import { Divider, List } from "@material-ui/core";
 import LoggedOutNavBar from "./LoggedOutNavBar";
-import LoggedInNavBar, { Container } from "./LoggedInNavBar";
+import { Container } from "./LoggedInNavBar";
 import { LinkContainer } from "../HeaderContainer";
 import Link from "next/link";
 import Button from "@material-ui/core/Button";

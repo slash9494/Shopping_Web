@@ -1,7 +1,3 @@
-import { Action, ProductByIdInfo } from "./../types";
-import { response } from "express";
-import shortId from "shortid";
-import faker from "faker";
 import {
   FILE_UPLOAD_REQUEST,
   uploadManProductActionAsync,
@@ -25,10 +21,8 @@ import {
 } from "./../actions";
 import axios from "axios";
 import { fileUploadActionAsync } from "../actions";
-import createAsyncSaga, {
-  createAsyncDummySaga,
-} from "../utils/createAsyncSaga";
-import { takeEvery, all, fork, takeLatest, delay } from "redux-saga/effects";
+import createAsyncSaga from "../utils/createAsyncSaga";
+import { takeEvery, all, fork, takeLatest } from "redux-saga/effects";
 import { Filters } from "../../components/Header/Header";
 
 export type Config = {
@@ -220,29 +214,6 @@ const loadKidProductByIdAsyncSaga = createAsyncSaga(
 function* loadKidProductByIdSaga() {
   yield takeLatest(LOAD_KID_PRODUCT_BY_ID_REQUEST, loadKidProductByIdAsyncSaga);
 }
-async function loadCartProductsAPI(
-  productIds: Array<string>,
-  userCarts: Array<any>
-) {
-  const response = await axios.get(
-    `/api/product/products_by_id?id=${productIds}&type=array`
-  );
-  userCarts.forEach((cartItem) => {
-    response.data.forEach((productDetail: ProductByIdInfo, index: number) => {
-      if (cartItem.id === productDetail._id) {
-        response.data[index].quantity = cartItem.quantity;
-      }
-    });
-  });
-
-  return response.data;
-}
-
-// const loadCartItemAsyncSaga = createAsyncSaga()
-
-// function* loadCartItemSaga(){
-//   yield takeLatest()
-// }
 
 export default function* productSaga() {
   yield all([

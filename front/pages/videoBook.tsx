@@ -8,15 +8,12 @@ import { Fade } from "react-awesome-reveal";
 import ReactPlayer from "react-player";
 import { Typography, makeStyles, Theme, createStyles } from "@material-ui/core";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ScrollToPlugin from "gsap/ScrollToPlugin";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
-gsap.registerPlugin(ScrollToPlugin);
 
 const AppContainer = styled.div`
   width: 100vw;
-  /* height: calc(100vh - 90px); */
   & .videoSection {
     @media screen and (max-width: 1300px) {
       align-items: center;
@@ -61,7 +58,6 @@ const ContextContainer = styled.div`
   align-items: center;
   flex-direction: column;
   position: fixed;
-  /* top: 10vh; */
   left: 50%;
   @media screen and (max-width: 1300px) {
     position: static;

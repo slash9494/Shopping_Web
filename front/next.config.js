@@ -1,8 +1,3 @@
-// const withImages = require("next-images");
-// module.exports = withImages({
-//   inlineImageLimit: false,
-// });
-
 const withReactSvg = require("next-react-svg");
 const path = require("path");
 
@@ -70,5 +65,13 @@ const withTM = require("next-transpile-modules")(["gsap"]);
 
 module.exports = withTM({});
 
-// const withCSS = require("@zeit/next-css");
-// module.exports = withCSS({});
+const withImages = require("next-images");
+module.exports = withImages({
+  inlineImageLimit: false,
+});
+
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
+module.exports = {
+  plugins: [new BundleAnalyzerPlugin()],
+};

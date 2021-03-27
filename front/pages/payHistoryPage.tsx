@@ -1,10 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  DataGrid,
-  GridColDef,
-  ValueGetterParams,
-} from "@material-ui/data-grid";
+import { DataGrid, GridColDef } from "@material-ui/data-grid";
 import wrapper, { IStore } from "../store/configureStore";
 import axios from "axios";
 import { authCheckActionAsync } from "../modules";

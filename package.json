@@ -1,7 +1,7 @@
 {
   "name": "showpping-web",
   "version": "1.0.0",
-  "description": "the showpping web created by LYH",
+  "description": "shopping web created by LYH",
   "main": "index.js",
   "scripts": {
     "start": "node backend/index.js",

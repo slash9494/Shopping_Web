@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Logo from "../../images/LYH.svg";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../modules/reducers";
@@ -13,7 +12,6 @@ import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
 import DrawerList from "./Sections/DrawerList";
 import { createSelector } from "reselect";
-import ShoppingBag from "../../images/Shopping-bag.svg";
 import { useRouter } from "next/router";
 import {
   HeaderContainer,
@@ -30,7 +28,6 @@ import {
   loadManProductsActionAsync,
   loadWomanProductsActionAsync,
   loadKidProductsActionAsync,
-  authCheckActionAsync,
 } from "../../modules";
 import CartDrawer from "./Sections/CartDrawer";
 export type Filters = {
@@ -78,8 +75,8 @@ function Header() {
     price: [],
   });
 
-  const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(16);
+  // const [skip, setSkip] = useState(0);
+  // const [limit, setLimit] = useState(16);
   const handleFilters = (propedFilters: any[] | any, kind: string) => {
     const newFilters = { ...filters };
     newFilters[kind] = propedFilters;
@@ -92,7 +89,7 @@ function Header() {
   };
   const handlePrice = (value: any) => {
     const data = price;
-    let array = [];
+    let array: any[] = [];
     for (let key in data) {
       if (data[key].id === parseInt(value)) {
         array = data[key].array;
@@ -103,10 +100,10 @@ function Header() {
   const showFilteredResults = (filters: Filters) => {
     const variables = {
       skip: 0,
-      limit: limit,
+      // limit: limit,
       filters: filters,
     };
-    setSkip(0);
+    // setSkip(0);
     if (pathName === "/shop/manPage") {
       dispatch(loadManProductsActionAsync.request(variables));
     } else if (pathName === "/shop/womanPage") {
@@ -129,7 +126,7 @@ function Header() {
     } else if (pathName === "/shop/kidPage") {
       dispatch(loadKidProductsActionAsync.request(variables));
     } else return;
-    setSkip(0);
+    // setSkip(0);
   };
   const [open, setOpen] = useState(false);
   const showCartDrawer = () => {
@@ -165,7 +162,7 @@ function Header() {
         <LogoContainer>
           <LogoLink>
             <Link href="/">
-              <Logo height={"100%"} width={"100%"} />
+              <img src="/LYH.svg" style={{ height: "100%", width: "100%" }} />
             </Link>
           </LogoLink>
         </LogoContainer>
@@ -202,7 +199,10 @@ function Header() {
                     color="default"
                     showZero={true}
                   >
-                    <ShoppingBag width={30} height={30} />
+                    <img
+                      src="/Shopping-bag.svg"
+                      style={{ width: 30, height: 30 }}
+                    />
                   </StyledBadge>
                 </LinkContainer>
               </Link>

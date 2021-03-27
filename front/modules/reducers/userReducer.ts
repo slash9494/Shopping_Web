@@ -1,8 +1,6 @@
 import { asyncState } from "../utils/reducerUtil";
 import { UserState, Action } from "../types";
 import { createReducer } from "typesafe-actions";
-import produce from "immer";
-import { WritableDraft } from "immer/dist/internal";
 import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,

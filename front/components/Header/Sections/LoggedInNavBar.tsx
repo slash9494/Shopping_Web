@@ -1,6 +1,6 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Button from "@material-ui/core/Button";
 import {
   makeStyles,
@@ -9,11 +9,9 @@ import {
   createStyles,
 } from "@material-ui/core/styles";
 import { logOutActionAsync } from "../../../modules";
-import ShoppingBag from "../../../images/Shopping-bag.svg";
-import { Badge, Drawer } from "@material-ui/core";
+import { Badge } from "@material-ui/core";
 import Link from "next/link";
 import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 interface LogInNavBarProps {
   badgeCount: number;
   showCartDrawer: any;
@@ -123,7 +121,7 @@ function LoggedInNavBar(props: LogInNavBarProps) {
           className="badge"
           onMouseOver={props.showCartDrawer}
         >
-          <ShoppingBag width={40} height={40} />
+          <img src="/Shopping-bag.svg" style={{ width: 40, height: 40 }} />
         </StyledBadge>
       </BagContainer>
     </Container>

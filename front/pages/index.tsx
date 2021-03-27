@@ -3,11 +3,6 @@ import wrapper, { IStore } from "../store/configureStore";
 import { authCheckActionAsync } from "../modules";
 import { END } from "redux-saga";
 import axios from "axios";
-interface Props {
-  dispatch: any;
-  ctx: any;
-  getInitialProps: any;
-}
 
 const IndexPage = () => <HomeLayout></HomeLayout>;
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { List, Button, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -76,11 +76,10 @@ function FilterList(props: any) {
   const classes = useStyles();
   const [sizeChecked, setSizeChecked] = useState<number[]>([]);
   const [categoryChecked, setCategoryChecked] = useState<number[]>([]);
-  const [priceChecked, setPriceChecked] = useState<string>("");
   const handleSizeChecked = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    const parsedValue = parseInt(e.target.value);
+    const parsedValue = parseInt((e.target as HTMLButtonElement).value);
     const currentIndex = sizeChecked.indexOf(parsedValue);
     const newChecked = [...sizeChecked];
     if (currentIndex === -1) {
@@ -94,7 +93,7 @@ function FilterList(props: any) {
   const handleCategoryChecked = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    const parsedValue = parseInt(e.target.value);
+    const parsedValue = parseInt((e.target as HTMLButtonElement).value);
     const currentIndex = categoryChecked.indexOf(parsedValue);
     const newChecked = [...categoryChecked];
     if (currentIndex === -1) {
@@ -108,7 +107,7 @@ function FilterList(props: any) {
   const handlePriceChecked = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    props.handlePriceFilters(e.target.value);
+    props.handlePriceFilters((e.target as HTMLButtonElement).value);
   };
 
   return (

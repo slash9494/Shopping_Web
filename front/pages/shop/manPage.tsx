@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { Typography, List, Drawer } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Link from "next/link";
 import Grid from "@material-ui/core/Grid";
@@ -74,15 +74,15 @@ const AppContainer = styled.ul`
 function manPage() {
   const dispatch = useDispatch();
   const loadMoreProducts = () => {
-    let changeSkip = skip + limit;
+    // let changeSkip = skip + limit;
 
     let body = {
-      skip: changeSkip,
-      bodu: limit,
+      // skip: changeSkip,
+      limit: 16,
       loadMore: true,
     };
     dispatch(loadManProductsActionAsync.request(body));
-    setSkip(changeSkip);
+    // setSkip(changeSkip);
   };
 
   const classes = useStyles();
@@ -91,8 +91,8 @@ function manPage() {
     (productReducer) => productReducer.loadProductsInfo
   );
   const loadProductsInfo = useSelector(checkUploadProductInfo);
-  const [skip, setSkip] = useState(0);
-  const [limit, setLimit] = useState(16);
+  // const [skip, setSkip] = useState(0);
+  // const [limit, setLimit] = useState(16);
 
   return (
     <AppContainer className={classes.root}>

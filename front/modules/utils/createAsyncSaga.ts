@@ -1,6 +1,5 @@
 import { PayloadAction, AsyncActionCreatorBuilder } from "typesafe-actions";
-import { call, put, delay } from "redux-saga/effects";
-import { FunctionComponent } from "react";
+import { call, put } from "redux-saga/effects";
 
 type PromiseCreatorFunction<P, T> =
   | ((payload: P) => Promise<T>)
