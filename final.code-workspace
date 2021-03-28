@@ -1,0 +1,43 @@
+{
+  "folders": [
+	{
+		"name": "Shopping-web-next",
+		"path": "."
+	},
+	{
+		"name": "react-shop-master",
+		"path": "../react-shop-master"
+	},
+	{
+		"name": "ts-nodebird-master",
+		"path": "../ts-nodebird-master"
+	},
+	{
+		"name": "react-nodebird-master",
+		"path": "../react-nodebird-master"
+	},
+	{
+		"name": "case1-context-menu",
+		"path": "../case1-context-menu"
+	},
+	{
+		"name": "ts-react-prtc",
+		"path": "../ts-react-prtc"
+	},
+	{
+		"path": "../Shopping_Web_next"
+	},
+	{
+		"path": "../PropWave"
+	},
+	{
+		"path": "../../집톡_전문가프로필"
+	},
+	{
+		"path": "../Shopping_Web"
+	},
+	{
+		"path": "../../코딩/sub"
+	}
+]
+}
